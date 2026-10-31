@@ -1,0 +1,1232 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>JPR KING — Review &amp; Sign Your Invoice</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --navy: #0a1a33;
+        --navy-deep: #061224;
+        --navy-card: #10233f;
+        --gold: #c9a24b;
+        --gold-bright: #e6c15c;
+        --gold-ink: #8a6d1f;
+        --bg: #eef0f3;
+        --surface: #ffffff;
+        --surface-2: #f6f7f9;
+        --ink: #16233a;
+        --ink-soft: #4a5871;
+        --line: #d9dee7;
+        --good: #1c7c43;
+        --danger: #b3372e;
+        --pad-bg: #ffffff;
+        --radius: 14px;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #050d1a;
+          --surface: #0d1e38;
+          --surface-2: #122741;
+          --ink: #eef2f9;
+          --ink-soft: #a9b7cf;
+          --line: #27405f;
+          --gold-ink: #e6c15c;
+          --good: #4cc47c;
+          --danger: #e07a72;
+        }
+      }
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+        font-size: 17px;
+        line-height: 1.45;
+        padding-bottom: 96px;
+      }
+      .wrap { max-width: 680px; margin: 0 auto; padding: 0 14px; }
+
+      /* ---------- Header ---------- */
+      header.shop {
+        background: linear-gradient(160deg, var(--navy) 0%, var(--navy-deep) 100%);
+        color: #f4f6fb;
+        border-bottom: 4px solid var(--gold);
+        padding: 26px 16px 22px;
+        text-align: center;
+      }
+      header.shop .crown { display: block; margin: 0 auto 4px; }
+      header.shop h1 {
+        font-family: "Barlow Condensed", "Barlow", sans-serif;
+        font-size: 52px;
+        letter-spacing: 3px;
+        margin: 0;
+        line-height: 1;
+        color: #ffffff;
+      }
+      header.shop .sub {
+        letter-spacing: 4px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--gold-bright);
+        margin-top: 4px;
+      }
+      header.shop .tagline {
+        margin-top: 14px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        font-size: 15px;
+        color: var(--gold-bright);
+      }
+      header.shop .addr { margin-top: 10px; font-size: 15px; color: #c8d3e6; }
+      header.shop .addr a { color: #ffffff; font-weight: 600; text-decoration: none; white-space: nowrap; }
+      header.shop .addr a:active { color: var(--gold-bright); }
+
+      /* ---------- Cards & sections ---------- */
+      section.card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 18px 16px;
+        margin-top: 16px;
+      }
+      h2.sec {
+        font-family: "Barlow Condensed", "Barlow", sans-serif;
+        font-size: 24px;
+        letter-spacing: 1px;
+        margin: 0 0 4px;
+        color: var(--ink);
+      }
+      h2.sec .step {
+        display: inline-block;
+        background: var(--navy);
+        color: var(--gold-bright);
+        border-radius: 8px;
+        font-size: 15px;
+        padding: 2px 9px;
+        margin-right: 8px;
+        vertical-align: 3px;
+        letter-spacing: 0;
+      }
+      @media (prefers-color-scheme: dark) { h2.sec .step { background: var(--navy-card); } }
+      p.lede { margin: 4px 0 12px; color: var(--ink-soft); font-size: 15.5px; }
+
+      .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; margin-bottom: 6px; }
+      .meta-grid .k { font-size: 12.5px; font-weight: 700; letter-spacing: 1px; color: var(--ink-soft); text-transform: uppercase; }
+      .meta-grid .v { font-size: 17px; font-weight: 600; }
+      .meta-grid .wide { grid-column: 1 / -1; }
+
+      table.items { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 10px; }
+      table.items th {
+        text-align: left; font-size: 12.5px; letter-spacing: 1.5px; text-transform: uppercase;
+        background: var(--navy); color: var(--gold-bright); padding: 9px 10px;
+      }
+      table.items th:first-child { border-radius: 8px 0 0 8px; }
+      table.items th.num { border-radius: 0 8px 8px 0; }
+      table.items td { padding: 11px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+      table.items tbody tr:nth-child(even) td { background: var(--surface-2); }
+      table.items .num { text-align: right; white-space: nowrap; font-weight: 600; }
+      table.items .desc { font-weight: 500; }
+      table.items .qtyprice { color: var(--ink-soft); font-size: 14.5px; display: block; font-weight: 400; }
+      .totals {
+        margin-top: 14px; background: var(--surface-2);
+        border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px 12px;
+      }
+      .totals .row { display: flex; justify-content: space-between; padding: 5px 4px; font-size: 16px; }
+      .totals .row.grand {
+        border-top: 2px solid var(--gold);
+        margin-top: 6px; padding-top: 10px;
+        font-size: 22px; font-weight: 700;
+      }
+      .totals .row.grand .amt { color: var(--gold-ink); }
+      .totals .row.balance {
+        background: var(--navy); color: #ffffff; border: 1.5px solid var(--gold);
+        border-radius: 9px; margin-top: 9px; padding: 11px 12px;
+        font-size: 18px; font-weight: 700; align-items: center;
+      }
+      .totals .row.balance .bal-amt { color: var(--gold-bright); font-size: 21px; }
+
+      /* ---------- Dressed invoice document ---------- */
+      section.card.doc { padding: 0; overflow: hidden; }
+      .doc-band {
+        background: linear-gradient(160deg, var(--navy) 0%, var(--navy-deep) 100%);
+        border-bottom: 3px solid var(--gold);
+        padding: 14px 16px; display: flex; align-items: center; gap: 12px;
+      }
+      .doc-band .band-step {
+        flex: none; background: var(--gold); color: #231a02;
+        font-family: "Barlow Condensed", "Barlow", sans-serif; font-weight: 700;
+        font-size: 17px; border-radius: 8px; padding: 3px 10px; line-height: 1.2;
+      }
+      .doc-band h2 {
+        font-family: "Barlow Condensed", "Barlow", sans-serif;
+        font-size: 27px; letter-spacing: 1.5px; margin: 0; line-height: 1.05;
+        color: #ffffff; text-transform: uppercase;
+      }
+      .doc-status {
+        margin-left: auto; flex: none; font-size: 11.5px; font-weight: 700;
+        letter-spacing: 1.2px; text-transform: uppercase; text-align: center;
+        padding: 6px 11px; border-radius: 999px;
+        border: 1.5px solid var(--gold-bright); color: var(--gold-bright);
+      }
+      .doc-status.is-paid { border-color: #57c785; color: #57c785; }
+      .doc-body { padding: 16px; }
+      .doc .meta-grid { border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 4px; }
+
+      /* ---------- Buttons ---------- */
+      .btn {
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+        width: 100%; min-height: 58px;
+        border-radius: 12px; border: none; cursor: pointer;
+        font-family: inherit; font-size: 18px; font-weight: 700;
+        text-decoration: none; padding: 12px 16px; text-align: center;
+      }
+      .btn:active { transform: translateY(1px); }
+      .btn-pay { background: var(--navy); color: #fff; border: 2px solid var(--gold); }
+      .btn-pay .pp { color: var(--gold-bright); }
+      .btn-gold .pp { color: var(--navy); }
+      .btn-gold { background: linear-gradient(180deg, var(--gold-bright), var(--gold)); color: #231a02; }
+      .btn-gold:disabled { background: var(--line); color: var(--ink-soft); cursor: not-allowed; transform: none; }
+      .btn-ghost {
+        background: transparent; color: var(--ink);
+        border: 1.5px solid var(--line); min-height: 48px; font-size: 16px; width: auto; padding: 8px 18px;
+      }
+      .btn-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+      /* ---------- Agreements ---------- */
+      .choice {
+        display: block; border: 1.5px solid var(--line); border-radius: 12px;
+        padding: 14px 14px 14px 46px; margin-top: 10px; position: relative; cursor: pointer;
+        background: var(--surface-2);
+      }
+      .choice input { position: absolute; left: 14px; top: 16px; width: 20px; height: 20px; accent-color: var(--gold-ink); }
+      .choice strong { display: block; font-size: 16.5px; }
+      .choice span { color: var(--ink-soft); font-size: 15px; }
+      .choice:has(input:checked) { border-color: var(--gold); box-shadow: 0 0 0 1.5px var(--gold); background: var(--surface); }
+      .choice .amt-row { margin-top: 10px; display: none; }
+      .choice:has(input:checked) .amt-row { display: block; }
+      .choice .amt-row input {
+        position: static; width: 100%; height: 48px; font-size: 17px; padding: 8px 12px;
+        border: 1.5px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink);
+        font-family: inherit;
+      }
+      .terms {
+        border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2);
+        padding: 12px 14px; max-height: 240px; overflow-y: auto;
+        font-size: 14.5px; color: var(--ink-soft); margin-top: 10px;
+      }
+      .terms p { margin: 0 0 9px; }
+      .terms p:last-child { margin-bottom: 0; }
+      .terms strong { color: var(--ink); }
+      .asis-banner {
+        background: var(--navy); color: #fff; border-radius: 10px; padding: 10px 14px;
+        font-weight: 700; letter-spacing: 1px; text-align: center; margin-top: 10px;
+        border: 2px solid var(--gold);
+      }
+
+      /* ---------- Signature pads ---------- */
+      label.field { display: block; font-weight: 600; margin: 14px 0 6px; font-size: 16px; }
+      input.name-input {
+        width: 100%; height: 54px; font-size: 18px; padding: 10px 14px;
+        border: 1.5px solid var(--line); border-radius: 10px;
+        background: var(--surface); color: var(--ink); font-family: inherit;
+      }
+      input.name-input:focus, .choice .amt-row input:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+      .pad-wrap { position: relative; margin-top: 6px; }
+      canvas.pad {
+        display: block; width: 100%; height: 190px;
+        background: var(--pad-bg);
+        border: 2px dashed var(--gold);
+        border-radius: 12px;
+        touch-action: none;
+      }
+      .pad-hint {
+        position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+        color: #93a0b5; font-size: 16px; pointer-events: none; font-style: italic;
+      }
+      .pad-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+      .signed-stamp { font-size: 14.5px; color: var(--good); font-weight: 600; min-height: 20px; }
+      .signed-stamp.empty { color: var(--ink-soft); font-weight: 400; }
+
+      ul.todo { list-style: none; margin: 12px 0 0; padding: 0; font-size: 15.5px; }
+      ul.todo li { padding: 5px 0 5px 30px; position: relative; color: var(--ink-soft); }
+      ul.todo li::before {
+        content: ""; position: absolute; left: 2px; top: 7px; width: 16px; height: 16px;
+        border: 2px solid var(--line); border-radius: 50%;
+      }
+      ul.todo li.done { color: var(--ink); }
+      ul.todo li.done::before { background: var(--good); border-color: var(--good); }
+      ul.todo li.done::after {
+        content: ""; position: absolute; left: 8px; top: 10px; width: 5px; height: 9px;
+        border: solid #fff; border-width: 0 2.5px 2.5px 0; transform: rotate(42deg);
+      }
+
+      textarea.payload {
+        width: 100%; min-height: 130px; font-family: ui-monospace, Menlo, monospace; font-size: 12px;
+        border: 1.5px solid var(--line); border-radius: 10px; padding: 10px;
+        background: var(--surface-2); color: var(--ink); word-break: break-all;
+      }
+      /* Paste field: tall enough that the customer can SEE the link land —
+         a one-line squished box hid whether a paste worked at all. */
+      textarea.payload.compact {
+        min-height: 96px; height: 96px; resize: vertical; overflow-y: auto;
+        white-space: normal; font-size: 13px; line-height: 1.4;
+        padding: 12px 14px; border-radius: 12px; word-break: break-all;
+      }
+      /* Compact chip that stands in for a long link / payload on screen */
+      .link-chip {
+        display: flex; align-items: center; gap: 10px;
+        background: var(--navy); border: 1.5px solid var(--gold);
+        border-radius: 999px; padding: 10px 16px; color: #fff;
+      }
+      .link-chip svg { flex: none; }
+      .link-chip .t {
+        font-weight: 700; font-size: 15.5px; min-width: 0;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      }
+      .link-chip .s {
+        margin-left: auto; flex: none; font-size: 12px; font-weight: 700;
+        letter-spacing: 1px; color: var(--gold-bright); white-space: nowrap;
+      }
+      /* The full payload stays in the page for the Copy button,
+         but never sprawls across the screen. */
+      .payload-hidden {
+        position: absolute !important; width: 1px !important; height: 1px !important;
+        min-height: 0 !important; padding: 0 !important; margin: 0 !important;
+        border: 0 !important; opacity: 0; overflow: hidden; pointer-events: none;
+      }
+
+      /* ---------- Empty / done states ---------- */
+      .empty, .done { text-align: center; padding: 34px 20px; }
+      .empty h2, .done h2 {
+        font-family: "Barlow Condensed", "Barlow", sans-serif; font-size: 30px; letter-spacing: 1px; margin: 10px 0 8px;
+      }
+      .empty p, .done p { color: var(--ink-soft); margin: 0 auto 16px; max-width: 420px; }
+      .done .check {
+        width: 74px; height: 74px; border-radius: 50%; background: var(--good);
+        margin: 0 auto; display: flex; align-items: center; justify-content: center;
+      }
+      .done .check::after {
+        content: ""; width: 20px; height: 36px; border: solid #fff;
+        border-width: 0 6px 6px 0; transform: rotate(42deg) translate(-2px, -4px);
+      }
+      .left { text-align: left; }
+
+      /* ---------- Sticky pay bar ---------- */
+      .paybar {
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+        background: var(--navy); border-top: 3px solid var(--gold);
+        padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+        display: flex; align-items: center; gap: 12px;
+      }
+      .paybar .tot { color: #fff; line-height: 1.15; min-width: 0; }
+      .paybar .tot .k { font-size: 12px; letter-spacing: 1.5px; color: var(--gold-bright); font-weight: 700; }
+      .paybar .tot .v { font-size: 22px; font-weight: 700; white-space: nowrap; }
+      .paybar .btn { flex: 1; min-height: 54px; }
+
+      .hidden { display: none !important; }
+      .small-note { font-size: 14px; color: var(--ink-soft); margin-top: 10px; }
+    </style>
+  </head>
+  <body>
+    <header class="shop">
+      <svg class="crown" width="54" height="40" viewBox="0 0 24 24" fill="none" stroke="#e6c15c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.735H5.81a1 1 0 0 1-.957-.735L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z" fill="#c9a24b"/>
+        <path d="M5 21h14"/>
+      </svg>
+      <h1>JPR KING</h1>
+      <div class="sub">AUTO SALES &amp; REPAIR</div>
+      <div class="tagline">GOD IS GOOD ALL THE TIME</div>
+      <div class="addr">
+        837 NW 8th Ave, Fort Lauderdale, FL 33311<br />
+        <a href="tel:+19412704988">(941) 270-4988</a>
+      </div>
+    </header>
+
+    <div class="wrap">
+      <!-- ===== Empty state: no invoice data in the link ===== -->
+      <section class="card empty hidden" id="emptyView">
+        <svg class="crown" width="46" height="34" viewBox="0 0 24 24" fill="none" stroke="#c9a24b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin:0 auto;">
+          <path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.735H5.81a1 1 0 0 1-.957-.735L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z" fill="#c9a24b"/>
+          <path d="M5 21h14"/>
+        </svg>
+        <h2>Open your estimate</h2>
+        <p>The link that brought you here arrived without your document attached — some apps strip it off in transit. Use the link from your JPR KING email below and your estimate or invoice opens right here, ready to review, sign, and pay.</p>
+        <div class="left" style="margin-top:6px;">
+          <label class="field" for="pasteBox" style="margin-top:0;">Have the link JPR KING sent you?</label>
+          <p class="lede" style="margin-bottom:10px;">In your email, long-press the gold <strong>Review &amp; Sign</strong> button and choose <strong>Copy link</strong>. Then come back here and tap:</p>
+          <button type="button" class="btn btn-gold" id="clipBtn">Paste &amp; open my document</button>
+          <p class="lede" style="margin:14px 0 8px;">Or paste the link into this box — it opens by itself as soon as the full link lands:</p>
+          <textarea class="payload compact" id="pasteBox" rows="4" placeholder="Paste link here" aria-label="Paste your JPR KING link here"></textarea>
+          <div style="height:10px"></div>
+          <button type="button" class="btn btn-pay" id="pasteBtn">Open my document</button>
+          <p class="small-note" id="pasteMsg" role="status"></p>
+        </div>
+        <div style="height:18px"></div>
+        <a class="btn btn-pay" href="tel:+19412704988">Call JPR KING — <span class="pp">(941) 270-4988</span></a>
+        <p class="small-note">837 NW 8th Ave, Fort Lauderdale, FL 33311</p>
+      </section>
+
+      <!-- ===== Main signing view ===== -->
+      <main id="signView" class="hidden">
+        <!-- Invoice summary -->
+        <section class="card doc">
+          <div class="doc-band">
+            <span class="band-step">1</span>
+            <h2 id="docKindLabel">Your invoice</h2>
+            <span class="doc-status" id="docStatus">Balance due</span>
+          </div>
+          <div class="doc-body">
+          <div class="meta-grid">
+            <div><div class="k">Invoice</div><div class="v" id="mInvoice">—</div></div>
+            <div><div class="k">Customer</div><div class="v" id="mCustomer">—</div></div>
+            <div class="wide"><div class="k">Vehicle</div><div class="v" id="mVehicle">—</div></div>
+            <div class="hidden" id="mIssuedRow"><div class="k">Issued</div><div class="v" id="mIssued">—</div></div>
+            <div class="hidden" id="mDueRow"><div class="k">Due</div><div class="v" id="mDue">—</div></div>
+            <div class="wide hidden" id="mPhoneRow"><div class="k">Phone on file</div><div class="v" id="mPhone">—</div></div>
+          </div>
+          <table class="items" aria-label="Invoice line items">
+            <thead><tr><th>Description</th><th class="num">Amount</th></tr></thead>
+            <tbody id="itemsBody"></tbody>
+          </table>
+          <div class="totals">
+            <div class="row"><span>Subtotal</span><span id="tSubtotal">$0.00</span></div>
+            <div class="row hidden" id="tDiscountRow"><span>Discount</span><span id="tDiscount">−$0.00</span></div>
+            <div class="row"><span>Tax</span><span id="tTax">$0.00</span></div>
+            <div class="row grand"><span>Total</span><span class="amt" id="tTotal">$0.00</span></div>
+            <div class="row hidden" id="tPaidRow"><span>Paid so far</span><span id="tPaid">$0.00</span></div>
+            <div class="row balance hidden" id="tBalanceRow"><span>Balance due</span><span class="bal-amt" id="tBalance">$0.00</span></div>
+          </div>
+          </div>
+        </section>
+
+        <!-- Pay -->
+        <section class="card" id="payCard">
+          <h2 class="sec"><span class="step">2</span>Pay deposit or full amount</h2>
+          <p class="lede">Pay securely through PayPal — the deposit or the full amount. You can pay before or after signing.</p>
+          <a class="btn btn-gold" id="payBtnTop" href="#" target="_blank" rel="noopener">Pay with <span class="pp">PayPal</span></a>
+        </section>
+
+        <!-- Agreements -->
+        <section class="card">
+          <h2 class="sec"><span class="step">3</span>Your agreements</h2>
+
+          <h3 style="margin:14px 0 2px; font-size:18px;">Florida Written Estimate Choice</h3>
+          <p class="lede">Florida&rsquo;s Motor Vehicle Repair Act (Fla. Stat. &sect;559.905) gives you the right to a written estimate before work begins. Pick one:</p>
+
+          <label class="choice">
+            <input type="radio" name="estChoice" value="Written estimate requested" />
+            <strong>Give me a written estimate first</strong>
+            <span>JPR KING will prepare a written estimate, and no work will start until I approve it.</span>
+          </label>
+          <label class="choice">
+            <input type="radio" name="estChoice" value="Written estimate waived" />
+            <strong>I waive the written estimate</strong>
+            <span>I do not want a written estimate. JPR KING may proceed with the work described on this invoice.</span>
+          </label>
+          <label class="choice">
+            <input type="radio" name="estChoice" value="Estimate with authorized dollar limit" />
+            <strong>Estimate, with a dollar limit I set</strong>
+            <span>Give me a written estimate, and I authorize work up to the amount below without further approval.</span>
+            <span class="amt-row">
+              <input type="text" inputmode="decimal" id="estLimit" placeholder="Authorized up to $ — enter an amount" aria-label="Authorized dollar limit" />
+            </span>
+          </label>
+
+          <h3 style="margin:22px 0 2px; font-size:18px;">Repair Authorization &amp; Shop Terms</h3>
+          <div class="terms" tabindex="0">
+            <p><strong>Authorization.</strong> By signing below, I authorize JPR KING (837 NW 8th Ave, Fort Lauderdale, FL 33311) to perform the repairs and services listed on this invoice, including ordering the parts and materials needed, and to operate my vehicle on public roads for testing and inspection.</p>
+            <p><strong>Payment.</strong> I agree to pay for all parts, labor, shop supplies, taxes, and fees on completion of the work, before the vehicle is released. A deposit may be required before work begins and will be applied to my total.</p>
+            <p><strong>Changes.</strong> If additional work is found to be needed, JPR KING will contact me for approval before doing work beyond what I authorized above, as required by Florida law.</p>
+            <p><strong>Mechanic&rsquo;s lien.</strong> I understand JPR KING may claim a lien on the vehicle for unpaid repair charges under Fla. Stat. &sect;713.585, and that vehicles left more than 3 days after I am notified the work is complete may incur a storage charge of $25 per day.</p>
+            <p><strong>Old parts.</strong> Replaced parts will be returned to me if I ask at the time I authorize the repair; otherwise they may be discarded or returned for core credit.</p>
+            <p><strong>Liability.</strong> JPR KING is not responsible for loss or damage to the vehicle or items left in it caused by fire, theft, or events beyond the shop&rsquo;s control.</p>
+          </div>
+
+          <h3 style="margin:22px 0 2px; font-size:18px;">AS IS Dealer Warranty Disclaimer</h3>
+          <div class="asis-banner">SOLD / SERVICED &ldquo;AS IS&rdquo; — NO WARRANTY</div>
+          <div class="terms" tabindex="0">
+            <p><strong>AS IS.</strong> The vehicle and any used parts are provided <strong>&ldquo;AS IS, WHERE IS,&rdquo;</strong> with all faults. JPR KING makes <strong>no warranties of any kind</strong>, express or implied, including any implied warranty of merchantability or fitness for a particular purpose, except for any written warranty JPR KING gives me separately in writing.</p>
+            <p>I understand I am responsible for inspecting the vehicle, that I accept its condition as it stands, and that JPR KING has not promised any repairs or improvements beyond the work listed on this invoice.</p>
+            <p><strong>This disclaimer requires its own separate signature below</strong>, in addition to my invoice approval signature.</p>
+          </div>
+        </section>
+
+        <!-- Signature 1 -->
+        <section class="card">
+          <h2 class="sec"><span class="step">4</span>Sign to approve</h2>
+          <p class="lede">Your signature approves this estimate/invoice, the estimate choice above, and the Repair Authorization &amp; Shop Terms.</p>
+          <label class="field" for="name1">Your full name</label>
+          <input class="name-input" id="name1" type="text" autocomplete="name" placeholder="Type your full name" />
+          <label class="field">Sign in the box with your finger</label>
+          <div class="pad-wrap">
+            <canvas class="pad" id="pad1" role="img" aria-label="Signature pad: sign to approve the invoice and repair authorization"></canvas>
+            <div class="pad-hint" id="hint1">Sign here</div>
+          </div>
+          <div class="pad-foot">
+            <div class="signed-stamp empty" id="stamp1">Not signed yet</div>
+            <button type="button" class="btn btn-ghost" id="clear1">Clear</button>
+          </div>
+          <a class="btn btn-ghost hidden" id="save1" href="#" download="JPR-KING-approval-signature.png" style="margin-top:10px;">Save signature image</a>
+          <p class="small-note">Save this image, then attach it as a photo to your text or WhatsApp message to JPR KING.</p>
+        </section>
+
+        <!-- Signature 2 : AS IS -->
+        <section class="card">
+          <h2 class="sec"><span class="step">5</span>Sign the AS IS acknowledgment</h2>
+          <p class="lede">A separate signature confirming you read and accept the AS IS Dealer Warranty Disclaimer above.</p>
+          <label class="field" for="name2">Your full name</label>
+          <input class="name-input" id="name2" type="text" autocomplete="name" placeholder="Type your full name" />
+          <label class="field">Sign in the box with your finger</label>
+          <div class="pad-wrap">
+            <canvas class="pad" id="pad2" role="img" aria-label="Signature pad: sign the AS IS acknowledgment"></canvas>
+            <div class="pad-hint" id="hint2">Sign here</div>
+          </div>
+          <div class="pad-foot">
+            <div class="signed-stamp empty" id="stamp2">Not signed yet</div>
+            <button type="button" class="btn btn-ghost" id="clear2">Clear</button>
+          </div>
+          <a class="btn btn-ghost hidden" id="save2" href="#" download="JPR-KING-asis-signature.png" style="margin-top:10px;">Save signature image</a>
+          <p class="small-note">Save this image, then attach it as a photo to your text or WhatsApp message to JPR KING.</p>
+        </section>
+
+        <!-- Submit -->
+        <section class="card">
+          <h2 class="sec"><span class="step">6</span>Send it to JPR KING</h2>
+          <ul class="todo" id="todoList">
+            <li data-check="choice">Pick your Florida written-estimate choice</li>
+            <li data-check="sig1">Type your name and sign to approve the invoice</li>
+            <li data-check="sig2">Type your name and sign the AS IS acknowledgment</li>
+          </ul>
+          <div style="height:14px"></div>
+          <button type="button" class="btn btn-gold" id="submitBtn" disabled>Finish signing</button>
+          <p class="small-note">This prepares your signed copy — nothing is sent yet. On the next screen, one tap on <strong>Send your signed copy to JPR KING</strong> delivers it, and the shop&rsquo;s page confirms it arrived.</p>
+        </section>
+      </main>
+
+      <!-- ===== Confirmation view ===== -->
+      <main id="doneView" class="hidden">
+        <section class="card done" id="doneCard">
+          <div class="check hidden" id="doneCheck" aria-hidden="true"></div>
+          <h2 id="doneTitle">Your signed copy is ready</h2>
+          <p id="doneMessage">Nothing has been sent yet. Tap the gold button below — it carries your signed copy straight to JPR KING, and the shop&rsquo;s page confirms it arrived.</p>
+          <p id="doneStatus" role="status" style="font-weight:600;">Ready to send — not sent yet.</p>
+          <a class="btn btn-gold" id="sendLink" href="#" target="_top" rel="noopener" style="margin-top:14px;">Send your signed copy to JPR KING</a>
+          <p class="small-note">Signed invoice <span id="doneInvoice"></span>. Tap Pay below to complete payment if you haven&rsquo;t.</p>
+          <a class="btn btn-gold" id="payBtnDone" href="#" target="_blank" rel="noopener">Pay with <span class="pp">PayPal</span></a>
+        </section>
+
+        <section class="card left" id="fallbackCard">
+          <h2 class="sec" id="fallbackTitle">Your backup copy</h2>
+          <p class="lede" id="fallbackText">Want a copy for yourself, or a second way to reach the shop? For <strong>WhatsApp</strong>: tap <strong>Copy signed invoice</strong> below and paste it into a WhatsApp message to JPR KING at <a href="tel:+19412704988" style="color:inherit;font-weight:600;">(941) 270-4988</a> — long messages are fine there. If you send it by regular text (SMS) instead, it may get cut off, so WhatsApp is the safer choice for this full copy.</p>
+          <div class="link-chip" role="status">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e6c15c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+            <span class="t">Your signed invoice</span>
+            <span class="s">READY TO COPY</span>
+          </div>
+          <textarea class="payload payload-hidden" id="payloadBox" readonly tabindex="-1" aria-hidden="true"></textarea>
+          <div style="height:10px"></div>
+          <div class="btn-row">
+            <button type="button" class="btn btn-gold" id="copyBtn" style="flex:1;">Copy signed invoice</button>
+            <button type="button" class="btn btn-ghost" id="smsAgainBtn" style="flex:1;">Open text message</button>
+          </div>
+          <p class="small-note" id="copyMsg"></p>
+        </section>
+      </main>
+    </div>
+
+    <!-- Sticky pay bar -->
+    <div class="paybar hidden" id="paybar">
+      <div class="tot"><div class="k">TOTAL DUE</div><div class="v" id="barTotal">$0.00</div></div>
+      <a class="btn btn-gold" id="payBtnBar" href="#" target="_blank" rel="noopener">Pay with PayPal</a>
+    </div>
+
+    <script>
+      (function () {
+        "use strict";
+
+        /* ---------- Decode invoice data from the link ----------
+           Primary form: <portalUrl>?code=<TOKEN>. Proven on the owner's
+           phone (Oct 31): the email's button link is byte-for-byte correct,
+           but the app that opens a muse.ai share link strips ?code= before
+           this page loads, so the code must be hunted on every surviving
+           channel (see loadData) and the paste path must be bulletproof.
+           Fallbacks (older / in-app links): "#/customer/<TOKEN>" and "#<TOKEN>". */
+        function b64ToText(b64) {
+          var s = String(b64).replace(/-/g, "+").replace(/_/g, "/").replace(/\s/g, "");
+          while (s.length % 4) s += "=";
+          var bin = atob(s);
+          var bytes = new Uint8Array(bin.length);
+          for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+          return new TextDecoder("utf-8").decode(bytes);
+        }
+        /* The invoicing app encodes the document in its public shape:
+           { kind, number, clientName, vehicle, lines: [{ name, description,
+           quantity, unitPriceCents }], taxRateBps, discountCents, payments,
+           paypalMeHandle, … }. Older links carried this page's own shape
+           ({ invoiceNo, customerName, items: [{ desc, qty, price }], … }).
+           normalize() maps the app shape onto this page's shape so both
+           generations of links open. Totals use the app's own cents math:
+           tax is charged on (subtotal − discount). */
+        function normalize(obj) {
+          if (!obj || typeof obj !== "object") return null;
+          if (obj.doc && typeof obj.doc === "object") return normalize(obj.doc); /* { doc: … } wrapper */
+          if (obj.invoiceNo || obj.items) return obj; /* older link shape */
+          if (!obj.number && !obj.lines) return null;
+          var lines = Array.isArray(obj.lines) ? obj.lines : [];
+          var subtotalC = 0;
+          var items = lines.map(function (l) {
+            var qty = Number(l.quantity) || 0;
+            var unitC = Number(l.unitPriceCents) || 0;
+            subtotalC += Math.round(qty * unitC);
+            var desc = l.name || "Service";
+            if (l.description && l.description !== l.name) desc += " — " + l.description;
+            return { desc: desc, qty: qty, price: unitC / 100 };
+          });
+          var discountC = Math.max(0, Number(obj.discountCents) || 0);
+          var taxableC = Math.max(0, subtotalC - discountC);
+          var taxC = Math.round(taxableC * (Number(obj.taxRateBps) || 0) / 10000);
+          var totalC = taxableC + taxC;
+          var payments = Array.isArray(obj.payments) ? obj.payments : [];
+          var paidC = payments.reduce(function (s, p) { return s + (Number(p.amountCents) || 0); }, 0);
+          var balanceC = Math.max(0, totalC - paidC);
+          var paypalLink = "";
+          if (obj.paypalMeHandle) {
+            var handle = String(obj.paypalMeHandle).replace(/^@/, "").replace(/^https?:\/\/(www\.)?paypal\.com\/paypalme\//i, "").replace(/\/.*$/, "");
+            if (handle) {
+              paypalLink = "https://www.paypal.com/paypalme/" + encodeURIComponent(handle) +
+                (balanceC > 0 ? "/" + (balanceC / 100).toFixed(2) : "");
+            }
+          }
+          return {
+            invoiceNo: obj.number || "",
+            kind: obj.kind || "invoice",
+            customerName: obj.clientName || "",
+            vehicle: obj.vehicle || "",
+            items: items,
+            subtotal: subtotalC / 100,
+            discount: discountC / 100,
+            tax: taxC / 100,
+            total: totalC / 100,
+            paid: paidC / 100,
+            balance: balanceC / 100,
+            paypalLink: paypalLink,
+            issueDate: obj.issueDate || "",
+            dueDate: obj.dueDate || "",
+            estimateChoice: obj.estimateChoice || "",
+            estimateChoiceLimitCents: obj.estimateChoiceLimitCents != null ? obj.estimateChoiceLimitCents : null
+          };
+        }
+        /* Pull every plausible code candidate out of a piece of text (a URL,
+           a pasted message, a bare code). Whitespace is removed up front:
+           mail and messaging apps wrap long links with line breaks and
+           spaces that are never part of the code, and rejoining them
+           restores the link. Zero-width characters are dropped too. */
+        function codeCandidates(raw) {
+          var out = [];
+          function push(v) { if (v && out.indexOf(v) === -1) out.push(v); }
+          if (!raw) return out;
+          var s = String(raw).replace(/[\s\u200B\u200C\u200D\uFEFF]+/g, "");
+          s = s.replace(/^["'“”‘’]+|["'“”‘’]+$/g, "");
+          push(s);
+          var m = s.match(/[?&#](?:code|c|data|d|invoice|token)=([^&#]+)/i);
+          if (m) push(m[1]);
+          var cm = s.match(/customer\/([A-Za-z0-9\-_]+)/);
+          if (cm) push(cm[1]);
+          var hm = s.match(/#\/?([A-Za-z0-9\-_]{40,})/);
+          if (hm) push(hm[1]);
+          /* The values of any query parameters — a redirect wrapper may
+             carry the whole signing link inside some other parameter. */
+          var q = s.match(/[?&]([^#]+)/);
+          if (q) {
+            q[1].split("&").forEach(function (pair) {
+              var eq = pair.indexOf("=");
+              if (eq > -1) push(pair.slice(eq + 1));
+            });
+          }
+          /* Longest base64url runs anywhere in the text — rescues links
+             whose "?code=" marker itself got reshaped (code%3D, "code:",
+             a lost "?"), and links pasted without their beginning. */
+          var runs = s.match(/[A-Za-z0-9\-_]{40,}/g) || [];
+          runs.sort(function (a, b) { return b.length - a.length; });
+          runs.slice(0, 3).forEach(push);
+          return out;
+        }
+        function decodeCandidate(candidate) {
+          var s = String(candidate);
+          /* Peel up to three layers of percent-encoding (shells and
+             redirect wrappers sometimes re-encode more than once). */
+          for (var i = 0; i < 3; i++) {
+            try {
+              var d = decodeURIComponent(s);
+              if (d === s) break;
+              s = d;
+            } catch (e) { break; }
+          }
+          s = s.replace(/^\/?customer\//, "").replace(/[\s\u200B\u200C\u200D\uFEFF]+/g, "");
+          /* A reshaped marker can leave residue fused to the code's front
+             (the "%3D" of a mangled "?code=" becomes "3D" + code) — retry
+             with up to 3 leading characters dropped to realign the code. */
+          for (var off = 0; off <= 3; off++) {
+            try {
+              var hit = normalize(JSON.parse(b64ToText(s.slice(off))));
+              if (hit) return hit;
+            } catch (e) { /* try the next alignment */ }
+          }
+          return null;
+        }
+        function tryDecode(raw) {
+          if (!raw) return null;
+          var cands = codeCandidates(raw);
+          for (var i = 0; i < cands.length; i++) {
+            var hit = decodeCandidate(cands[i]);
+            if (hit) return hit;
+            /* A candidate may itself be a whole link (a wrapper's value):
+               dig one level into it before moving on. */
+            var inner = codeCandidates(cands[i]);
+            for (var j = 0; j < inner.length; j++) {
+              var hit2 = decodeCandidate(inner[j]);
+              if (hit2) return hit2;
+            }
+          }
+          return null;
+        }
+        /* The public share shell embeds this page in a sandboxed frame, and
+           the app that opens a muse.ai share link hands the frame a bare
+           artifact address — the ?code= the customer tapped is stripped
+           before this page loads. So hunt the code on EVERY channel a link
+           can survive: the frame's full URL (query, fragment, path), the
+           referrer (the shell page's own URL may still carry ?code=, or a
+           redirect wrapper may carry the whole link inside some other
+           parameter), a hand-off message from the shell, and late URL
+           rewrites — some shells patch the frame's address after first
+           paint, so keep scanning briefly and on navigation events. */
+        var handedText = "";
+        function loadData() {
+          var texts = [];
+          function pushText(v) { if (v) texts.push(v); }
+          try { pushText(location.pathname + location.search + location.hash); } catch (e) { /* no url channel */ }
+          try { pushText(location.search); pushText(location.hash); } catch (e) { /* no url parts */ }
+          try { pushText(document.referrer); } catch (e) { /* no referrer channel */ }
+          try {
+            (location.pathname || "").split("/").filter(Boolean).forEach(pushText);
+          } catch (e) { /* no path channel */ }
+          pushText(handedText);
+          for (var i = 0; i < texts.length; i++) {
+            var found = tryDecode(texts[i]);
+            if (found) return found;
+          }
+          return null;
+        }
+
+        var emptyView = document.getElementById("emptyView");
+        var signView = document.getElementById("signView");
+        var doneView = document.getElementById("doneView");
+        var paybar = document.getElementById("paybar");
+
+        var started = false;
+        function boot(data) {
+          if (started || !data) return;
+          started = true;
+          emptyView.classList.add("hidden");
+          start(data);
+        }
+        function scanForLink() {
+          if (started) return;
+          var found = loadData();
+          if (found) boot(found);
+        }
+
+        var bootData = loadData();
+        if (bootData) {
+          boot(bootData);
+        } else {
+          emptyView.classList.remove("hidden");
+
+          /* Keep hunting: late URL rewrites, shell hand-offs, bfcache
+             returns — any of them can deliver the code after first paint. */
+          [400, 1200, 2500, 5000].forEach(function (ms) { setTimeout(scanForLink, ms); });
+          window.addEventListener("hashchange", scanForLink);
+          window.addEventListener("popstate", scanForLink);
+          window.addEventListener("pageshow", scanForLink);
+          window.addEventListener("focus", scanForLink);
+          window.addEventListener("message", function (ev) {
+            if (started) return;
+            var d = ev && ev.data;
+            var text = "";
+            if (typeof d === "string") text = d;
+            else if (d && typeof d === "object") {
+              text = d.code || d.url || d.href || d.link || "";
+              if (!text) { try { text = JSON.stringify(d); } catch (e) { text = ""; } }
+            }
+            if (text) {
+              handedText = text;
+              scanForLink();
+            }
+          });
+
+          /* ----- Paste path: the recovery that must never fail -----
+             One-tap clipboard read, auto-open the moment a full link
+             lands in the box, and errors that say what actually happened
+             (empty box vs. cut-off link) instead of one blanket message. */
+          var pasteBox = document.getElementById("pasteBox");
+          var pasteMsg = document.getElementById("pasteMsg");
+          function attemptOpen(raw, silent) {
+            var text = typeof raw === "string" ? raw : pasteBox.value;
+            if (!text || !text.trim()) {
+              if (!silent) {
+                pasteMsg.textContent = "The box is still empty — nothing was pasted yet. Tap \u201CPaste & open my document\u201D above, or long-press the box and choose Paste.";
+              }
+              return false;
+            }
+            var data = tryDecode(text);
+            if (!data) {
+              if (!silent) {
+                var n = text.replace(/\s/g, "").length;
+                pasteMsg.textContent = "We received " + n + " characters but couldn\u2019t find your document in them — the link looks cut off or incomplete. In the email, long-press the gold button, choose Copy link (not Copy text), then tap Paste & open here. Or call JPR KING and we\u2019ll walk it through.";
+              }
+              return false;
+            }
+            pasteMsg.textContent = "Got it — opening your document\u2026";
+            boot(data);
+            return true;
+          }
+          document.getElementById("pasteBtn").addEventListener("click", function () {
+            attemptOpen(null, false);
+          });
+          document.getElementById("clipBtn").addEventListener("click", function () {
+            if (navigator.clipboard && navigator.clipboard.readText) {
+              navigator.clipboard.readText().then(function (text) {
+                if (text) pasteBox.value = text;
+                attemptOpen(text || null, false);
+              }, function () {
+                pasteMsg.textContent = "Your phone didn\u2019t hand over the clipboard — long-press the box below and choose Paste, and your document opens by itself.";
+                pasteBox.focus();
+              });
+            } else {
+              pasteMsg.textContent = "Long-press the box below and choose Paste — your document opens by itself as soon as the full link lands.";
+              pasteBox.focus();
+            }
+          });
+          pasteBox.addEventListener("paste", function () {
+            setTimeout(function () { attemptOpen(null, false); }, 60);
+          });
+          var inputTimer = null;
+          pasteBox.addEventListener("input", function () {
+            clearTimeout(inputTimer);
+            inputTimer = setTimeout(function () { attemptOpen(null, true); }, 500);
+          });
+        }
+
+        function start(data) {
+        signView.classList.remove("hidden");
+        paybar.classList.remove("hidden");
+
+        /* ---------- Helpers ---------- */
+        function num(v) {
+          var n = typeof v === "string" ? parseFloat(v.replace(/[^0-9.\-]/g, "")) : Number(v);
+          return isFinite(n) ? n : 0;
+        }
+        function money(v) { return "$" + num(v).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+        function digits(v) { return String(v || "").replace(/[^0-9+]/g, ""); }
+        function nowStamp() {
+          return new Date().toLocaleString("en-US", {
+            month: "short", day: "numeric", year: "numeric",
+            hour: "numeric", minute: "2-digit"
+          });
+        }
+
+        /* ---------- Fill invoice summary ---------- */
+        var items = Array.isArray(data.items) ? data.items : [];
+        var subtotal = data.subtotal != null ? num(data.subtotal)
+          : items.reduce(function (s, it) { return s + num(it.qty || 1) * num(it.price); }, 0);
+        var tax = data.tax != null ? num(data.tax) : 0;
+        var total = data.total != null ? num(data.total) : subtotal + tax;
+
+        document.getElementById("mInvoice").textContent = data.invoiceNo || "—";
+        document.getElementById("mCustomer").textContent = data.customerName || "—";
+        document.getElementById("mVehicle").textContent = data.vehicle || "—";
+        if (data.phone) {
+          document.getElementById("mPhoneRow").classList.remove("hidden");
+          document.getElementById("mPhone").textContent = data.phone;
+        }
+        var tbody = document.getElementById("itemsBody");
+        items.forEach(function (it) {
+          var qty = it.qty != null ? it.qty : 1;
+          var tr = document.createElement("tr");
+          var tdD = document.createElement("td");
+          tdD.className = "desc";
+          tdD.textContent = it.desc || "Service";
+          var qp = document.createElement("span");
+          qp.className = "qtyprice";
+          qp.textContent = qty + " × " + money(it.price);
+          tdD.appendChild(qp);
+          var tdA = document.createElement("td");
+          tdA.className = "num";
+          tdA.textContent = money(num(qty) * num(it.price));
+          tr.appendChild(tdD); tr.appendChild(tdA);
+          tbody.appendChild(tr);
+        });
+        if (!items.length) {
+          var tr0 = document.createElement("tr");
+          var td0 = document.createElement("td");
+          td0.colSpan = 2; td0.textContent = "As described by JPR KING";
+          tr0.appendChild(td0); tbody.appendChild(tr0);
+        }
+        document.getElementById("tSubtotal").textContent = money(subtotal);
+        document.getElementById("tTax").textContent = money(tax);
+        document.getElementById("tTotal").textContent = money(total);
+        var discount = data.discount != null ? num(data.discount) : 0;
+        var paid = data.paid != null ? num(data.paid) : 0;
+        var balance = data.balance != null ? num(data.balance) : total;
+        if (discount > 0) {
+          document.getElementById("tDiscountRow").classList.remove("hidden");
+          document.getElementById("tDiscount").textContent = "−" + money(discount);
+        }
+        document.getElementById("tPaidRow").classList.remove("hidden");
+        document.getElementById("tPaid").textContent = money(paid);
+        document.getElementById("tBalanceRow").classList.remove("hidden");
+        document.getElementById("tBalance").textContent = money(balance);
+        document.getElementById("barTotal").textContent = money(paid > 0 ? balance : total);
+        if (data.kind === "estimate") {
+          document.getElementById("docKindLabel").textContent = "Your estimate";
+        }
+        /* Dressed-document status pill + dates, straight from the data. */
+        var statusEl = document.getElementById("docStatus");
+        if (data.kind === "estimate") {
+          statusEl.textContent = "Estimate";
+        } else if (total > 0 && balance <= 0) {
+          statusEl.textContent = "Paid in full";
+          statusEl.classList.add("is-paid");
+        } else if (paid > 0) {
+          statusEl.textContent = "Part paid";
+        } else {
+          statusEl.textContent = "Balance due";
+        }
+        function fmtDate(v) {
+          if (!v) return "";
+          var d = new Date(v);
+          if (isNaN(d.getTime())) return String(v);
+          return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+        }
+        var issuedTxt = fmtDate(data.issueDate);
+        if (issuedTxt) {
+          document.getElementById("mIssuedRow").classList.remove("hidden");
+          document.getElementById("mIssued").textContent = issuedTxt;
+        }
+        var dueTxt = fmtDate(data.dueDate);
+        if (dueTxt) {
+          document.getElementById("mDueRow").classList.remove("hidden");
+          document.getElementById("mDue").textContent = dueTxt;
+        }
+        /* If the shop already recorded an estimate choice, pre-pick it. */
+        var choiceMap = {
+          "request": "Written estimate requested",
+          "none": "Written estimate waived",
+          "limit": "Estimate with authorized dollar limit"
+        };
+        if (data.estimateChoice && choiceMap[data.estimateChoice]) {
+          var radio = document.querySelector('input[name="estChoice"][value="' + choiceMap[data.estimateChoice] + '"]');
+          if (radio) radio.checked = true;
+          if (data.estimateChoice === "limit" && data.estimateChoiceLimitCents) {
+            document.getElementById("estLimit").value = "$" + (num(data.estimateChoiceLimitCents) / 100).toFixed(2);
+          }
+        }
+
+        var paypal = data.paypalLink || "";
+        ["payBtnTop", "payBtnBar", "payBtnDone"].forEach(function (id) {
+          var a = document.getElementById(id);
+          if (paypal) { a.href = paypal; }
+          else { a.style.display = "none"; }
+        });
+        if (!paypal) {
+          document.getElementById("payCard").style.display = "none";
+          paybar.style.display = "none";
+        }
+
+        /* ---------- Signature pads ---------- */
+        function makePad(canvasId, hintId, stampId, saveId) {
+          var canvas = document.getElementById(canvasId);
+          var hint = document.getElementById(hintId);
+          var stamp = document.getElementById(stampId);
+          var saveBtn = document.getElementById(saveId);
+          var ctx = canvas.getContext("2d");
+          var state = { signed: false, stamp: "", drawing: false, last: null };
+
+          function fit() {
+            var keep = state.signed ? canvas.toDataURL() : null;
+            var rect = canvas.getBoundingClientRect();
+            var dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+            canvas.width = Math.round(rect.width * dpr);
+            canvas.height = Math.round(rect.height * dpr);
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.lineCap = "round"; ctx.lineJoin = "round";
+            ctx.strokeStyle = "#12294d";
+            ctx.lineWidth = 2.6 * dpr;
+            if (keep) {
+              var img = new Image();
+              img.onload = function () { ctx.drawImage(img, 0, 0, canvas.width, canvas.height); };
+              img.src = keep;
+            }
+          }
+          fit();
+          var resizeT;
+          window.addEventListener("resize", function () {
+            clearTimeout(resizeT);
+            resizeT = setTimeout(fit, 180);
+          });
+
+          function pos(e) {
+            var r = canvas.getBoundingClientRect();
+            return {
+              x: (e.clientX - r.left) * (canvas.width / r.width),
+              y: (e.clientY - r.top) * (canvas.height / r.height)
+            };
+          }
+          canvas.addEventListener("pointerdown", function (e) {
+            e.preventDefault();
+            canvas.setPointerCapture(e.pointerId);
+            state.drawing = true;
+            state.last = pos(e);
+            ctx.beginPath();
+            ctx.moveTo(state.last.x, state.last.y);
+            ctx.lineTo(state.last.x + 0.01, state.last.y + 0.01);
+            ctx.stroke();
+          });
+          canvas.addEventListener("pointermove", function (e) {
+            if (!state.drawing) return;
+            e.preventDefault();
+            var p = pos(e);
+            ctx.beginPath();
+            ctx.moveTo(state.last.x, state.last.y);
+            ctx.lineTo(p.x, p.y);
+            ctx.stroke();
+            state.last = p;
+          });
+          function endStroke() {
+            if (!state.drawing) return;
+            state.drawing = false;
+            if (!state.signed) {
+              state.signed = true;
+              state.stamp = nowStamp();
+            }
+            hint.style.display = "none";
+            render();
+          }
+          canvas.addEventListener("pointerup", endStroke);
+          canvas.addEventListener("pointercancel", endStroke);
+
+          function render() {
+            if (state.signed) {
+              stamp.textContent = "Signed " + state.stamp;
+              stamp.classList.remove("empty");
+              saveBtn.href = png();
+              saveBtn.classList.remove("hidden");
+            } else {
+              stamp.textContent = "Not signed yet";
+              stamp.classList.add("empty");
+              saveBtn.classList.add("hidden");
+              saveBtn.removeAttribute("href");
+            }
+            validate();
+          }
+          function clear() {
+            state.signed = false; state.stamp = "";
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            hint.style.display = "flex";
+            render();
+          }
+          function png() {
+            var maxW = 520;
+            var scale = Math.min(1, maxW / canvas.width);
+            var t = document.createElement("canvas");
+            t.width = Math.round(canvas.width * scale);
+            t.height = Math.round(canvas.height * scale);
+            var tc = t.getContext("2d");
+            tc.fillStyle = "#ffffff";
+            tc.fillRect(0, 0, t.width, t.height);
+            tc.drawImage(canvas, 0, 0, t.width, t.height);
+            return t.toDataURL("image/png");
+          }
+          return { state: state, clear: clear, png: png };
+        }
+
+        var pad1 = makePad("pad1", "hint1", "stamp1", "save1");
+        var pad2 = makePad("pad2", "hint2", "stamp2", "save2");
+        document.getElementById("clear1").addEventListener("click", pad1.clear);
+        document.getElementById("clear2").addEventListener("click", pad2.clear);
+
+        var name1 = document.getElementById("name1");
+        var name2 = document.getElementById("name2");
+        if (data.customerName) { name1.value = data.customerName; name2.value = data.customerName; }
+        name1.addEventListener("input", validate);
+        name2.addEventListener("input", validate);
+
+        /* ---------- Validation ---------- */
+        var submitBtn = document.getElementById("submitBtn");
+        function chosenChoice() {
+          var r = document.querySelector('input[name="estChoice"]:checked');
+          return r ? r.value : "";
+        }
+        document.querySelectorAll('input[name="estChoice"]').forEach(function (r) {
+          r.addEventListener("change", validate);
+        });
+        var estLimitInput = document.getElementById("estLimit");
+        estLimitInput.addEventListener("input", validate);
+        function checks() {
+          var choiceOk = !!chosenChoice();
+          if (chosenChoice() === "Estimate with authorized dollar limit" && !num(estLimitInput.value)) {
+            choiceOk = false;
+          }
+          return {
+            choice: choiceOk,
+            sig1: pad1.state.signed && name1.value.trim().length >= 2,
+            sig2: pad2.state.signed && name2.value.trim().length >= 2
+          };
+        }
+        function validate() {
+          var c = checks();
+          document.querySelectorAll("#todoList li").forEach(function (li) {
+            li.classList.toggle("done", !!c[li.getAttribute("data-check")]);
+          });
+          submitBtn.disabled = !(c.choice && c.sig1 && c.sig2);
+        }
+        validate();
+
+        /* ---------- Finish: build payload + prepare the tap-link ---------- */
+        var lastPayload = "", lastSmsUrl = "";
+        function choiceText() {
+          var choice = chosenChoice();
+          var limit = document.getElementById("estLimit").value.trim();
+          if (limit && choice === "Estimate with authorized dollar limit") {
+            choice += " (up to " + (limit.charAt(0) === "$" ? limit : "$" + limit) + ")";
+          }
+          return choice;
+        }
+        function baseLines() {
+          return [
+            "JPR KING — SIGNED INVOICE",
+            "Invoice: " + (data.invoiceNo || ""),
+            "Code: " + (data.code || ""),
+            "Customer: " + (data.customerName || ""),
+            "Vehicle: " + (data.vehicle || ""),
+            "Total: " + money(total),
+            "Estimate choice: " + choiceText(),
+            "Approval signed by: " + name1.value.trim(),
+            "Approval signed at: " + pad1.state.stamp,
+            "AS IS signed by: " + name2.value.trim(),
+            "AS IS signed at: " + pad2.state.stamp
+          ];
+        }
+        /* Full copy-paste payload (for WhatsApp — long messages are fine there). */
+        function buildPayload() {
+          var lines = baseLines();
+          lines.push("Approval signature PNG: " + pad1.png());
+          lines.push("AS IS signature PNG: " + pad2.png());
+          return lines.join("\n");
+        }
+        /* SMS body: text fields only — no image data, so the sms: link stays small. */
+        function buildSmsBody() {
+          var lines = baseLines();
+          lines.push("Signatures captured: YES (images saved separately)");
+          return lines.join("\n");
+        }
+
+        /* The postbox is reached ONLY through the customer's own tap on
+           the gold send link in the confirmation view — a plain outbound
+           GET carrying the signed TEXT record in the query. This page
+           never submits anything on its own: no fetch, no beacon, no
+           hidden form post anywhere. */
+        var POSTBOX_URL = "https://script.google.com/macros/s/AKfycbyrSRnoFv5yFFeUQVVkj7_djCUhAtrcJGcY_Os3raDR4VizLYnF-lPZsDiL2dG6SM7P/exec";
+        submitBtn.addEventListener("click", function () {
+          if (submitBtn.disabled) return;
+          lastPayload = buildPayload();
+          var owner = digits(data.ownerPhone) || "+19412704988";
+          lastSmsUrl = "sms:" + owner + "?&body=" + encodeURIComponent(buildSmsBody());
+          document.getElementById("payloadBox").value = lastPayload;
+          document.getElementById("doneInvoice").textContent = data.invoiceNo ? "#" + data.invoiceNo : "";
+
+          /* Signed TEXT record for the tap-link: the same fields the
+             postbox already accepts via GET (?d=<url-encoded JSON>) —
+             document number, signer, estimate choice, total, signing
+             timestamps. Text only, no signature image data, so the URL
+             stays short. summaryText is the text-only summary, NOT the
+             copy-paste payload that embeds signature images. */
+          var record = {
+            number: data.invoiceNo || "",
+            kind: data.kind || "invoice",
+            clientName: data.customerName || "",
+            vehicle: data.vehicle || "",
+            totalText: money(total),
+            balanceText: money(balance),
+            estimateChoice: choiceText(),
+            signerName: name1.value.trim(),
+            signedAt: pad1.state.stamp || "",
+            asIsSignerName: name2.value.trim(),
+            asIsSignedAt: pad2.state.stamp || "",
+            via: "tap-link",
+            imagesOmitted: true,
+            summaryText: buildSmsBody()
+          };
+          var sendLink = document.getElementById("sendLink");
+          sendLink.href = POSTBOX_URL + "?d=" + encodeURIComponent(JSON.stringify(record));
+
+          var doneTitle = document.getElementById("doneTitle");
+          var doneMessage = document.getElementById("doneMessage");
+          var doneStatus = document.getElementById("doneStatus");
+          var doneCheck = document.getElementById("doneCheck");
+          var fallbackTitle = document.getElementById("fallbackTitle");
+
+          /* Ready state — honest wording: nothing has been sent yet.
+             The customer's tap on the gold link is the send. */
+          doneCheck.classList.add("hidden");
+          doneTitle.textContent = "Your signed copy is ready";
+          doneMessage.textContent = "Nothing has been sent yet. Tap the gold button below \u2014 it carries your signed copy straight to JPR KING, and the shop\u2019s page confirms it arrived.";
+          doneStatus.textContent = "Ready to send \u2014 not sent yet.";
+          doneStatus.style.color = "var(--gold-ink)";
+          if (fallbackTitle) fallbackTitle.textContent = "Your backup copy";
+
+          signView.classList.add("hidden");
+          paybar.classList.add("hidden");
+          doneView.classList.remove("hidden");
+          window.scrollTo(0, 0);
+        });
+
+        document.getElementById("smsAgainBtn").addEventListener("click", function () {
+          if (!lastSmsUrl) return;
+          var a = document.createElement("a");
+          a.href = lastSmsUrl;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        });
+
+        document.getElementById("copyBtn").addEventListener("click", function () {
+          var box = document.getElementById("payloadBox");
+          var msg = document.getElementById("copyMsg");
+          function done() { msg.textContent = "Copied — now paste it into a text or WhatsApp message to JPR KING."; }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(box.value).then(done, function () {
+              box.select(); document.execCommand("copy"); done();
+            });
+          } else {
+            box.select(); document.execCommand("copy"); done();
+          }
+        });
+        } /* end start(data) */
+      })();
+    </script>
+  </body>
+</html>
