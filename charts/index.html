@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="data:," />
+    <title>JPR KING TV — My Charts</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --navy: #0a1a33;
+        --navy-deep: #061224;
+        --gold: #c9a24b;
+        --gold-bright: #e6c15c;
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        background: linear-gradient(165deg, var(--navy) 0%, var(--navy-deep) 70%);
+        color: #f4f6fb;
+        font-family: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 32px 20px;
+      }
+      .door { text-align: center; max-width: 880px; width: 100%; }
+      .crown { display: block; margin: 0 auto 10px; width: clamp(84px, 12vw, 132px); height: auto; }
+      h1 {
+        font-family: "Barlow Condensed", "Barlow", sans-serif;
+        font-size: clamp(56px, 10vw, 118px);
+        letter-spacing: 5px;
+        line-height: 1;
+        margin: 0;
+        color: #ffffff;
+      }
+      .personal {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 8px 22px;
+        border: 2px solid var(--gold);
+        border-radius: 999px;
+        color: var(--gold-bright);
+        font-weight: 700;
+        font-size: clamp(17px, 2.4vw, 24px);
+        letter-spacing: 3px;
+      }
+      .motto {
+        margin-top: 18px;
+        font-size: clamp(14px, 2vw, 19px);
+        font-weight: 600;
+        letter-spacing: 3px;
+        color: var(--gold-bright);
+      }
+      .btn-gold {
+        display: flex; align-items: center; justify-content: center;
+        margin: clamp(36px, 6vh, 64px) auto 0;
+        width: 100%; max-width: 720px;
+        min-height: clamp(96px, 15vh, 132px);
+        border-radius: 18px;
+        background: linear-gradient(180deg, var(--gold-bright), var(--gold));
+        color: #231a02;
+        font-family: "Barlow Condensed", "Barlow", sans-serif;
+        font-size: clamp(34px, 5.5vw, 52px);
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-decoration: none;
+        padding: 20px 28px;
+        box-shadow: 0 10px 34px rgba(0, 0, 0, 0.45);
+      }
+      .btn-gold:active { transform: translateY(2px); }
+      .next {
+        margin-top: 18px;
+        font-size: clamp(16px, 2.2vw, 22px);
+        color: #c8d3e6;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="door">
+      <svg class="crown" viewBox="0 0 24 24" fill="none" stroke="#e6c15c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.735H5.81a1 1 0 0 1-.957-.735L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z" fill="#c9a24b"/>
+        <path d="M5 21h14"/>
+      </svg>
+      <h1>JPR KING TV</h1>
+      <div><span class="personal">👑 PERSONAL</span></div>
+      <div class="motto">GOD IS GOOD ALL THE TIME</div>
+
+      <!-- CHARTS HREF -->
+      <a class="btn-gold" href="https://muse.ai/artifacts">👑 Open My Charts</a>
+      <div class="next">Then tap JPR KING TV Charts</div>
+    </main>
+  </body>
+</html>
