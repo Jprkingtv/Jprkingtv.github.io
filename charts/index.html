@@ -79,6 +79,39 @@
         font-size: clamp(16px, 2.2vw, 22px);
         color: #c8d3e6;
       }
+      [hidden] { display: none !important; }
+      .gate-input {
+        display: block;
+        margin: clamp(36px, 6vh, 64px) auto 0;
+        width: 100%; max-width: 720px;
+        min-height: clamp(84px, 13vh, 112px);
+        border-radius: 18px;
+        border: 2px solid var(--gold);
+        background: rgba(6, 18, 36, 0.65);
+        color: #ffffff;
+        font-family: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+        font-size: clamp(28px, 4.5vw, 40px);
+        font-weight: 600;
+        letter-spacing: 4px;
+        text-align: center;
+        padding: 16px 24px;
+      }
+      .gate-input::placeholder { color: #8fa3c4; letter-spacing: 2px; }
+      .gate-input:focus { outline: 3px solid var(--gold-bright); outline-offset: 2px; }
+      .btn-unlock { margin-top: 22px; border: 0; cursor: pointer; }
+      .gate-error {
+        margin-top: 18px;
+        font-size: clamp(17px, 2.4vw, 23px);
+        font-weight: 600;
+        color: #ff7a72;
+      }
+      @keyframes gate-shake {
+        10%, 90% { transform: translateX(-2px); }
+        20%, 80% { transform: translateX(4px); }
+        30%, 50%, 70% { transform: translateX(-7px); }
+        40%, 60% { transform: translateX(7px); }
+      }
+      .shake { animation: gate-shake 0.5s ease both; }
     </style>
   </head>
   <body>
@@ -91,9 +124,65 @@
       <div><span class="personal">👑 PERSONAL</span></div>
       <div class="motto">GOD IS GOOD ALL THE TIME</div>
 
-      <!-- CHARTS HREF -->
-      <a class="btn-gold" href="https://muse.ai/artifacts">👑 Open My Charts</a>
-      <div class="next">Then tap JPR KING TV Charts</div>
+      <form id="gateForm">
+        <input id="gateInput" class="gate-input" type="password" autocomplete="current-password" placeholder="Password" aria-label="Password" autofocus />
+        <button class="btn-gold btn-unlock" type="submit">Unlock</button>
+        <div id="gateError" class="gate-error" hidden>Wrong code — try again</div>
+      </form>
+
+      <div id="doorContent" hidden>
+        <!-- CHARTS HREF -->
+        <a class="btn-gold" href="https://muse.ai/artifacts">👑 Open My Charts</a>
+        <div class="next">Then tap JPR KING TV Charts</div>
+      </div>
     </main>
+    <script>
+      (function () {
+        var GATE_HASH = "36c25bcaa45239341e0c5bee4bcbe19538c0d5289078768cdcba5b9be4c31dca";
+        var GATE_KEY = "jprChartsGate";
+        var gateForm = document.getElementById("gateForm");
+        var doorContent = document.getElementById("doorContent");
+        var gateInput = document.getElementById("gateInput");
+        var gateError = document.getElementById("gateError");
+
+        function unlock() {
+          gateForm.hidden = true;
+          doorContent.hidden = false;
+        }
+
+        try {
+          if (window.localStorage.getItem(GATE_KEY) === GATE_HASH) {
+            unlock();
+            return;
+          }
+        } catch (e) { /* storage unavailable: the gate still works for this visit */ }
+
+        function sha256Hex(text) {
+          return crypto.subtle.digest("SHA-256", new TextEncoder().encode(text)).then(function (buf) {
+            return Array.prototype.map.call(new Uint8Array(buf), function (b) {
+              return ("0" + b.toString(16)).slice(-2);
+            }).join("");
+          });
+        }
+
+        gateForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+          sha256Hex(gateInput.value).then(function (hex) {
+            if (hex === GATE_HASH) {
+              try { window.localStorage.setItem(GATE_KEY, GATE_HASH); } catch (e) {}
+              gateError.hidden = true;
+              unlock();
+            } else {
+              gateInput.value = "";
+              gateError.hidden = false;
+              gateForm.classList.remove("shake");
+              void gateForm.offsetWidth;
+              gateForm.classList.add("shake");
+              gateInput.focus();
+            }
+          });
+        });
+      })();
+    </script>
   </body>
 </html>
