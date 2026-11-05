@@ -1,0 +1,925 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Levels Pushed — Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #edf0f5;
+        --card: #ffffff;
+        --card-2: #f6f8fb;
+        --ink: #101a30;
+        --muted: #55627c;
+        --line: #d8dee9;
+        --navy: #0a1633;
+        --navy-2: #101f47;
+        --gold: #c99612;
+        --gold-bright: #e9bc45;
+        --gold-soft: #fdf3d7;
+        --red: #c62f3b;
+        --red-soft: #fdecec;
+        --green: #1d8a52;
+        --green-soft: #e6f5ec;
+        --shadow: 0 10px 28px rgba(10, 22, 51, 0.10);
+        color-scheme: light;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #050b1a;
+          --card: #0c1834;
+          --card-2: #0a1429;
+          --ink: #f0f3fa;
+          --muted: #a3b0c9;
+          --line: #22335c;
+          --gold: #e9bc45;
+          --gold-soft: #2b230d;
+          --red: #ff7a84;
+          --red-soft: #33141b;
+          --green: #4cc983;
+          --green-soft: #0d2b1c;
+          --shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+          color-scheme: dark;
+        }
+      }
+
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      h1, h2, h3, p, ul, ol, figure { margin: 0; }
+      ul, ol { padding: 0; list-style: none; }
+      .num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+      .wrap { max-width: 680px; margin: 0 auto; padding: 0 16px 40px; }
+
+      /* ---------- Header ---------- */
+      .masthead {
+        background: var(--navy);
+        color: #f4f6fc;
+        border-bottom: 3px solid var(--gold-bright);
+        padding: 30px 16px 26px;
+        text-align: center;
+      }
+      .crown { display: block; margin: 0 auto 6px; }
+      .brand-line {
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 600;
+        letter-spacing: 0.34em;
+        font-size: 13px;
+        color: var(--gold-bright);
+        text-transform: uppercase;
+      }
+      .masthead h1 {
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 700;
+        font-size: clamp(44px, 13vw, 64px);
+        line-height: 0.98;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        margin-top: 6px;
+      }
+      .motto {
+        margin-top: 10px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        font-size: 12.5px;
+        color: #c9d3e8;
+        text-transform: uppercase;
+      }
+      .chips {
+        margin-top: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid rgba(233, 188, 69, 0.55);
+        color: #ffe9a8;
+        border-radius: 999px;
+        padding: 5px 13px;
+        font-size: 13.5px;
+        font-weight: 600;
+      }
+      .chip.solid {
+        background: var(--gold-bright);
+        border-color: var(--gold-bright);
+        color: #231a02;
+      }
+      .chip.plain { border-color: rgba(201, 211, 232, 0.4); color: #dbe3f2; }
+      .masthead .separate {
+        margin-top: 14px;
+        font-size: 13.5px;
+        color: #aebbd6;
+      }
+      .masthead .separate strong { color: #f4f6fc; }
+
+      /* ---------- Sections ---------- */
+      section { margin-top: 30px; }
+      .sec-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+      .sec-head h2 {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 27px;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+      }
+      .sec-head .rule { flex: 1; height: 2px; background: var(--gold-bright); opacity: 0.7; border-radius: 2px; }
+      .sec-sub { color: var(--muted); font-size: 14.5px; margin-bottom: 14px; }
+      .stamp {
+        display: inline-block;
+        background: var(--card);
+        border: 1px dashed var(--gold);
+        color: var(--ink);
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 13.5px;
+        font-weight: 500;
+        margin-bottom: 16px;
+      }
+      .stamp strong { color: var(--gold); }
+
+      /* ---------- Instrument cards ---------- */
+      .board { display: grid; gap: 16px; }
+      .inst {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+        padding: 18px 18px 16px;
+      }
+      .inst-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+      .inst-name {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .inst-sym { color: var(--muted); font-size: 13px; font-weight: 600; letter-spacing: 0.08em; margin-left: 7px; }
+      .inst-price { text-align: right; }
+      .inst-price .px {
+        font-size: 27px;
+        font-weight: 700;
+        line-height: 1.05;
+      }
+      .inst-price .px-label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+
+      /* zone strip */
+      .strip { position: relative; height: 40px; margin: 16px 2px 4px; }
+      .strip .track {
+        position: absolute; left: 0; right: 0; top: 14px; height: 12px;
+        background: var(--card-2);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+      }
+      .strip .zone { position: absolute; top: 14px; height: 12px; border-radius: 3px; }
+      .strip .zone.supply { background: var(--red); opacity: 0.75; }
+      .strip .zone.demand { background: var(--green); opacity: 0.75; }
+      .strip .zone.key { opacity: 1; outline: 2px solid var(--gold-bright); outline-offset: 1px; }
+      .strip .pxmark {
+        position: absolute; top: 2px; height: 36px; width: 3px;
+        background: var(--gold-bright);
+        border-radius: 2px;
+        transform: translateX(-50%);
+        box-shadow: 0 0 0 1.5px var(--navy);
+      }
+      .strip .pxmark::after {
+        content: "PRICE";
+        position: absolute; top: -1px; left: 7px;
+        font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em; color: var(--gold);
+        white-space: nowrap;
+      }
+      .strip .pxmark.flip::after { left: auto; right: 7px; }
+
+      .zone-group { margin-top: 12px; }
+      .zone-group h3 {
+        font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+        display: flex; align-items: center; gap: 7px; margin-bottom: 7px;
+      }
+      .zone-group h3 .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+      .zone-group.supply h3 { color: var(--red); }
+      .zone-group.supply h3 .dot { background: var(--red); }
+      .zone-group.demand h3 { color: var(--green); }
+      .zone-group.demand h3 .dot { background: var(--green); }
+      .zrow {
+        display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+        padding: 8px 11px;
+        border-radius: 8px;
+        font-size: 15.5px;
+        font-weight: 600;
+      }
+      .zrow + .zrow { margin-top: 5px; }
+      .zone-group.supply .zrow { background: var(--red-soft); }
+      .zone-group.demand .zrow { background: var(--green-soft); }
+      .zrow .range { letter-spacing: 0.01em; }
+      .zrow .tested { margin-left: auto; font-size: 12.5px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+      .zrow.keyrow {
+        background: var(--gold-soft);
+        border: 1.5px solid var(--gold-bright);
+      }
+      .keytag {
+        display: inline-flex; align-items: center; gap: 4px;
+        background: var(--gold-bright); color: #231a02;
+        font-size: 11px; font-weight: 700; letter-spacing: 0.09em;
+        padding: 2.5px 8px; border-radius: 999px; text-transform: uppercase; white-space: nowrap;
+      }
+      .neartag {
+        display: inline-flex; align-items: center;
+        background: var(--red); color: #fff;
+        font-size: 11px; font-weight: 700; letter-spacing: 0.09em;
+        padding: 2.5px 8px; border-radius: 999px; text-transform: uppercase; white-space: nowrap;
+      }
+      @media (prefers-color-scheme: dark) {
+        .neartag { background: #a12330; }
+      }
+      .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 14px; font-size: 13px; color: var(--muted); font-weight: 500; }
+      .legend span { display: inline-flex; align-items: center; gap: 6px; }
+      .legend .sw { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
+      .legend .sw.r { background: var(--red); }
+      .legend .sw.g { background: var(--green); }
+      .legend .sw.k { background: var(--gold-bright); }
+
+      /* the play — prediction line on each card */
+      .play {
+        margin-top: 14px;
+        background: var(--navy);
+        color: #eef2fb;
+        border-radius: 10px;
+        border-bottom: 3px solid var(--gold-bright);
+        padding: 12px 14px;
+        font-size: 14.5px;
+        line-height: 1.55;
+      }
+      .play .play-label {
+        display: block;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--gold-bright);
+        margin-bottom: 3px;
+      }
+      .play .arr-down { color: #ff9aa2; font-weight: 700; }
+      .play .arr-up { color: #6fd598; font-weight: 700; }
+      .play b { color: #fff; font-weight: 700; }
+
+      /* ---------- Email cards ---------- */
+      .mail {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+      .mail + .mail { margin-top: 16px; }
+      .mail-head {
+        background: var(--card-2);
+        border-bottom: 1px solid var(--line);
+        padding: 13px 18px;
+      }
+      .mail-from { display: flex; align-items: center; gap: 9px; font-size: 13px; color: var(--muted); font-weight: 500; }
+      .avatar {
+        width: 30px; height: 30px; border-radius: 50%; flex: none;
+        background: var(--navy);
+        display: inline-flex; align-items: center; justify-content: center;
+      }
+      .mail-subject { font-size: 18.5px; font-weight: 700; margin-top: 7px; line-height: 1.3; }
+      .mail-body { padding: 16px 18px 18px; }
+      .mail-body .hello { font-weight: 600; font-size: 16.5px; margin-bottom: 12px; }
+      .mail-line {
+        display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px;
+        padding: 10px 0;
+        border-top: 1px solid var(--line);
+      }
+      .mail-line:first-of-type { border-top: none; padding-top: 2px; }
+      .mail-line .m-name {
+        font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 19px;
+        letter-spacing: 0.04em; text-transform: uppercase; min-width: 158px;
+      }
+      .mail-line .m-px { font-weight: 700; font-size: 16.5px; }
+      .mail-line .m-zones { width: 100%; font-size: 14px; color: var(--muted); font-weight: 500; }
+      .mail-line .m-zones b { color: var(--ink); font-weight: 600; }
+      .mail-line .m-play {
+        width: 100%;
+        margin-top: 7px;
+        background: var(--gold-soft);
+        border-radius: 8px;
+        padding: 8px 11px;
+        font-size: 13.5px;
+        line-height: 1.5;
+        color: var(--ink);
+        font-weight: 500;
+      }
+      .mail-line .m-play .play-label {
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        font-size: 12px;
+        color: var(--gold);
+        margin-right: 6px;
+      }
+      .mail-line .m-play b { font-weight: 700; }
+      .pill { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.07em; padding: 1.5px 7px; border-radius: 999px; text-transform: uppercase; vertical-align: 1px; }
+      .pill.s { background: var(--red-soft); color: var(--red); }
+      .pill.d { background: var(--green-soft); color: var(--green); }
+      .pill.k { background: var(--gold-bright); color: #231a02; }
+      .mail-close { margin-top: 14px; font-size: 15px; }
+      .mail-motto {
+        margin-top: 12px; text-align: center;
+        font-weight: 700; letter-spacing: 0.16em; font-size: 12.5px; color: var(--gold);
+        border-top: 1px solid var(--line); padding-top: 13px; text-transform: uppercase;
+      }
+      .sample-stamp {
+        display: inline-block; margin-bottom: 10px;
+        border: 1.5px solid var(--gold); color: var(--gold);
+        font-size: 11.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+        padding: 3px 10px; border-radius: 6px; transform: rotate(-1.2deg);
+      }
+      .alert-play {
+        background: var(--green-soft);
+        border-radius: 10px;
+        padding: 12px 14px;
+        font-size: 15.5px;
+        margin-top: 4px;
+      }
+      .alert-play strong { color: var(--green); }
+
+      /* ---------- Demo ---------- */
+      .demo {
+        background: var(--navy);
+        color: #eef2fb;
+        border-radius: 14px;
+        padding: 20px 18px;
+        margin-top: 16px;
+        border-bottom: 3px solid var(--gold-bright);
+      }
+      .demo h3 { font-family: "Barlow Condensed", sans-serif; font-size: 21px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+      .demo p { color: #b9c5dd; font-size: 14.5px; margin-top: 5px; }
+      .demo-track { position: relative; height: 52px; margin: 20px 4px 2px; }
+      .demo-track .rail { position: absolute; left: 0; right: 0; top: 22px; height: 8px; background: #22335c; border-radius: 5px; }
+      .demo-track .dzone {
+        position: absolute; top: 22px; height: 8px; border-radius: 4px;
+        background: var(--green); outline: 2px solid var(--gold-bright); outline-offset: 1px;
+      }
+      .demo-track .dzone-label {
+        position: absolute; top: 38px; transform: translateX(-50%);
+        font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: var(--gold-bright); white-space: nowrap;
+      }
+      .demo-dot {
+        position: absolute; top: 26px; width: 18px; height: 18px; border-radius: 50%;
+        background: var(--gold-bright); border: 3px solid #fff;
+        transform: translate(-50%, -50%);
+        left: 100%;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      }
+      .demo-readout { display: flex; justify-content: space-between; align-items: baseline; margin-top: 12px; flex-wrap: wrap; gap: 6px; }
+      .demo-readout .cur { font-size: 15px; color: #b9c5dd; font-weight: 500; }
+      .demo-readout .cur b { color: #fff; font-size: 21px; }
+      .demo-status { font-size: 13.5px; font-weight: 700; letter-spacing: 0.05em; color: #8fa1c4; text-transform: uppercase; }
+      .demo-status.fired { color: #4cc983; }
+      .demo-btn {
+        margin-top: 14px; width: 100%;
+        background: var(--gold-bright); color: #231a02;
+        border: none; border-radius: 10px;
+        font-family: inherit; font-size: 16px; font-weight: 700;
+        padding: 13px 16px; cursor: pointer;
+      }
+      .demo-btn:disabled { opacity: 0.55; cursor: default; }
+      .demo-alert {
+        display: none;
+        margin-top: 14px;
+        background: #0d2b1c; border: 1.5px solid #4cc983; border-radius: 10px;
+        padding: 12px 14px; font-size: 15px; color: #d9f5e4;
+      }
+      .demo-alert.show { display: block; }
+      .demo-alert strong { color: #4cc983; }
+
+      /* ---------- Steps ---------- */
+      .steps { display: grid; gap: 12px; }
+      .step {
+        display: flex; gap: 14px;
+        background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+        padding: 15px 16px; box-shadow: var(--shadow);
+      }
+      .step-n {
+        flex: none; width: 34px; height: 34px; border-radius: 50%;
+        background: var(--navy); color: var(--gold-bright);
+        font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 19px;
+        display: flex; align-items: center; justify-content: center;
+      }
+      .step h3 { font-size: 16.5px; font-weight: 700; margin-bottom: 2px; }
+      .step p { font-size: 14.5px; color: var(--muted); }
+      .step p strong { color: var(--ink); }
+      .swatch-red { color: var(--red); font-weight: 700; }
+      .swatch-green { color: var(--green); font-weight: 700; }
+
+      /* ---------- Subscribe ---------- */
+      .subscribe {
+        background: var(--navy);
+        color: #f4f6fc;
+        border-radius: 16px;
+        padding: 26px 20px 22px;
+        text-align: center;
+        border-bottom: 3px solid var(--gold-bright);
+      }
+      .subscribe .price {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 54px; font-weight: 700; line-height: 1; color: #fff;
+      }
+      .subscribe .price small { font-size: 22px; color: #c9d3e8; font-weight: 600; }
+      .subscribe .what { color: #c9d3e8; font-size: 15px; margin: 10px auto 18px; max-width: 420px; }
+      .sub-btn {
+        display: block; width: 100%;
+        background: #3b4a6e; color: #aebbd6;
+        border: 1.5px dashed rgba(233, 188, 69, 0.6); border-radius: 12px;
+        font-family: inherit; font-size: 17px; font-weight: 700;
+        padding: 15px 16px; cursor: not-allowed;
+      }
+      .sub-preview-label {
+        margin-top: 11px; font-size: 13.5px; font-weight: 700;
+        letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-bright);
+      }
+      .subscribe .next { margin-top: 14px; font-size: 14px; color: #aebbd6; }
+      .subscribe .next strong { color: #f4f6fc; }
+      .paypal-wrap { max-width: 440px; margin: 0 auto; }
+      #paypal-button-container-P-307560592C428194FNLWLPOQ { min-height: 96px; }
+      .sub-confirm {
+        margin: 16px auto 0; max-width: 440px;
+        background: #0d2b1c; border: 1.5px solid #4cc983; border-radius: 10px;
+        padding: 14px 16px; font-size: 15px; color: #d9f5e4; text-align: left;
+      }
+      .sub-confirm strong { color: #4cc983; }
+      .sub-confirm .sub-id { font-weight: 700; color: #fff; word-break: break-all; }
+      .sub-honest { margin-top: 14px; font-size: 13.5px; color: #aebbd6; max-width: 440px; margin-left: auto; margin-right: auto; }
+      .join-note {
+        margin-top: 14px;
+        background: var(--gold-soft);
+        border: 1.5px dashed var(--gold);
+        border-radius: 10px;
+        padding: 14px;
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 1.55;
+      }
+      .join-tag {
+        display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.09em;
+        padding: 2.5px 8px; border-radius: 999px; text-transform: uppercase;
+        background: var(--gold-bright); color: #231a02; margin-bottom: 8px;
+      }
+
+      footer {
+        margin-top: 30px; text-align: center;
+        color: var(--muted); font-size: 13.5px; font-weight: 500;
+      }
+      footer .fmotto { color: var(--gold); font-weight: 700; letter-spacing: 0.16em; font-size: 12px; text-transform: uppercase; margin-bottom: 5px; }
+
+      @media (min-width: 560px) {
+        .board { grid-template-columns: 1fr 1fr; }
+        .inst.wide { grid-column: 1 / -1; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="masthead">
+      <svg class="crown" width="46" height="30" viewBox="0 0 46 30" aria-hidden="true"><path d="M3 24 L6 8 L15 16 L23 4 L31 16 L40 8 L43 24 Z" fill="#e9bc45" stroke="#c99612" stroke-width="1.5" stroke-linejoin="round"/><rect x="3" y="24" width="40" height="3.5" rx="1.5" fill="#e9bc45"/></svg>
+      <div class="brand-line">JPR KING TV</div>
+      <h1>Levels Pushed</h1>
+      <p class="motto">God is good all the time</p>
+      <div class="chips">
+        <span class="chip solid">$14.99/mo</span>
+        <span class="chip">Sold through PayPal</span>
+        <span class="chip plain">Delivered by email — no app to install</span>
+      </div>
+      <p class="separate">Its <strong>own subscription</strong> — separate from the $29/mo student app.</p>
+    </header>
+
+    <div class="wrap">
+
+      <!-- ======== TODAY'S BOARD ======== -->
+      <section aria-labelledby="board-h">
+        <div class="sec-head"><h2 id="board-h">Today&rsquo;s board</h2><span class="rule"></span></div>
+        <p class="sec-sub">The five markets, the zones around price, and the one level that matters most in each — crowned <strong>KEY LEVEL</strong> — plus <strong>THE PLAY</strong> on every card: a little prediction for how price should treat the zones.</p>
+        <p class="stamp"><strong>Snapshot</strong> — Wed Nov 4, 2026, 11:44 AM EST. In the live product these refresh all day. <strong>ES replaces US500</strong> — same S&amp;P 500 feed, new label.</p>
+
+        <div class="board">
+
+          <!-- GOLD -->
+          <article class="inst wide">
+            <div class="inst-top">
+              <div><span class="inst-name">GOLD</span><span class="inst-sym">/ XAU</span></div>
+              <div class="inst-price"><span class="px num">4,060.87</span><span class="px-label">Price at snapshot</span></div>
+            </div>
+            <div class="strip" aria-hidden="true">
+              <div class="track"></div>
+              <div class="zone demand" style="left:0%;width:2.1%"></div>
+              <div class="zone demand" style="left:22%;width:2%"></div>
+              <div class="zone demand key" style="left:42.8%;width:2.1%"></div>
+              <div class="zone supply" style="left:63.5%;width:2.1%"></div>
+              <div class="zone supply" style="left:80.5%;width:2.1%"></div>
+              <div class="zone supply" style="left:98%;width:2%"></div>
+              <div class="pxmark" style="left:57.1%"></div>
+            </div>
+            <div class="zone-group supply">
+              <h3><span class="dot"></span>Supply above</h3>
+              <div class="zrow"><span class="range num">4,079.80 – 4,085.85</span><span class="tested num">tested 7×</span></div>
+              <div class="zrow"><span class="range num">4,129.96 – 4,136.01</span><span class="tested num">tested 9×</span></div>
+              <div class="zrow"><span class="range num">4,181.36 – 4,187.41</span><span class="tested num">tested 7×</span></div>
+            </div>
+            <div class="zone-group demand">
+              <h3><span class="dot"></span>Demand below</h3>
+              <div class="zrow keyrow"><span class="keytag">👑 Key Level</span><span class="range num">4,018.79 – 4,024.84</span><span class="tested num">tested 11×</span></div>
+              <div class="zrow"><span class="range num">3,957.25 – 3,963.30</span><span class="tested num">tested 6×</span></div>
+              <div class="zrow"><span class="range num">3,892.54 – 3,898.60</span><span class="tested num">tested 2×</span></div>
+            </div>
+            <div class="play"><span class="play-label">The Play — a little prediction</span>Reject <span class="arr-down">↓</span> at <b class="num">4,079.80 – 4,085.85</b> supply · bounce <span class="arr-up">↑</span> off the 👑 KEY demand <b class="num">4,018.79 – 4,024.84</b> · break &amp; hold through a zone flips the play.</div>
+          </article>
+
+          <!-- ES -->
+          <article class="inst wide">
+            <div class="inst-top">
+              <div><span class="inst-name">ES</span><span class="inst-sym">/ S&amp;P 500</span></div>
+              <div class="inst-price"><span class="px num">7,703.80</span><span class="px-label">Price at snapshot</span></div>
+            </div>
+            <div class="strip" aria-hidden="true">
+              <div class="track"></div>
+              <div class="zone demand" style="left:0%;width:2.5%"></div>
+              <div class="zone demand" style="left:24.1%;width:2.5%"></div>
+              <div class="zone demand" style="left:46.8%;width:2.5%"></div>
+              <div class="zone supply key" style="left:78%;width:2.5%"></div>
+              <div class="zone supply" style="left:87.7%;width:2.5%"></div>
+              <div class="zone supply" style="left:97.5%;width:2.5%"></div>
+              <div class="pxmark" style="left:66.4%"></div>
+            </div>
+            <div class="zone-group supply">
+              <h3><span class="dot"></span>Supply above</h3>
+              <div class="zrow keyrow"><span class="keytag">👑 Key Level</span><span class="range num">7,757.05 – 7,768.55</span><span class="tested num">tested 16×</span></div>
+              <div class="zrow"><span class="range num">7,801.65 – 7,813.15</span><span class="tested num">tested 8×</span></div>
+              <div class="zrow"><span class="range num">7,846.85 – 7,858.35</span><span class="tested num">tested 1×</span></div>
+            </div>
+            <div class="zone-group demand">
+              <h3><span class="dot"></span>Demand below</h3>
+              <div class="zrow"><span class="range num">7,613.75 – 7,625.25</span><span class="tested num">tested 12×</span></div>
+              <div class="zrow"><span class="range num">7,509.35 – 7,520.85</span><span class="tested num">tested 14×</span></div>
+              <div class="zrow"><span class="range num">7,398.65 – 7,410.15</span><span class="tested num">tested 11×</span></div>
+            </div>
+            <div class="play"><span class="play-label">The Play — a little prediction</span>Reject <span class="arr-down">↓</span> at the 👑 KEY supply <b class="num">7,757.05 – 7,768.55</b> · bounce <span class="arr-up">↑</span> off <b class="num">7,613.75 – 7,625.25</b> demand · break &amp; hold flips it.</div>
+          </article>
+
+                    <!-- QQQ -->
+          <article class="inst wide">
+            <div class="inst-top">
+              <div><span class="inst-name">QQQ</span><span class="inst-sym">/ NASDAQ 100</span></div>
+              <div class="inst-price"><span class="px-label">Joining the board</span></div>
+            </div>
+            <p class="join-note"><span class="join-tag">New market</span><br />QQQ levels join the board from the Levels Alarm app — the morning email carries its zones and THE PLAY from day one.</p>
+          </article>
+<!-- NAS100 -->
+          <article class="inst wide">
+            <div class="inst-top">
+              <div><span class="inst-name">NAS100</span><span class="inst-sym">/ NASDAQ</span></div>
+              <div class="inst-price"><span class="px num">28,583.10</span><span class="px-label">Price at snapshot</span></div>
+            </div>
+            <div class="strip" aria-hidden="true">
+              <div class="track"></div>
+              <div class="zone demand" style="left:0%;width:1.3%"></div>
+              <div class="zone demand" style="left:14%;width:1.3%"></div>
+              <div class="zone demand" style="left:34.5%;width:1.3%"></div>
+              <div class="zone supply" style="left:51.7%;width:1.3%"></div>
+              <div class="zone supply" style="left:69.5%;width:1.3%"></div>
+              <div class="zone supply key" style="left:83.4%;width:1.3%"></div>
+              <div class="zone supply" style="left:98.7%;width:1.3%"></div>
+              <div class="pxmark" style="left:46.7%"></div>
+            </div>
+            <div class="zone-group supply">
+              <h3><span class="dot"></span>Supply above</h3>
+              <div class="zrow"><span class="range num">28,748.20 – 28,790.80</span><span class="tested num">tested 4×</span></div>
+              <div class="zrow"><span class="range num">29,339.00 – 29,381.60</span><span class="tested num">tested 10×</span></div>
+              <div class="zrow keyrow"><span class="keytag">👑 Key Level</span><span class="range num">29,799.70 – 29,842.30</span><span class="tested num">tested 22×</span></div>
+              <div class="zrow"><span class="range num">30,306.20 – 30,348.80</span><span class="tested num">tested 4×</span></div>
+            </div>
+            <div class="zone-group demand">
+              <h3><span class="dot"></span>Demand below</h3>
+              <div class="zrow"><span class="range num">28,181.10 – 28,223.70</span><span class="tested num">tested 8×</span></div>
+              <div class="zrow"><span class="range num">27,500.90 – 27,543.50</span><span class="tested num">tested 2×</span></div>
+              <div class="zrow"><span class="range num">27,038.60 – 27,081.20</span><span class="tested num">tested 5×</span></div>
+            </div>
+            <div class="play"><span class="play-label">The Play — a little prediction</span>Reject <span class="arr-down">↓</span> at <b class="num">28,748.20 – 28,790.80</b> supply · bounce <span class="arr-up">↑</span> off <b class="num">28,181.10 – 28,223.70</b> demand · break &amp; hold flips it.</div>
+          </article>
+
+          <!-- US30 -->
+          <article class="inst wide">
+            <div class="inst-top">
+              <div><span class="inst-name">US30</span><span class="inst-sym">/ DOW</span></div>
+              <div class="inst-price"><span class="px num">53,288.55</span><span class="px-label">Price at snapshot</span></div>
+            </div>
+            <div class="strip" aria-hidden="true">
+              <div class="track"></div>
+              <div class="zone demand" style="left:0%;width:4.1%"></div>
+              <div class="zone demand key" style="left:25.8%;width:4.1%"></div>
+              <div class="zone demand" style="left:41.6%;width:4.1%"></div>
+              <div class="zone demand" style="left:62.3%;width:4.1%"></div>
+              <div class="zone supply" style="left:95.9%;width:4.1%"></div>
+              <div class="pxmark flip" style="left:94.6%"></div>
+            </div>
+            <div class="zone-group supply">
+              <h3><span class="dot"></span>Supply above</h3>
+              <div class="zrow"><span class="neartag">Near — ~25 pts away</span><span class="range num">53,313.80 – 53,393.40</span><span class="tested num">tested 3×</span></div>
+            </div>
+            <div class="zone-group demand">
+              <h3><span class="dot"></span>Demand below</h3>
+              <div class="zrow"><span class="range num">52,663.40 – 52,743.00</span><span class="tested num">tested 4×</span></div>
+              <div class="zrow"><span class="range num">52,262.60 – 52,342.20</span><span class="tested num">tested 7×</span></div>
+              <div class="zrow keyrow"><span class="keytag">👑 Key Level</span><span class="range num">51,958.80 – 52,038.40</span><span class="tested num">tested 16×</span></div>
+              <div class="zrow"><span class="range num">51,458.70 – 51,538.30</span><span class="tested num">tested 12×</span></div>
+            </div>
+            <div class="play"><span class="play-label">The Play — a little prediction</span>Price is knocking on <b class="num">53,313.80 – 53,393.40</b> supply — reject <span class="arr-down">↓</span> is the first read · bounce <span class="arr-up">↑</span> off <b class="num">52,663.40 – 52,743.00</b> demand · break &amp; hold above the supply flips it up.</div>
+          </article>
+        </div>
+
+        <div class="legend">
+          <span><span class="sw r"></span>Supply — sellers above</span>
+          <span><span class="sw g"></span>Demand — buyers below</span>
+          <span><span class="sw k"></span>👑 Key Level — most tested</span>
+        </div>
+      </section>
+
+      <!-- ======== INBOX ======== -->
+      <section aria-labelledby="inbox-h">
+        <div class="sec-head"><h2 id="inbox-h">What lands in your inbox</h2><span class="rule"></span></div>
+        <p class="sec-sub">Two emails do all the work — the same push the Levels Alarm app already sends, now pointed at subscribers.</p>
+
+        <article class="mail">
+          <div class="mail-head">
+            <div class="mail-from">
+              <span class="avatar"><svg width="15" height="10" viewBox="0 0 46 30" aria-hidden="true"><path d="M3 24 L6 8 L15 16 L23 4 L31 16 L40 8 L43 24 Z" fill="#e9bc45"/><rect x="3" y="24" width="40" height="3.5" rx="1.5" fill="#e9bc45"/></svg></span>
+              <span>JPR KING TV Levels · every morning</span>
+            </div>
+            <p class="mail-subject">🔑 Key Levels — Wed Nov 4</p>
+          </div>
+          <div class="mail-body">
+            <p class="hello">Your levels for today 👑</p>
+
+            <div class="mail-line">
+              <span class="m-name">GOLD / XAU</span>
+              <span class="m-px num">4,060.87</span>
+              <span class="m-zones">Nearest supply <b class="num">4,079.80 – 4,085.85</b> <span class="pill s">Supply</span><br />
+              Nearest demand <b class="num">4,018.79 – 4,024.84</b> <span class="pill k">👑 Key Level</span></span>
+              <span class="m-play"><span class="play-label">The Play</span>Reject ↓ at <b class="num">4,079.80 – 4,085.85</b> supply · bounce ↑ off the 👑 KEY demand <b class="num">4,018.79 – 4,024.84</b> · break &amp; hold through a zone flips the play.</span>
+            </div>
+
+            <div class="mail-line">
+              <span class="m-name">ES / S&amp;P 500</span>
+              <span class="m-px num">7,703.80</span>
+              <span class="m-zones">Nearest supply <b class="num">7,757.05 – 7,768.55</b> <span class="pill k">👑 Key Level</span><br />
+              Nearest demand <b class="num">7,613.75 – 7,625.25</b> <span class="pill d">Demand</span></span>
+              <span class="m-play"><span class="play-label">The Play</span>Reject ↓ at the 👑 KEY supply <b class="num">7,757.05 – 7,768.55</b> · bounce ↑ off <b class="num">7,613.75 – 7,625.25</b> demand · break &amp; hold flips it.</span>
+            </div>
+
+            <div class="mail-line">
+              <span class="m-name">QQQ / NASDAQ 100</span>
+              <span class="m-zones">Zones &amp; THE PLAY <b>in the morning email</b> — QQQ levels join from the Levels Alarm app from day one.</span>
+            </div>
+
+            <div class="mail-line">
+              <span class="m-name">NAS100 / NASDAQ</span>
+              <span class="m-px num">28,583.10</span>
+              <span class="m-zones">Nearest supply <b class="num">28,748.20 – 28,790.80</b> <span class="pill s">Supply</span><br />
+              Nearest demand <b class="num">28,181.10 – 28,223.70</b> <span class="pill d">Demand</span><br />
+              Key level <b class="num">29,799.70 – 29,842.30</b> <span class="pill k">👑 Key Supply</span></span>
+              <span class="m-play"><span class="play-label">The Play</span>Reject ↓ at <b class="num">28,748.20 – 28,790.80</b> supply · bounce ↑ off <b class="num">28,181.10 – 28,223.70</b> demand · break &amp; hold flips it.</span>
+            </div>
+
+            <div class="mail-line">
+              <span class="m-name">US30 / DOW</span>
+              <span class="m-px num">53,288.55</span>
+              <span class="m-zones">Nearest supply <b class="num">53,313.80 – 53,393.40</b> <span class="pill s">Supply</span><br />
+              Nearest demand <b class="num">52,663.40 – 52,743.00</b> <span class="pill d">Demand</span><br />
+              Key level <b class="num">51,958.80 – 52,038.40</b> <span class="pill k">👑 Key Demand</span></span>
+              <span class="m-play"><span class="play-label">The Play</span>Price is knocking on <b class="num">53,313.80 – 53,393.40</b> supply — reject ↓ is the first read · bounce ↑ off <b class="num">52,663.40 – 52,743.00</b> demand · break &amp; hold above the supply flips it up.</span>
+            </div>
+
+            <p class="mail-close">Watch your inbox — when price walks into a zone, you get the alert.</p>
+            <p class="mail-motto">God is good all the time</p>
+          </div>
+        </article>
+
+        <article class="mail">
+          <div class="mail-head">
+            <span class="sample-stamp">Sample — the format a real alert takes</span>
+            <div class="mail-from">
+              <span class="avatar"><svg width="15" height="10" viewBox="0 0 46 30" aria-hidden="true"><path d="M3 24 L6 8 L15 16 L23 4 L31 16 L40 8 L43 24 Z" fill="#e9bc45"/><rect x="3" y="24" width="40" height="3.5" rx="1.5" fill="#e9bc45"/></svg></span>
+              <span>JPR KING TV Levels · zone alert</span>
+            </div>
+            <p class="mail-subject">🟢 GOLD entered a DEMAND zone</p>
+          </div>
+          <div class="mail-body">
+            <div class="alert-play">
+              Price just walked into the demand zone <strong class="num">4,018.79 – 4,024.84</strong> — the 👑 <strong>KEY LEVEL</strong> (tested <span class="num">11×</span>).<br /><br />
+              <strong>The play:</strong> watch for the bounce. If it breaks and holds below, the play changes.
+            </div>
+            <p class="mail-motto">God is good all the time</p>
+          </div>
+        </article>
+
+        <!-- Live demo -->
+        <div class="demo">
+          <h3>See an alert fire</h3>
+          <p>GOLD / XAU at the snapshot price, walking down into today&rsquo;s 👑 KEY LEVEL demand zone. This is the exact moment the alert email above goes out.</p>
+          <div class="demo-track" aria-hidden="true">
+            <div class="rail"></div>
+            <div class="dzone" id="demoZone" style="left:8%;width:16%"></div>
+            <div class="dzone-label" style="left:16%">👑 4,018.79 – 4,024.84</div>
+            <div class="demo-dot" id="demoDot"></div>
+          </div>
+          <div class="demo-readout">
+            <span class="cur">GOLD price&nbsp; <b class="num" id="demoPrice">4,060.87</b></span>
+            <span class="demo-status" id="demoStatus">Outside the zone — watcher quiet</span>
+          </div>
+          <div class="demo-alert" id="demoAlert">🟢 <strong>Alert sent:</strong> GOLD entered the 👑 KEY LEVEL demand zone <span class="num">4,018.79 – 4,024.84</span> — every subscriber just got that email.</div>
+          <button class="demo-btn" id="demoBtn" type="button">▶&ensp;Walk price into the zone</button>
+        </div>
+      </section>
+
+      <!-- ======== HOW IT WORKS ======== -->
+      <section aria-labelledby="how-h">
+        <div class="sec-head"><h2 id="how-h">How it works</h2><span class="rule"></span></div>
+        <p class="sec-sub">Four steps, start to finish. No charts to watch, no app to open — the levels come to the subscriber.</p>
+        <ol class="steps">
+          <li class="step">
+            <span class="step-n">1</span>
+            <div>
+              <h3>The zones are drawn</h3>
+              <p>From <strong>4H candles</strong>: <span class="swatch-red">SUPPLY</span> zones (red) sit above price, anchored on swing highs; <span class="swatch-green">DEMAND</span> zones (green) sit below, anchored on swing lows. The most tested zone is crowned the <strong>👑 KEY LEVEL</strong>.</p>
+            </div>
+          </li>
+          <li class="step">
+            <span class="step-n">2</span>
+            <div>
+              <h3>A watcher checks the price</h3>
+              <p>Live price is checked about <strong>every 5 minutes</strong> while the market is open — the same engine behind the Levels Alarm app.</p>
+            </div>
+          </li>
+          <li class="step">
+            <span class="step-n">3</span>
+            <div>
+              <h3>Alerts fire on entry only</h3>
+              <p>An alert fires <strong>only when price crosses from outside INTO a zone</strong> — starting inside fires nothing. After an alert, that zone stays quiet for <strong>30 minutes</strong>, and price has to leave before it can alert again. No spam, no repeats.</p>
+            </div>
+          </li>
+          <li class="step">
+            <span class="step-n">4</span>
+            <div>
+              <h3>Subscribers get the emails</h3>
+              <p>The <strong>morning Key Levels email</strong> — with <strong>THE PLAY</strong> for each market, the little prediction that comes with the levels — plus a <strong>zone-entry alert</strong> the moment one fires. Subscribers cancel anytime from their own PayPal.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- ======== SUBSCRIBE ======== -->
+      <section aria-labelledby="sub-h">
+        <div class="sec-head"><h2 id="sub-h">The subscription</h2><span class="rule"></span></div>
+        <div class="subscribe">
+          <div class="price num">$14.99<small>/mo</small></div>
+          <p class="what">Daily Key Levels for all five markets — GOLD / XAU, ES / S&amp;P 500, QQQ / NASDAQ 100, NAS100 / NASDAQ and US30 / DOW — in your inbox every morning, with THE PLAY on each market, a little prediction to go with the levels, plus an email the moment live price walks into a zone. Pay with PayPal, cancel anytime.</p>
+          <div class="paypal-wrap"><div id="paypal-button-container-P-307560592C428194FNLWLPOQ"></div></div>
+          <div class="sub-confirm" id="subConfirm" hidden>
+            <strong>You&rsquo;re subscribed — welcome in.</strong><br />
+            Your PayPal subscription ID is <span class="sub-id num" id="subId"></span>. Keep it for your records — PayPal also emails you a receipt, and you can cancel anytime from your own PayPal.
+          </div>
+          <p class="sub-honest">One honest note: joining is not automatic yet. PayPal notifies the owner of each new subscriber, and your email is added to the Levels Pushed book by hand — usually the same day.</p>
+          <p class="next" id="paypalFallback">If the Subscribe button doesn&rsquo;t appear above, check your connection and refresh this page — PayPal loads the button live.</p>
+        </div>
+      </section>
+
+      <footer>
+        <p class="fmotto">God is good all the time</p>
+        <p>Levels Pushed is a public sales page. Joining is not automatic yet — PayPal notifies the owner of each new subscriber and their email is added to the book by hand.</p>
+      </footer>
+    </div>
+
+    <script>
+      (function () {
+        var btn = document.getElementById('demoBtn');
+        var dot = document.getElementById('demoDot');
+        var priceEl = document.getElementById('demoPrice');
+        var statusEl = document.getElementById('demoStatus');
+        var alertEl = document.getElementById('demoAlert');
+        var zone = document.getElementById('demoZone');
+
+        // Demo scale: price 4,070 (right edge) down to 3,995 (left edge).
+        var HI = 4070, LO = 3995;
+        var START = 4060.87, TARGET = 4021.5; // lands inside 4,018.79–4,024.84
+        var ZONE_HI = 4024.84;
+        var running = false, fired = false, raf = null, startTs = null;
+        var DURATION = 3400;
+        var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // Position the zone block precisely on the same scale.
+        function pct(p) { return ((p - LO) / (HI - LO)) * 100; }
+        zone.style.left = pct(4018.79) + '%';
+        zone.style.width = (pct(4024.84) - pct(4018.79)) + '%';
+        var zl = zone.nextElementSibling;
+        if (zl) { zl.style.left = ((pct(4018.79) + pct(4024.84)) / 2) + '%'; }
+        dot.style.left = pct(START) + '%';
+
+        function fmt(n) {
+          return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function render(price) {
+          dot.style.left = pct(price) + '%';
+          priceEl.textContent = fmt(price);
+          if (!fired && price <= ZONE_HI) {
+            fired = true;
+            statusEl.textContent = 'Inside the zone — alert fired';
+            statusEl.classList.add('fired');
+            alertEl.classList.add('show');
+          } else if (!fired) {
+            statusEl.textContent = price < START - 1 ? 'Walking down… still outside' : 'Outside the zone — watcher quiet';
+          }
+        }
+
+        function finish() {
+          running = false;
+          btn.disabled = false;
+          btn.innerHTML = '↺&ensp;Run it again';
+        }
+
+        function step(ts) {
+          if (startTs === null) startTs = ts;
+          var t = Math.min((ts - startTs) / DURATION, 1);
+          var eased = 1 - Math.pow(1 - t, 2);
+          render(START + (TARGET - START) * eased);
+          if (t < 1) { raf = requestAnimationFrame(step); } else { finish(); }
+        }
+
+        btn.addEventListener('click', function () {
+          if (running) return;
+          if (raf) cancelAnimationFrame(raf);
+          fired = false;
+          statusEl.classList.remove('fired');
+          alertEl.classList.remove('show');
+          render(START);
+          if (reduceMotion) {
+            render(TARGET);
+            finish();
+            btn.innerHTML = '↺&ensp;Run it again';
+            return;
+          }
+          running = true;
+          btn.disabled = true;
+          btn.textContent = 'Watching price…';
+          startTs = null;
+          raf = requestAnimationFrame(step);
+        });
+      })();
+    </script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AS045KeYeKgdp2OMNcc1hNUC7dX938FXwLNa1-ThHGK_sqDiLo34fG6KQ_-MIKUXK5Sj91L55-NRd258&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+    <script>
+      (function () {
+        if (!window.paypal || !paypal.Buttons) return;
+        paypal.Buttons({
+          style: {
+            shape: 'rect',
+            color: 'gold',
+            layout: 'vertical',
+            label: 'subscribe'
+          },
+          createSubscription: function (data, actions) {
+            return actions.subscription.create({
+              plan_id: 'P-307560592C428194FNLWLPOQ'
+            });
+          },
+          onApprove: function (data, actions) {
+            var box = document.getElementById('subConfirm');
+            var idEl = document.getElementById('subId');
+            if (idEl) idEl.textContent = data.subscriptionID || '';
+            if (box) {
+              box.hidden = false;
+              if (box.scrollIntoView) box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          }
+        }).render('#paypal-button-container-P-307560592C428194FNLWLPOQ');
+      })();
+    </script>
+  </body>
+</html>
