@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="light dark" />
     <link rel="icon" href="data:," />
-    <title>Levels Pushed — Preview</title>
+    <title>Levels Pushed</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -453,10 +453,6 @@
         font-family: inherit; font-size: 17px; font-weight: 700;
         padding: 15px 16px; cursor: not-allowed;
       }
-      .sub-preview-label {
-        margin-top: 11px; font-size: 13.5px; font-weight: 700;
-        letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-bright);
-      }
       .subscribe .next { margin-top: 14px; font-size: 14px; color: #aebbd6; }
       .subscribe .next strong { color: #f4f6fc; }
       .paypal-wrap { max-width: 440px; margin: 0 auto; }
@@ -468,6 +464,31 @@
       }
       .sub-confirm strong { color: #4cc983; }
       .sub-confirm .sub-id { font-weight: 700; color: #fff; word-break: break-all; }
+      .cap-block { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(76, 201, 131, 0.35); }
+      .cap-block h3 {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 20px; font-weight: 700; letter-spacing: 0.03em;
+        color: #fff; margin-bottom: 4px;
+      }
+      .cap-block p { font-size: 14px; color: #bfe6cf; margin-bottom: 10px; }
+      .cap-form { display: flex; gap: 8px; flex-wrap: wrap; }
+      .cap-input {
+        flex: 1 1 200px; min-width: 0;
+        background: #fff; color: #101a30;
+        border: 1.5px solid var(--gold-bright); border-radius: 8px;
+        font-family: inherit; font-size: 15px;
+        padding: 11px 12px;
+      }
+      .cap-btn {
+        flex: none;
+        background: var(--gold-bright); color: #231a02;
+        border: none; border-radius: 8px;
+        font-family: inherit; font-size: 15px; font-weight: 700;
+        padding: 11px 16px; cursor: pointer;
+      }
+      .cap-btn:disabled { opacity: 0.6; cursor: default; }
+      .cap-msg { font-size: 14.5px; font-weight: 600; color: #d9f5e4; margin-top: 10px; margin-bottom: 0 !important; }
+      .cap-msg.err { color: #ffd9a8; }
       .sub-honest { margin-top: 14px; font-size: 13.5px; color: #aebbd6; max-width: 440px; margin-left: auto; margin-right: auto; }
       .join-note {
         margin-top: 14px;
@@ -813,15 +834,24 @@
           <div class="sub-confirm" id="subConfirm" hidden>
             <strong>You&rsquo;re subscribed — welcome in.</strong><br />
             Your PayPal subscription ID is <span class="sub-id num" id="subId"></span>. Keep it for your records — PayPal also emails you a receipt, and you can cancel anytime from your own PayPal.
+            <div class="cap-block" id="capBlock">
+              <h3>Where do we send your levels?</h3>
+              <p>Your morning Key Levels and zone-entry alerts go by email. Put the inbox you actually want them in — it takes five seconds.</p>
+              <form class="cap-form" id="capForm" novalidate>
+                <input class="cap-input" id="capEmail" type="email" placeholder="you@example.com" autocomplete="email" aria-label="Email address for your levels" />
+                <button class="cap-btn" id="capBtn" type="submit">Send my levels here</button>
+              </form>
+              <p class="cap-msg" id="capMsg" role="status" hidden></p>
+            </div>
           </div>
-          <p class="sub-honest">One honest note: joining is not automatic yet. PayPal notifies the owner of each new subscriber, and your email is added to the Levels Pushed book by hand — usually the same day.</p>
+          <p class="sub-honest">One honest note: joining is not automatic yet. Add your email above after you subscribe and it goes into the Levels Pushed book by hand — usually the same day. PayPal also notifies the owner of each new subscriber.</p>
           <p class="next" id="paypalFallback">If the Subscribe button doesn&rsquo;t appear above, check your connection and refresh this page — PayPal loads the button live.</p>
         </div>
       </section>
 
       <footer>
         <p class="fmotto">God is good all the time</p>
-        <p>Levels Pushed is a public sales page. Joining is not automatic yet — PayPal notifies the owner of each new subscriber and their email is added to the book by hand.</p>
+        <p>Levels Pushed is a public sales page. Joining is not automatic yet — each new subscriber's chosen email is added to the book by hand.</p>
         <div class="legal">
           <p class="legal-edu">For education purposes only</p>
           <p class="legal-risk">Trading involves risk. Nothing here is financial advice or a promise of profit.</p>
@@ -932,6 +962,50 @@
             }
           }
         }).render('#paypal-button-container-P-307560592C428194FNLWLPOQ');
+      })();
+    </script>
+    <script>
+      (function () {
+        var form = document.getElementById('capForm');
+        var input = document.getElementById('capEmail');
+        var btn = document.getElementById('capBtn');
+        var msg = document.getElementById('capMsg');
+        if (!form || !input || !btn || !msg) return;
+
+        function showMsg(text, isErr) {
+          msg.textContent = text;
+          msg.classList.toggle('err', !!isErr);
+          msg.hidden = false;
+        }
+
+        form.addEventListener('submit', function (ev) {
+          ev.preventDefault();
+          var email = (input.value || '').trim();
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showMsg('That email doesn\u2019t look right — check it and try again.', true);
+            input.focus();
+            return;
+          }
+          var subEl = document.getElementById('subId');
+          var subscription = subEl ? (subEl.textContent || '') : '';
+          btn.disabled = true;
+          btn.textContent = 'Sending\u2026';
+          var body = new URLSearchParams();
+          body.append('email', email);
+          body.append('subscription', subscription);
+          fetch('https://script.google.com/macros/s/AKfycbzs-DwFvobTSCXAM8HzCmEribDElxG_4raJ9YpVNMlTklMnN2Vwa2v1Qkj3RHRjfvNE/exec', {
+            method: 'POST',
+            mode: 'no-cors',
+            body: body
+          }).then(function () {
+            form.style.display = 'none';
+            showMsg('Got it — your levels will go to ' + email + '.', false);
+          }).catch(function () {
+            btn.disabled = false;
+            btn.textContent = 'Send my levels here';
+            showMsg('That didn\u2019t go through — email jprkingtv@gmail.com with your subscription ID and the inbox you want, and we\u2019ll set it by hand.', true);
+          });
+        });
       })();
     </script>
   </body>
