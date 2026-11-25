@@ -10,84 +10,123 @@
   --navy:#0a1633; --navy2:#1b2f63; --gold:#d4af37; --gold2:#f0cd55; --gold3:#c39a2b;
   --cream:#f5eeda; --ink:#10131c; --mut:#9fb0d8; --line:rgba(212,175,55,.35);
   --glass:linear-gradient(180deg,rgba(212,175,55,.09),rgba(10,22,51,.72) 42%);
-  --red:#e06c5b; --green:#7fc97f;
+  --red:#e06c5b; --green:#7fc97f; --green2:#5fd35f; --red2:#ff8a76;
   --serif:Georgia,'Times New Roman',serif;
   --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{
-  font-family:var(--sans);color:var(--cream);min-height:100vh;
+  font-family:var(--sans);color:var(--cream);min-height:100vh;position:relative;
   background:
-    radial-gradient(900px 480px at 85% -5%,rgba(212,175,55,.14) 0%,rgba(212,175,55,0) 55%),
-    radial-gradient(1200px 620px at 50% -10%,#1e3570 0%,#0a1633 55%,#060d22 100%);
+    radial-gradient(1000px 520px at 85% -5%,rgba(212,175,55,.17) 0%,rgba(212,175,55,0) 55%),
+    radial-gradient(760px 520px at 6% 24%,rgba(43,80,175,.38) 0%,rgba(43,80,175,0) 60%),
+    radial-gradient(1300px 720px at 50% -10%,#223a7d 0%,#0c1a3d 52%,#060d22 100%);
   background-attachment:fixed;
   -webkit-font-smoothing:antialiased;
+}
+/* faint gold diamond lattice over the palace navy */
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    linear-gradient(45deg,rgba(212,175,55,.055) 1px,transparent 1px),
+    linear-gradient(-45deg,rgba(212,175,55,.055) 1px,transparent 1px);
+  background-size:26px 26px;
 }
 h1,h2,h3{font-family:var(--serif)}
 a{color:var(--gold2)}
 button{font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
-input,select,textarea{font-family:inherit;font-size:16px;color:var(--ink);background:#fdfaf0;border:1px solid #b9a86a;border-radius:10px;padding:11px 12px;width:100%;min-height:44px}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.35)}
+input,select,textarea{font-family:inherit;font-size:16px;color:var(--cream);background:linear-gradient(180deg,rgba(5,10,25,.92),rgba(13,24,54,.92));border:1px solid rgba(212,175,55,.42);border-radius:12px;padding:11px 12px;width:100%;min-height:44px;box-shadow:inset 0 2px 9px rgba(0,0,0,.55),inset 0 1px 0 rgba(240,205,85,.10)}
+input::placeholder,textarea::placeholder{color:#7e8fb8}
+select option{color:var(--ink);background:#fdfaf0}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.35),inset 0 2px 9px rgba(0,0,0,.55)}
 label{display:block;font-size:11.5px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold);margin:13px 0 5px}
-.wrap{max-width:860px;margin:0 auto;padding:16px 14px 118px}
-/* ---------- hero header ---------- */
-.topbar{position:relative;display:flex;align-items:center;gap:16px;padding:20px 18px;margin-top:6px;border:1.5px solid rgba(212,175,55,.55);border-radius:20px;background:linear-gradient(160deg,rgba(27,47,99,.88),rgba(10,22,51,.92) 60%);box-shadow:0 12px 34px rgba(0,0,0,.45),0 0 30px rgba(212,175,55,.14),inset 0 1px 0 rgba(240,205,85,.35);overflow:hidden}
-.topbar::after{content:"";position:absolute;top:0;bottom:0;left:-35%;width:45%;background:linear-gradient(100deg,rgba(240,205,85,0) 0%,rgba(240,205,85,.13) 50%,rgba(240,205,85,0) 100%);transform:skewX(-18deg);animation:sweep 7.5s ease-in-out infinite;pointer-events:none}
+.wrap{max-width:860px;margin:0 auto;padding:16px 14px 118px;position:relative;z-index:1}
+/* ---------- compact top bar ---------- */
+.topbar{position:relative;display:flex;align-items:center;gap:13px;padding:12px 14px;margin-top:6px;border:1px solid rgba(212,175,55,.55);border-radius:18px;background:linear-gradient(160deg,rgba(31,54,112,.90),rgba(10,22,51,.94) 60%);box-shadow:0 10px 28px rgba(0,0,0,.45),0 0 24px rgba(212,175,55,.13),inset 0 1px 0 rgba(240,205,85,.35);overflow:hidden}
+.topbar::after{content:"";position:absolute;top:0;bottom:0;left:-35%;width:45%;background:linear-gradient(100deg,rgba(240,205,85,0) 0%,rgba(240,205,85,.12) 50%,rgba(240,205,85,0) 100%);transform:skewX(-18deg);animation:sweep 8s ease-in-out infinite;pointer-events:none}
 @keyframes sweep{0%,55%{left:-35%}85%,100%{left:110%}}
-.medallion{flex:none;width:92px;height:92px;border-radius:50%;padding:4px;background:conic-gradient(from 210deg,#7a5f18,var(--gold2),var(--gold),#7a5f18,var(--gold2),var(--gold),#7a5f18);box-shadow:0 0 30px rgba(212,175,55,.55),0 6px 18px rgba(0,0,0,.5)}
+.medallion{flex:none;width:56px;height:56px;border-radius:50%;padding:3px;background:conic-gradient(from 210deg,#7a5f18,var(--gold2),var(--gold),#7a5f18,var(--gold2),var(--gold),#7a5f18);box-shadow:0 0 22px rgba(212,175,55,.55),0 5px 14px rgba(0,0,0,.5)}
 .medallion img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;border:2px solid rgba(10,22,51,.65)}
-.topbar img{border-radius:50%}
 .topbar .tt{min-width:0}
-.topbar .tt h1{margin:0;font-size:clamp(23px,6vw,33px);letter-spacing:3.5px;line-height:1.12;background:linear-gradient(180deg,#f7e08a 0%,var(--gold2) 45%,var(--gold3) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--gold2);filter:drop-shadow(0 2px 10px rgba(212,175,55,.30))}
-.topbar .tt p{margin:5px 0 0;font-size:11.5px;letter-spacing:2.2px;color:var(--cream);opacity:.92}
-.topbar .tt p.sub{margin:4px 0 0;font-size:12.5px;letter-spacing:.6px;color:var(--gold2);opacity:.95}
+.topbar .tt h1{margin:0;font-size:19px;letter-spacing:2.4px;line-height:1.15;background:linear-gradient(180deg,#f7e08a 0%,var(--gold2) 45%,var(--gold3) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--gold2);filter:drop-shadow(0 2px 8px rgba(212,175,55,.30))}
+.topbar .tt p{margin:3px 0 0;font-size:9.5px;letter-spacing:1.7px;color:var(--cream);opacity:.92}
+.topbar .tt p.sub{display:none}
 /* top navrow is superseded by the fixed bottom bar (kept in DOM; renderNav still fills it) */
 .navrow{display:none}
 .navbtn{flex:1;min-width:70px;background:rgba(10,22,51,.65);color:var(--cream);border:1px solid var(--line);border-radius:11px;padding:10px 4px;font-size:14px;letter-spacing:.6px}
 .navbtn.on{background:linear-gradient(180deg,var(--gold2),var(--gold3));color:var(--navy);font-weight:bold;border-color:var(--gold)}
-/* ---------- cards ---------- */
-.card{position:relative;border:1.5px solid rgba(212,175,55,.55);border-radius:20px;padding:20px 17px;background:linear-gradient(180deg,rgba(27,47,99,.55),rgba(10,22,51,.78) 45%);box-shadow:0 14px 34px rgba(0,0,0,.42),0 0 26px rgba(212,175,55,.13),inset 0 1px 0 rgba(240,205,85,.28),inset 0 0 50px rgba(0,0,0,.35);margin:15px 0;animation:cardIn .28s ease both}
+/* ---------- glass panels & cards ---------- */
+.card,.panel{position:relative;border:1px solid rgba(212,175,55,.52);border-radius:20px;padding:20px 17px;background:linear-gradient(165deg,rgba(48,76,152,.50),rgba(16,30,66,.88) 46%,rgba(8,15,36,.95));box-shadow:0 16px 38px rgba(0,0,0,.50),0 0 28px rgba(212,175,55,.12),inset 0 1px 0 rgba(240,205,85,.32),inset 0 0 60px rgba(0,0,0,.35);margin:15px 0;overflow:hidden;animation:cardIn .28s ease both}
+.card::before,.panel::before{content:"";position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(240,205,85,.75),transparent);pointer-events:none}
 @keyframes cardIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
 .card h2{margin:0 0 9px;color:var(--gold2);letter-spacing:1.8px;font-size:20px;text-shadow:0 1px 8px rgba(212,175,55,.25)}
-.card.center img{border-radius:50%!important;border:3px solid var(--gold)!important;box-shadow:0 0 34px rgba(212,175,55,.55),0 0 0 6px rgba(212,175,55,.15)!important}
+.rise{animation:riseIn .45s ease both}
+@keyframes riseIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+/* ---------- home hero ---------- */
+.hero{position:relative;text-align:center;padding:30px 18px 24px;margin-top:14px;border-radius:22px;border:1px solid rgba(212,175,55,.62);background:radial-gradient(430px 210px at 50% -4%,rgba(240,205,85,.24),rgba(240,205,85,0) 70%),linear-gradient(170deg,rgba(48,76,152,.55),rgba(10,20,48,.95) 58%);box-shadow:0 20px 46px rgba(0,0,0,.55),0 0 40px rgba(212,175,55,.16),inset 0 1px 0 rgba(240,205,85,.4),inset 0 0 70px rgba(0,0,0,.35);overflow:hidden;animation:riseIn .45s ease both}
+.hero::after{content:"";position:absolute;top:0;bottom:0;left:-35%;width:45%;background:linear-gradient(100deg,rgba(240,205,85,0) 0%,rgba(240,205,85,.13) 50%,rgba(240,205,85,0) 100%);transform:skewX(-18deg);animation:sweep 8.5s ease-in-out infinite;pointer-events:none}
+.hero-medal{width:118px;height:118px;margin:2px auto 0;border-radius:50%;padding:5px;background:conic-gradient(from 210deg,#7a5f18,var(--gold2),var(--gold),#7a5f18,var(--gold2),var(--gold),#7a5f18);box-shadow:0 0 46px rgba(212,175,55,.65),0 0 0 10px rgba(212,175,55,.08),0 12px 28px rgba(0,0,0,.55)}
+.hero-medal img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;border:2px solid rgba(10,22,51,.65)}
+.hero-name{font-size:clamp(34px,9vw,44px);letter-spacing:4px;line-height:1.1;margin:17px 0 5px;background:linear-gradient(180deg,#f9e38f 0%,var(--gold2) 45%,var(--gold3) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--gold2);filter:drop-shadow(0 3px 14px rgba(212,175,55,.35))}
+.hero-tag{margin:0;font-size:12px;font-weight:600;letter-spacing:3.2px;color:var(--cream)}
+.hero-sub{margin:7px 0 0;font-size:13.5px;line-height:1.55;letter-spacing:.4px;color:var(--gold2);white-space:pre-line}
+/* ---------- home stats panel ---------- */
+.plabel{font-size:12px;font-weight:700;letter-spacing:2.6px;text-transform:uppercase;color:var(--gold2)}
+.bignum{font-family:var(--serif);font-weight:bold;font-size:clamp(40px,11vw,52px);line-height:1.05;color:#fff8e6;text-shadow:0 2px 20px rgba(240,205,85,.35);margin:7px 0 15px}
+.substats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.substat{border:1px solid rgba(212,175,55,.45);border-radius:14px;padding:12px 5px 10px;text-align:center;background:linear-gradient(180deg,rgba(240,205,85,.08),rgba(0,0,0,.30));box-shadow:inset 0 1px 0 rgba(240,205,85,.25),inset 0 0 22px rgba(0,0,0,.25)}
+.substat .sv{font-family:var(--serif);font-weight:bold;font-size:clamp(16px,4.9vw,21px);color:var(--cream)}
+.substat .sv.green{color:var(--green2)}
+.substat .sv.red{color:var(--red2)}
+.substat .sv.gold{color:var(--gold2)}
+.substat .sk{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--mut);margin-top:5px}
+/* ---------- signing-page card ---------- */
+.cardtitle{font-family:var(--serif);font-size:20.5px;font-weight:bold;color:var(--cream);display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 8px}
+.livepill{margin-left:auto;background:linear-gradient(180deg,#43d977,#1f9d4d);color:#04160a;font-family:var(--sans);font-size:11px;font-weight:800;letter-spacing:1.6px;padding:5px 13px;border-radius:20px;box-shadow:0 0 16px rgba(67,217,119,.5),inset 0 1px 0 rgba(255,255,255,.5)}
+.linkchip{display:flex;align-items:center;gap:10px;background:linear-gradient(180deg,rgba(43,72,150,.65),rgba(24,44,102,.65));border:1px solid rgba(130,160,235,.5);border-radius:12px;padding:12px 13px;box-shadow:inset 0 1px 0 rgba(160,190,255,.25)}
+.linkchip .lk{flex:none;font-weight:700;font-size:13.5px;color:#d7e5ff}
+.linkchip .lu{font-size:13px;color:#a9c2f5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* ---------- section headings ---------- */
+.sect{font-family:var(--serif);font-size:23px;font-weight:bold;color:var(--cream);margin:25px 0 7px;text-shadow:0 2px 10px rgba(0,0,0,.4)}
+.sectrow{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin:25px 0 7px}
+.sectrow .sect{margin:0}
+.seclink{background:none;border:none;color:var(--gold2);font-size:14.5px;font-weight:600;padding:8px 2px;min-height:44px}
+.countbadge{display:inline-block;vertical-align:middle;margin-left:9px;font-family:var(--sans);font-size:14px;font-weight:700;color:var(--gold2);border:1.5px solid rgba(212,175,55,.65);border-radius:9px;padding:2px 10px;background:rgba(212,175,55,.10);box-shadow:inset 0 1px 0 rgba(240,205,85,.25)}
 /* ---------- buttons ---------- */
 .btn{position:relative;overflow:hidden;display:inline-block;background:linear-gradient(180deg,#f7e08a 0%,var(--gold2) 30%,var(--gold) 62%,var(--gold3) 100%);color:var(--navy);font-family:var(--serif);font-weight:bold;font-size:16px;letter-spacing:.7px;padding:13px 21px;border:1px solid #8a6d1f;border-radius:12px;box-shadow:0 6px 20px rgba(212,175,55,.38),inset 0 1px 0 rgba(255,255,255,.65),inset 0 -2px 0 rgba(90,68,10,.45);text-decoration:none;text-align:center;min-height:44px;transition:transform .12s ease,box-shadow .12s ease}
 .btn::after{content:"";position:absolute;top:0;bottom:0;left:-80%;width:50%;background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.5),rgba(255,255,255,0));transform:skewX(-20deg);transition:left .45s ease;pointer-events:none}
 .btn:hover::after,.btn:active::after{left:130%}
 .btn:active{transform:translateY(1.5px) scale(.99);box-shadow:0 3px 10px rgba(212,175,55,.30),inset 0 1px 0 rgba(255,255,255,.5),inset 0 -1px 0 rgba(90,68,10,.4)}
-.btn.ghost{background:linear-gradient(180deg,rgba(27,47,99,.78),rgba(10,22,51,.88));color:var(--gold2);border:1px solid rgba(212,175,55,.65);box-shadow:inset 0 1px 0 rgba(240,205,85,.22)}
+.btn.ghost{background:linear-gradient(180deg,rgba(31,54,112,.82),rgba(10,22,51,.92));color:var(--gold2);border:1px solid rgba(212,175,55,.65);box-shadow:inset 0 1px 0 rgba(240,205,85,.22),0 4px 14px rgba(0,0,0,.3)}
 .btn.ghost::after{background:linear-gradient(100deg,rgba(240,205,85,0),rgba(240,205,85,.28),rgba(240,205,85,0))}
-.btn.danger{background:linear-gradient(180deg,rgba(27,47,99,.78),rgba(10,22,51,.88));color:var(--red);border:1px solid var(--red);box-shadow:inset 0 1px 0 rgba(240,205,85,.15)}
+.btn.danger{background:linear-gradient(180deg,rgba(31,54,112,.82),rgba(10,22,51,.92));color:var(--red2);border:1px solid var(--red);box-shadow:inset 0 1px 0 rgba(240,205,85,.15)}
 .btn.danger::after{background:linear-gradient(100deg,rgba(224,108,91,0),rgba(224,108,91,.22),rgba(224,108,91,0))}
 .btn.small{padding:9px 14px;font-size:13.5px;min-height:38px}
 .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin:13px 0}
-/* ---------- home stat tiles ---------- */
-.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0}
-.tile{position:relative;border:1.5px solid rgba(212,175,55,.5);border-radius:17px;padding:17px 13px 15px;background:linear-gradient(165deg,rgba(240,205,85,.13),rgba(27,47,99,.5) 38%,rgba(10,22,51,.72));box-shadow:0 10px 24px rgba(0,0,0,.38),inset 0 1px 0 rgba(240,205,85,.35),inset 0 0 26px rgba(212,175,55,.06);text-align:center;overflow:hidden;animation:tileIn .38s ease both}
-.tile::before{content:"";position:absolute;top:0;left:14%;right:14%;height:1.5px;background:linear-gradient(90deg,transparent,var(--gold2),transparent)}
-.tile:nth-child(2){animation-delay:.06s}
-.tile:nth-child(3){animation-delay:.12s}
-.tile:nth-child(4){animation-delay:.18s}
-@keyframes tileIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-.tile .k{font-size:11px;font-weight:600;letter-spacing:1.9px;text-transform:uppercase;color:var(--mut)}
-.tile .v{font-family:var(--serif);font-size:29px;color:var(--gold2);margin-top:6px;font-weight:bold;background:linear-gradient(180deg,#f7e08a,var(--gold2) 55%,var(--gold3));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 /* ---------- tabs ---------- */
 .tabs{display:flex;gap:9px;margin:8px 0 13px}
 .tab{flex:1;padding:12px;border-radius:12px;border:1px solid var(--line);background:rgba(10,22,51,.6);color:var(--cream);font-size:15.5px;letter-spacing:.6px;min-height:44px;transition:box-shadow .15s ease}
 .tab.on{background:linear-gradient(180deg,#f7e08a,var(--gold2) 35%,var(--gold3));color:var(--navy);font-weight:bold;border-color:#8a6d1f;box-shadow:0 5px 16px rgba(212,175,55,.35),inset 0 1px 0 rgba(255,255,255,.6)}
 /* ---------- list rows ---------- */
-.rowitem{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:linear-gradient(180deg,rgba(27,47,99,.45),rgba(10,22,51,.62));border:1px solid rgba(212,175,55,.30);border-left:3.5px solid var(--gold);border-radius:14px;padding:13px 14px;margin:9px 0;color:var(--cream);box-shadow:0 6px 16px rgba(0,0,0,.30),inset 0 1px 0 rgba(240,205,85,.14);min-height:44px;transition:transform .12s ease,box-shadow .12s ease}
+.rowitem{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:linear-gradient(165deg,rgba(48,76,152,.45),rgba(10,20,48,.88));border:1px solid rgba(212,175,55,.42);border-left:4px solid var(--gold);border-radius:15px;padding:14px;margin:9px 0;color:var(--cream);box-shadow:0 8px 20px rgba(0,0,0,.38),inset 0 1px 0 rgba(240,205,85,.18);min-height:44px;transition:transform .12s ease,box-shadow .12s ease}
 button.rowitem:active{transform:scale(.992)}
 .rowitem .grow{flex:1;min-width:0}
-.rowitem .t1{font-family:var(--serif);font-size:16.5px;font-weight:bold;color:var(--gold2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rowitem .t1{font-family:var(--serif);font-size:17px;font-weight:bold;color:#fff3d6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rowitem .t2{display:block;font-size:13px;color:var(--cream);opacity:.78;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rowitem .amt{font-family:var(--serif);font-size:16.5px;font-weight:bold;white-space:nowrap}
-.chip{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;border:1px solid var(--gold);color:var(--gold2);background:rgba(212,175,55,.12);border-radius:20px;padding:3px 10px;margin-left:7px;vertical-align:middle}
-.chip.paid{border-color:var(--green);color:#a9e6a9;background:rgba(127,201,127,.12)}
-.chip.bad{border-color:var(--red);color:#ffb3a7;background:rgba(224,108,91,.12)}
+.rowitem .t3{display:block;font-size:12.5px;font-weight:700;letter-spacing:.4px;margin-top:3px}
+.rowitem .t3.paidup{color:var(--green2)}
+.rowitem .t3.owes{color:var(--red2)}
+.rowitem .amt{font-family:var(--serif);font-size:17px;font-weight:bold;white-space:nowrap;text-align:right}
+.rowitem .amtdate{display:block;font-family:var(--sans);font-size:11.5px;font-weight:400;color:var(--mut);margin-top:3px}
+.rowitem .dot{flex:none;width:10px;height:10px;border-radius:50%}
+.rowitem .dot.gold{background:var(--gold2);box-shadow:0 0 10px rgba(240,205,85,.85)}
+.rowitem .dot.bad{background:#ff6b57;box-shadow:0 0 10px rgba(255,107,87,.85)}
+.rowitem .chev{flex:none;color:var(--gold2);font-family:var(--serif);font-size:24px;line-height:1}
+.chip{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;border:1px solid rgba(212,175,55,.55);color:#ffe9a8;background:rgba(212,175,55,.18);border-radius:20px;padding:3px 10px;margin-left:7px;vertical-align:middle}
+.chip.paid{border-color:rgba(95,211,95,.6);color:#a9e6a9;background:rgba(95,211,95,.16)}
+.chip.bad{border-color:rgba(255,138,118,.6);color:#ffb3a7;background:rgba(255,138,118,.15)}
 /* ---------- document sheet ---------- */
-.card.doc-sheet{border:2px solid var(--gold);background:linear-gradient(180deg,rgba(27,47,99,.66),rgba(10,22,51,.88) 30%);box-shadow:0 18px 44px rgba(0,0,0,.5),0 0 40px rgba(212,175,55,.18),inset 0 0 0 1px rgba(10,22,51,.9),inset 0 0 0 3.5px rgba(212,175,55,.22),inset 0 1px 0 rgba(240,205,85,.4)}
+.card.doc-sheet{border:2px solid var(--gold);background:linear-gradient(180deg,rgba(31,54,112,.72),rgba(10,22,51,.92) 30%);box-shadow:0 18px 44px rgba(0,0,0,.5),0 0 40px rgba(212,175,55,.18),inset 0 0 0 1px rgba(10,22,51,.9),inset 0 0 0 3.5px rgba(212,175,55,.22),inset 0 1px 0 rgba(240,205,85,.4)}
 .doc-head{display:flex;gap:15px;align-items:center;padding-bottom:14px;border-bottom:1.5px solid var(--line)}
 .doc-head img{width:78px;height:78px;object-fit:cover;border-radius:50%;border:2.5px solid var(--gold);box-shadow:0 0 20px rgba(212,175,55,.5)}
 table.lines{width:100%;border-collapse:collapse;margin:10px 0}
@@ -112,10 +151,10 @@ canvas.pad{background:#fdfaf0;border:2px dashed var(--gold3);border-radius:12px;
 select.picker{margin-top:6px}
 /* ---------- fixed bottom navigation ---------- */
 .bottombar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;justify-content:center;pointer-events:none}
-.bottombar .bar-in{pointer-events:auto;width:100%;max-width:860px;display:flex;align-items:flex-end;gap:2px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(16,30,68,.88),rgba(7,13,30,.96));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1.5px solid rgba(212,175,55,.55);box-shadow:0 -8px 30px rgba(0,0,0,.5),0 -1px 18px rgba(212,175,55,.12)}
-.bb-btn{flex:1;background:none;border:none;color:var(--mut);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 2px 3px;font-size:9.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;border-radius:12px;min-height:52px;transition:color .15s ease,transform .1s ease}
+.bottombar .bar-in{pointer-events:auto;width:100%;max-width:860px;display:flex;align-items:flex-end;gap:2px;padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(18,34,74,.90),rgba(7,13,30,.97));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1.5px solid rgba(212,175,55,.55);box-shadow:0 -8px 30px rgba(0,0,0,.5),0 -1px 18px rgba(212,175,55,.12)}
+.bb-btn{flex:1;background:none;border:none;color:var(--mut);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:7px 1px 4px;font-size:9.5px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;border-radius:14px;min-height:52px;transition:color .15s ease,transform .1s ease,background .15s ease,box-shadow .15s ease}
 .bb-btn svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.bb-btn.on{color:var(--gold2);text-shadow:0 0 12px rgba(240,205,85,.6)}
+.bb-btn.on{color:var(--gold2);background:linear-gradient(180deg,rgba(240,205,85,.22),rgba(212,175,55,.07));box-shadow:inset 0 0 0 1px rgba(212,175,55,.5),0 0 16px rgba(212,175,55,.20);text-shadow:0 0 12px rgba(240,205,85,.6)}
 .bb-btn.on svg{filter:drop-shadow(0 0 6px rgba(240,205,85,.75))}
 .bb-btn:active{transform:scale(.94)}
 .bb-new{flex:none;width:58px;height:58px;border-radius:50%;border:1.5px solid #8a6d1f;background:linear-gradient(180deg,#f7e08a,var(--gold2) 35%,var(--gold3));color:var(--navy);font-size:31px;font-family:var(--serif);line-height:1;display:flex;align-items:center;justify-content:center;transform:translateY(-13px);box-shadow:0 8px 22px rgba(212,175,55,.5),inset 0 1.5px 0 rgba(255,255,255,.7),inset 0 -2px 0 rgba(90,68,10,.4);transition:transform .12s ease}
@@ -134,6 +173,7 @@ select.picker{margin-top:6px}
 }
 @media print{
   body{background:#fff;color:#000}
+  body::before{display:none}
   .no-print{display:none!important}
   .wrap{padding:0;max-width:none}
   .card.doc-sheet{border:1px solid #888;box-shadow:none;background:#fff;color:#000}
@@ -158,7 +198,8 @@ select.picker{margin-top:6px}
 </div>
 <nav class="bottombar no-print" id="bottombar"><div class="bar-in">
   <button class="bb-btn" data-bb="home" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9h13v-9"/><path d="M10 19v-5h4v5"/></svg><span>Home</span></button>
-  <button class="bb-btn" data-bb="documents" onclick="go('documents')"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M9.5 12h6M9.5 15.5h6"/></svg><span>Documents</span></button>
+  <button class="bb-btn" data-bb="estimates" onclick="goDocs('estimate')"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M9.5 12h6M9.5 15.5h6"/></svg><span>Estimates</span></button>
+  <button class="bb-btn" data-bb="invoices" onclick="goDocs('invoice')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2"/><path d="M12 6.8v10.4M15 8.6c-.7-.9-1.7-1.3-3-1.3-1.9 0-3.2 1-3.2 2.4 0 3.3 6.4 1.8 6.4 4.6 0 1.4-1.4 2.4-3.2 2.4-1.4 0-2.5-.5-3.2-1.4"/></svg><span>Invoices</span></button>
   <button class="bb-new" onclick="toggleSheet('sheetNew')" aria-label="New document">+</button>
   <button class="bb-btn" data-bb="clients" onclick="go('clients')"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c1.2-3.4 3.8-5 7-5s5.8 1.6 7 5"/></svg><span>Clients</span></button>
   <button class="bb-btn" data-bb="more" onclick="toggleSheet('sheetMore')"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg><span>More</span></button>
@@ -363,14 +404,20 @@ function go(view){
   render();
   window.scrollTo(0, 0);
 }
+function goDocs(kind){
+  ui.docTab = kind;
+  go("documents");
+}
 function renderNav(){
   $("navrow").innerHTML = NAV.map(function (n){
     var on = ui.view === n[0] || (n[0] === "documents" && (ui.view === "docEdit" || ui.view === "docView" || ui.view === "sign")) ||
              (n[0] === "clients" && ui.view === "clientEdit");
     return '<button class="navbtn' + (on ? " on" : "") + '" onclick="go(\'' + n[0] + '\')">' + n[1] + "</button>";
   }).join("");
-  var bbMap = { home: "home", documents: "documents", docEdit: "documents", docView: "documents", sign: "documents", clients: "clients", clientEdit: "clients" };
-  var bbOn = bbMap[ui.view] || "";
+  var bbOn = ui.view === "home" ? "home"
+    : (ui.view === "clients" || ui.view === "clientEdit") ? "clients"
+    : (ui.view === "documents" || ui.view === "docEdit" || ui.view === "docView" || ui.view === "sign") ? (ui.docTab === "invoice" ? "invoices" : "estimates")
+    : "";
   Array.prototype.forEach.call(document.querySelectorAll("#bottombar .bb-btn"), function (b){
     b.classList.toggle("on", b.getAttribute("data-bb") === bbOn);
   });
@@ -409,42 +456,87 @@ function render(){
 }
 
 /* ---------- Home ---------- */
+function attRow(a){
+  var c = clientById(a.d.clientId);
+  return '<button class="rowitem rise" onclick="openDoc(' + a.d.id + ')">' +
+    '<span class="dot ' + a.cls + '"></span>' +
+    '<span class="grow"><span class="t1" style="font-family:var(--sans);font-size:15.5px;color:var(--cream)">' + esc(a.d.number || "(no number)") + " &middot; " + esc(c ? c.name : "—") + "</span>" +
+    '<span class="t2">' + esc(a.why) + " (" + fmt$(a.amt) + ")</span></span>" +
+    '<span class="chev">&rsaquo;</span></button>';
+}
+function recentRow(d){
+  var c = clientById(d.clientId);
+  var t = docTotals(d);
+  var amt = d.kind === "invoice" && d.status !== "paid" && t.balance > 0 ? t.balance : t.total;
+  return '<button class="rowitem" onclick="openDoc(' + d.id + ')">' +
+    '<span class="grow"><span class="t1">' + esc(d.number || "(no number)") + "</span>" + statusChip(d) +
+    '<span class="t2">' + esc(c ? c.name : "—") + (d.vehicle ? " &bull; " + esc(d.vehicle) : "") + "</span></span>" +
+    '<span class="amt">' + fmt$(amt) + '<span class="amtdate">' + fmtDate(d.issueDate || d.createdAt) + "</span></span></button>";
+}
+/* Home derivations are computed live from the book at render — never stored:
+   outstanding = sum of unpaid invoice balances; collected = sum of all payments;
+   overdue = balances of unpaid invoices whose dueDate is before today;
+   awaiting OK = totals of estimates with status 'sent'. */
 function renderHome(){
   var s = book.settings;
-  var outstanding = 0, openInv = 0, waitingEst = 0;
+  var today = todayISO();
+  var outstanding = 0, collected = 0, overdue = 0, overdueN = 0, awaiting = 0, awaitingN = 0;
+  var overdueInv = [], sentEst = [];
   book.documents.forEach(function (d){
     if (d.archivedAt) return;
-    if (d.kind === "invoice" && d.status !== "paid"){
-      var b = docTotals(d).balance;
-      if (b > 0) outstanding += b;
-      if (d.status === "open") openInv++;
+    var t = docTotals(d);
+    collected += t.paid;
+    if (d.kind === "invoice" && d.status !== "paid" && t.balance > 0){
+      outstanding += t.balance;
+      if (d.dueDate && String(d.dueDate).slice(0, 10) < today){
+        overdue += t.balance; overdueN++;
+        overdueInv.push({ d: d, why: "overdue — payment was due " + fmtDate(d.dueDate), amt: t.balance, cls: "bad" });
+      }
     }
-    if (d.kind === "estimate" && d.status === "sent") waitingEst++;
+    if (d.kind === "estimate" && d.status === "sent"){
+      awaiting += t.total; awaitingN++;
+      sentEst.push({ d: d, why: "waiting on approval", amt: t.total, cls: "gold" });
+    }
   });
+  var attention = overdueInv.concat(sentEst);
+  var recent = book.documents.filter(function (d){ return !d.archivedAt; }).slice().sort(function (a, b){
+    return String(b.updatedAt || b.createdAt || b.issueDate || "").localeCompare(String(a.updatedAt || a.createdAt || a.issueDate || ""));
+  }).slice(0, 5);
+  var portalShort = String(s.portalUrl || "").replace(/^https?:\/\//, "").replace(/\/$/, "");
   $("app").innerHTML =
     msgHtml() +
-    '<div class="card center">' +
-      '<img src="' + LOGO_URL + '" alt="JPR KING lion logo" style="width:120px;height:120px;object-fit:cover;border-radius:15px;border:2px solid var(--gold);box-shadow:0 0 24px rgba(212,175,55,.45)">' +
-      "<h2 style='font-size:24px;margin-top:12px'>" + esc(s.businessName || "JPR KING") + " INVOICING</h2>" +
-      '<p class="small" style="white-space:pre-line;margin:2px 0">' + esc(s.businessAddress || "") + "</p>" +
-      '<p class="small" style="margin:2px 0">' + esc(s.businessPhone || "") + " &mdash; ask for JAY</p>" +
+    '<section class="hero">' +
+      '<div class="hero-medal"><img src="' + LOGO_URL + '" alt="JPR KING lion logo"></div>' +
+      '<h2 class="hero-name">' + esc(s.businessName || "JPR KING") + "</h2>" +
+      '<p class="hero-tag">SALES &bull; AUTO REPAIR &bull; AUTOBODY</p>' +
+      '<p class="hero-sub">' + esc(s.businessAddress || "") + "\n" + esc(s.businessPhone || "") + " — ask for JAY" + (s.businessEmail ? " &bull; " + esc(s.businessEmail) : "") + "</p>" +
+    "</section>" +
+    '<section class="panel rise" style="animation-delay:.06s">' +
+      '<div class="plabel">Outstanding right now</div>' +
+      '<div class="bignum">' + fmt$(outstanding) + "</div>" +
+      '<div class="substats">' +
+        '<div class="substat"><div class="sv green">' + fmt$(collected) + '</div><div class="sk">Collected</div></div>' +
+        '<div class="substat"><div class="sv' + (overdue > 0 ? " red" : "") + '">' + fmt$(overdue) + '</div><div class="sk">Overdue (' + overdueN + ")</div></div>" +
+        '<div class="substat"><div class="sv gold">' + fmt$(awaiting) + '</div><div class="sk">Awaiting OK (' + awaitingN + ")</div></div>" +
+      "</div>" +
+    "</section>" +
+    '<section class="panel rise" style="animation-delay:.12s">' +
+      '<h2 class="cardtitle">Customer signing page <span class="livepill">&#9679; LIVE</span></h2>' +
+      '<p class="small" style="margin:2px 0 11px">&#10003; Live — every customer link points straight at your signing page.</p>' +
+      '<div class="linkchip"><span class="lk">&#128279; Signing page</span><span class="lu">' + esc(portalShort) + "</span></div>" +
+      '<p class="small mut" style="margin:11px 0">Share this link with any customer — it opens their own signing page.</p>' +
+      '<button class="btn" style="width:100%" onclick="copyText(book.settings.portalUrl || \'\', this)">Copy link</button>' +
+    "</section>" +
+    '<div class="btnrow rise" style="animation-delay:.18s">' +
+      '<button class="btn" style="flex:1.25" onclick="newDocument(\'estimate\')">+ New estimate</button>' +
+      '<button class="btn ghost" style="flex:1" onclick="newDocument(\'invoice\')">+ New invoice</button>' +
     "</div>" +
-    '<div class="tiles">' +
-      '<div class="tile"><div class="k">Outstanding</div><div class="v">' + fmt$(outstanding) + "</div></div>" +
-      '<div class="tile"><div class="k">Open invoices</div><div class="v">' + openInv + "</div></div>" +
-      '<div class="tile"><div class="k">Estimates waiting</div><div class="v">' + waitingEst + "</div></div>" +
-      '<div class="tile"><div class="k">Clients</div><div class="v">' + book.clients.length + "</div></div>" +
-    "</div>" +
-    '<div class="btnrow">' +
-      '<button class="btn" onclick="newDocument(\'estimate\')">+ New Estimate</button>' +
-      '<button class="btn" onclick="newDocument(\'invoice\')">+ New Invoice</button>' +
-    "</div>" +
-    '<div class="btnrow">' +
-      '<button class="btn ghost" onclick="go(\'documents\')">Documents</button>' +
-      '<button class="btn ghost" onclick="go(\'clients\')">Clients</button>' +
-      '<button class="btn ghost" onclick="go(\'library\')">Library</button>' +
-      '<button class="btn ghost" onclick="go(\'settings\')">Settings</button>' +
-    "</div>" +
+    '<h3 class="sect rise" style="animation-delay:.24s">Needs attention</h3>' +
+    (attention.length
+      ? attention.map(attRow).join("")
+      : '<section class="panel rise" style="animation-delay:.26s"><p class="small" style="margin:0">All caught up — nothing is waiting on you.</p></section>') +
+    '<div class="sectrow rise" style="animation-delay:.3s"><h3 class="sect">Recent</h3><button class="seclink" onclick="goDocs(\'invoice\')">All invoices &rarr;</button></div>' +
+    (recent.length ? recent.map(recentRow).join("") : '<p class="mut center" style="margin:14px 0">No documents yet.</p>') +
     (book.clients.length === 0 && book.documents.length === 0
       ? '<div class="card"><h2>Your book is empty on this device</h2><p class="small">This app keeps its book on this device. To bring your book in, go to <strong>Settings &rarr; Import book</strong> and pick your book export file. Nothing about your book is stored online.</p></div>'
       : "");
@@ -478,6 +570,7 @@ function renderDocuments(){
   filed.sort(function (a, b){ return String(b.archivedAt || "").localeCompare(String(a.archivedAt || "")); });
   $("app").innerHTML =
     msgHtml() +
+    '<h3 class="sect" style="margin-top:2px">' + (ui.docTab === "estimate" ? "Estimates" : "Invoices") + '<span class="countbadge">' + active.length + "</span></h3>" +
     '<div class="tabs no-print">' +
       '<button class="tab' + (ui.docTab === "estimate" ? " on" : "") + '" onclick="ui.docTab=\'estimate\';render()">Estimates</button>' +
       '<button class="tab' + (ui.docTab === "invoice" ? " on" : "") + '" onclick="ui.docTab=\'invoice\';render()">Invoices</button>' +
@@ -1011,8 +1104,18 @@ function renderClients(){
     '<div class="btnrow"><button class="btn" onclick="editClient(null)">+ New client</button></div>' +
     shown.map(function (c){
       var tel = String(c.phone || "").replace(/[^0-9+]/g, "");
+      var owed = 0;
+      book.documents.forEach(function (dd){
+        if (!dd.archivedAt && dd.kind === "invoice" && dd.status !== "paid" && String(dd.clientId) === String(c.id)){
+          var bb = docTotals(dd).balance;
+          if (bb > 0) owed += bb;
+        }
+      });
+      var standing = owed > 0
+        ? '<span class="t3 owes">Owes ' + fmt$(owed) + "</span>"
+        : '<span class="t3 paidup">Paid up</span>';
       return '<div class="rowitem"><span class="grow"><span class="t1" style="font-size:15.5px">' + esc(c.name) + "</span>" +
-        '<span class="t2">' + esc(c.phone || "") + (c.email ? " &bull; " + esc(c.email) : "") + "</span></span>" +
+        '<span class="t2">' + esc(c.phone || "") + (c.email ? " &bull; " + esc(c.email) : "") + "</span>" + standing + "</span>" +
         (tel ? '<a class="btn ghost small" href="tel:' + tel + '">Call</a><a class="btn ghost small" href="sms:' + tel + '">Text</a>' : "") +
         '<button class="btn ghost small" onclick="editClient(' + c.id + ')">Edit</button></div>';
     }).join("") +
