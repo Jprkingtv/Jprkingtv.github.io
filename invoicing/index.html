@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a1633">
+<title>JPR KING Invoicing</title>
+<style>
+:root{
+  --navy:#0a1633; --navy2:#1b2f63; --gold:#d4af37; --gold2:#f0cd55; --gold3:#c39a2b;
+  --cream:#f5eeda; --ink:#10131c; --mut:#9fb0d8; --line:rgba(212,175,55,.35);
+  --glass:linear-gradient(180deg,rgba(212,175,55,.09),rgba(10,22,51,.72) 42%);
+  --red:#e06c5b; --green:#7fc97f;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:Georgia,'Times New Roman',serif;color:var(--cream);min-height:100vh;
+  background:radial-gradient(1200px 600px at 50% -10%,#1b2f63 0%,#0a1633 55%,#060d22 100%);
+  background-attachment:fixed;
+}
+a{color:var(--gold2)}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:16px;color:var(--ink);background:#fdfaf0;border:1px solid #b9a86a;border-radius:9px;padding:10px 11px;width:100%}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--gold);outline-offset:0}
+label{display:block;font-size:12.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--gold);margin:12px 0 5px}
+.wrap{max-width:860px;margin:0 auto;padding:14px 14px 90px}
+.topbar{display:flex;align-items:center;gap:13px;padding:10px 2px 4px}
+.topbar img{width:58px;height:58px;object-fit:cover;border-radius:12px;border:2px solid var(--gold);box-shadow:0 0 18px rgba(212,175,55,.45)}
+.topbar .tt h1{margin:0;color:var(--gold);font-size:23px;letter-spacing:2.5px;text-shadow:0 2px 12px rgba(212,175,55,.35)}
+.topbar .tt p{margin:2px 0 0;font-size:12px;letter-spacing:1.4px;opacity:.9}
+.navrow{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}
+.navbtn{flex:1;min-width:70px;background:rgba(10,22,51,.65);color:var(--cream);border:1px solid var(--line);border-radius:11px;padding:10px 4px;font-size:14px;letter-spacing:.6px}
+.navbtn.on{background:linear-gradient(180deg,var(--gold2),var(--gold3));color:var(--navy);font-weight:bold;border-color:var(--gold)}
+.card{border:2px solid var(--gold);border-radius:18px;padding:18px 16px;background:var(--glass);box-shadow:0 0 34px rgba(212,175,55,.20),inset 0 0 50px rgba(0,0,0,.4);margin:14px 0}
+.card h2{margin:0 0 8px;color:var(--gold);letter-spacing:1.6px;font-size:19px}
+.btn{display:inline-block;background:linear-gradient(180deg,var(--gold2),var(--gold3));color:var(--navy);font-weight:bold;font-size:16px;letter-spacing:.6px;padding:12px 20px;border:none;border-radius:11px;box-shadow:0 5px 18px rgba(212,175,55,.4);text-decoration:none;text-align:center}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:rgba(10,22,51,.6);color:var(--gold2);border:1px solid var(--gold);box-shadow:none}
+.btn.danger{background:rgba(10,22,51,.6);color:var(--red);border:1px solid var(--red);box-shadow:none}
+.btn.small{padding:8px 13px;font-size:13.5px}
+.btnrow{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:14px 0}
+.tile{border:1.5px solid var(--line);border-radius:15px;padding:15px 13px;background:rgba(10,22,51,.55);text-align:center}
+.tile .k{font-size:11.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--mut)}
+.tile .v{font-size:25px;color:var(--gold2);margin-top:5px;font-weight:bold}
+.tabs{display:flex;gap:8px;margin:6px 0 12px}
+.tab{flex:1;padding:11px;border-radius:11px;border:1px solid var(--line);background:rgba(10,22,51,.6);color:var(--cream);font-size:15.5px;letter-spacing:.5px}
+.tab.on{background:linear-gradient(180deg,var(--gold2),var(--gold3));color:var(--navy);font-weight:bold}
+.rowitem{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:rgba(10,22,51,.55);border:1px solid var(--line);border-radius:13px;padding:12px 13px;margin:8px 0;color:var(--cream)}
+.rowitem .grow{flex:1;min-width:0}
+.rowitem .t1{font-size:16.5px;font-weight:bold;color:var(--gold2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rowitem .t2{font-size:13px;opacity:.85;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rowitem .amt{font-size:16px;font-weight:bold;white-space:nowrap}
+.chip{display:inline-block;font-size:11px;letter-spacing:1px;text-transform:uppercase;border:1px solid var(--gold);color:var(--gold2);border-radius:20px;padding:2.5px 9px;margin-left:7px;vertical-align:middle}
+.chip.paid{border-color:var(--green);color:var(--green)}
+.chip.bad{border-color:var(--red);color:var(--red)}
+table.lines{width:100%;border-collapse:collapse;margin:10px 0}
+table.lines th{font-size:11.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--gold);text-align:left;border-bottom:1.5px solid var(--line);padding:7px 6px}
+table.lines td{padding:8px 6px;border-bottom:1px solid rgba(212,175,55,.16);font-size:15px;vertical-align:top}
+table.lines td.r,table.lines th.r{text-align:right;white-space:nowrap}
+.totrow{display:flex;justify-content:space-between;padding:5px 2px;font-size:15.5px}
+.totrow.grand{border-top:1.5px solid var(--gold);margin-top:7px;padding-top:10px;font-size:19px;color:var(--gold2);font-weight:bold}
+.mut{color:var(--mut)} .small{font-size:13px} .center{text-align:center}
+.terms{font-size:13.5px;line-height:1.55;opacity:.95}
+.terms p{margin:7px 0}
+.asis-banner{border:2px solid var(--red);color:#ffb3a7;border-radius:10px;padding:9px;text-align:center;font-weight:bold;letter-spacing:1.5px;margin:9px 0}
+.sigimg{background:#fdfaf0;border-radius:10px;max-width:100%;padding:6px}
+canvas.pad{background:#fdfaf0;border:2px dashed var(--gold3);border-radius:12px;width:100%;height:210px;touch-action:none;display:block}
+.linkbox{word-break:break-all;background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:10px;padding:10px;font-size:12.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.grid3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:9px;align-items:end}
+@media (max-width:560px){.grid2{grid-template-columns:1fr}.grid3{grid-template-columns:1fr 1fr}}
+.motto{color:var(--gold);font-weight:bold;letter-spacing:2px;text-align:center;margin:20px 0 4px;font-size:14px}
+.err{background:rgba(224,108,91,.15);border:1px solid var(--red);color:#ffb3a7;border-radius:10px;padding:10px 12px;margin:10px 0;font-size:14px}
+.okmsg{background:rgba(127,201,127,.13);border:1px solid var(--green);color:#cdeecd;border-radius:10px;padding:10px 12px;margin:10px 0;font-size:14px}
+select.picker{margin-top:6px}
+.doc-head{display:flex;gap:14px;align-items:center}
+.doc-head img{width:74px;height:74px;object-fit:cover;border-radius:13px;border:2px solid var(--gold)}
+@media print{
+  body{background:#fff;color:#000}
+  .no-print{display:none!important}
+  .wrap{padding:0;max-width:none}
+  .card.doc-sheet{border:1px solid #888;box-shadow:none;background:#fff;color:#000}
+  .card.doc-sheet *{color:#000!important;border-color:#bbb!important}
+  .card.doc-sheet .chip{border-color:#555!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <img src="https://invoice.jprkingtv.store/logo.jpg" alt="JPR KING — Sales, Auto Repair, Autobody">
+    <div class="tt">
+      <h1>JPR KING INVOICING</h1>
+      <p>SALES &bull; AUTO REPAIR &bull; AUTOBODY &mdash; FORT LAUDERDALE</p>
+    </div>
+  </div>
+  <div class="navrow no-print" id="navrow"></div>
+  <div id="app"></div>
+  <p class="motto">GOD IS GOOD ALL THE TIME</p>
+</div>
+<script>
+"use strict";
+/* ================= JPR KING Invoicing — own-house edition =================
+   Book lives in localStorage on this device only. Shape mirrors the shop's
+   book export: { clients[], documents[], items[], settings{}, filedBookings[] }. */
+var LS_KEY = "jpr-invoicing-v1";
+var LOGO_URL = "https://invoice.jprkingtv.store/logo.jpg";
+var DEFAULT_SETTINGS = {
+  businessName: "JPR KING",
+  businessAddress: "837 NW 8th Ave\nFort Lauderdale, FL 33311-7205",
+  businessEmail: "jprkingtv@gmail.com",
+  businessPhone: "(941) 270-4988",
+  paypalMeHandle: "JPRKINGTV365",
+  portalUrl: "https://jprkingtv.github.io/signing/"
+};
+function normalizeBook(b){
+  b = (b && typeof b === "object") ? b : {};
+  return {
+    clients: Array.isArray(b.clients) ? b.clients : [],
+    documents: Array.isArray(b.documents) ? b.documents : [],
+    items: Array.isArray(b.items) ? b.items : [],
+    settings: Object.assign({}, DEFAULT_SETTINGS, (b.settings && typeof b.settings === "object") ? b.settings : {}),
+    filedBookings: Array.isArray(b.filedBookings) ? b.filedBookings : (Array.isArray(b.bookings) ? b.bookings : [])
+  };
+}
+function loadBook(){
+  try {
+    var raw = localStorage.getItem(LS_KEY);
+    if (raw) return normalizeBook(JSON.parse(raw));
+  } catch (e) { /* fall through to empty book */ }
+  return normalizeBook({});
+}
+var book = loadBook();
+function saveBook(){ localStorage.setItem(LS_KEY, JSON.stringify(book)); }
+
+/* ---------- helpers ---------- */
+function $(id){ return document.getElementById(id); }
+function esc(s){
+  return String(s == null ? "" : s).replace(/[&<>"']/g, function (c){
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+  });
+}
+function fmt$(cents){
+  var n = (Number(cents) || 0) / 100;
+  return "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function parseMoney(v){
+  var n = parseFloat(String(v == null ? "" : v).replace(/[^0-9.\-]/g, ""));
+  return isNaN(n) ? 0 : Math.round(n * 100);
+}
+function todayISO(){
+  var d = new Date();
+  function p(x){ return (x < 10 ? "0" : "") + x; }
+  return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate());
+}
+function fmtDate(iso){
+  if (!iso) return "";
+  var d = new Date(String(iso).length <= 10 ? iso + "T12:00:00" : iso);
+  if (isNaN(d.getTime())) return String(iso);
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
+function nextId(arr){
+  var m = 0;
+  (arr || []).forEach(function (x){ var n = Number(x && x.id) || 0; if (n > m) m = n; });
+  return m + 1;
+}
+function clientById(id){
+  for (var i = 0; i < book.clients.length; i++) if (String(book.clients[i].id) === String(id)) return book.clients[i];
+  return null;
+}
+function docById(id){
+  for (var i = 0; i < book.documents.length; i++) if (String(book.documents[i].id) === String(id)) return book.documents[i];
+  return null;
+}
+/* Totals rule (matches the shop app + bridge):
+   line = round(qty x unitPriceCents); tax = round(subtotal x taxRateBps/10000);
+   total = subtotal + tax - discountCents; balance = total - sum(payments). */
+function docTotals(doc){
+  var subtotal = 0;
+  (doc.lines || []).forEach(function (l){ subtotal += Math.round((Number(l.quantity) || 0) * (Number(l.unitPriceCents) || 0)); });
+  var tax = Math.round(subtotal * (Number(doc.taxRateBps) || 0) / 10000);
+  var discount = Number(doc.discountCents) || 0;
+  var total = subtotal + tax - discount;
+  var paid = 0;
+  (doc.payments || []).forEach(function (p){ paid += Number(p.amountCents) || 0; });
+  return { subtotal: subtotal, tax: tax, discount: discount, total: total, paid: paid, balance: total - paid };
+}
+function nextNumber(kind){
+  var prefix = kind === "invoice" ? "INV-" : "EST-";
+  var m = 1000;
+  book.documents.forEach(function (d){
+    if (d.kind !== kind || !d.number) return;
+    var n = parseInt(String(d.number).replace(/\D/g, ""), 10);
+    if (!isNaN(n) && n > m) m = n;
+  });
+  return prefix + (m + 1);
+}
+function statusChip(doc){
+  var s = doc.status || "draft";
+  var cls = s === "paid" || s === "approved" ? "chip paid" : (s === "declined" || s === "cancelled" ? "chip bad" : "chip");
+  return '<span class="' + cls + '">' + esc(s) + "</span>";
+}
+function paypalLink(amountCents){
+  var h = String(book.settings.paypalMeHandle || "").replace(/^@/, "").trim();
+  if (!h) return "";
+  var a = (Number(amountCents) || 0) / 100;
+  return "https://www.paypal.com/paypalme/" + encodeURIComponent(h) + (a > 0 ? "/" + a.toFixed(2) : "");
+}
+function b64urlEncode(text){
+  var bytes = new TextEncoder().encode(text);
+  var bin = "";
+  bytes.forEach(function (b){ bin += String.fromCharCode(b); });
+  return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+/* Signing-link payload mirrors the current system exactly (field order
+   matches the links the shop already sends), so the public signing page
+   at the portal URL keeps opening them. */
+function signingPayload(doc){
+  var c = clientById(doc.clientId);
+  return {
+    kind: doc.kind,
+    number: doc.number,
+    clientName: c ? c.name : "",
+    lines: (doc.lines || []).map(function (l){
+      return { name: l.name, description: l.description || "", quantity: l.quantity, unitPriceCents: l.unitPriceCents };
+    }),
+    vehicle: doc.vehicle || "",
+    issueDate: doc.issueDate || "",
+    dueDate: doc.dueDate || "",
+    taxRateBps: doc.taxRateBps || 0,
+    discountCents: doc.discountCents || 0,
+    payments: (doc.payments || []).map(function (p){
+      return { amountCents: p.amountCents, method: p.method || "", note: p.note || "", paidAt: p.paidAt || "" };
+    }),
+    estimateChoice: doc.estimateChoice || "",
+    estimateChoiceLimitCents: doc.estimateChoiceLimitCents != null ? doc.estimateChoiceLimitCents : null,
+    paypalMeHandle: book.settings.paypalMeHandle || ""
+  };
+}
+function signingLink(doc){
+  var base = String(book.settings.portalUrl || "").trim();
+  if (!base) return "";
+  var sep = base.indexOf("?") > -1 ? "&" : "?";
+  return base + sep + "code=" + b64urlEncode(JSON.stringify(signingPayload(doc)));
+}
+function copyText(txt, btn){
+  function done(){ if (btn) { var o = btn.textContent; btn.textContent = "Copied ✓"; setTimeout(function (){ btn.textContent = o; }, 1600); } }
+  if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(txt).then(done, function (){ fallback(); }); }
+  else fallback();
+  function fallback(){
+    var ta = document.createElement("textarea");
+    ta.value = txt; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); done(); } catch (e) { /* leave text visible for manual copy */ }
+    document.body.removeChild(ta);
+  }
+}
+
+/* ---------- app state / router ---------- */
+var ui = {
+  view: "home",            /* home | documents | docEdit | docView | clients | clientEdit | library | bookings | settings | sign */
+  docTab: "estimate",
+  docSearch: "",
+  clientSearch: "",
+  clientShown: 100,
+  currentDocId: null,
+  draft: null,             /* document being edited */
+  draftIsNew: false,
+  editClientId: null,      /* client being edited (null = new) */
+  editItemId: null,
+  signWhich: null,         /* 'signature' | 'asIsSignature' */
+  msg: "", msgOk: true
+};
+var NAV = [
+  ["home", "Home"], ["documents", "Documents"], ["clients", "Clients"],
+  ["library", "Library"], ["bookings", "Bookings"], ["settings", "Settings"]
+];
+function go(view){
+  ui.view = view; ui.msg = "";
+  render();
+  window.scrollTo(0, 0);
+}
+function renderNav(){
+  $("navrow").innerHTML = NAV.map(function (n){
+    var on = ui.view === n[0] || (n[0] === "documents" && (ui.view === "docEdit" || ui.view === "docView" || ui.view === "sign")) ||
+             (n[0] === "clients" && ui.view === "clientEdit");
+    return '<button class="navbtn' + (on ? " on" : "") + '" onclick="go(\'' + n[0] + '\')">' + n[1] + "</button>";
+  }).join("");
+}
+function flash(text, ok){
+  ui.msg = text; ui.msgOk = ok !== false;
+  render();
+}
+function msgHtml(){
+  if (!ui.msg) return "";
+  return '<div class="' + (ui.msgOk ? "okmsg" : "err") + '">' + esc(ui.msg) + "</div>";
+}
+function render(){
+  renderNav();
+  var v = ui.view;
+  if (v === "home") renderHome();
+  else if (v === "documents") renderDocuments();
+  else if (v === "docEdit") renderDocEdit();
+  else if (v === "docView") renderDocView();
+  else if (v === "clients") renderClients();
+  else if (v === "clientEdit") renderClientEdit();
+  else if (v === "library") renderLibrary();
+  else if (v === "bookings") renderBookings();
+  else if (v === "settings") renderSettings();
+  else if (v === "sign") renderSign();
+}
+
+/* ---------- Home ---------- */
+function renderHome(){
+  var s = book.settings;
+  var outstanding = 0, openInv = 0, waitingEst = 0;
+  book.documents.forEach(function (d){
+    if (d.archivedAt) return;
+    if (d.kind === "invoice" && d.status !== "paid"){
+      var b = docTotals(d).balance;
+      if (b > 0) outstanding += b;
+      if (d.status === "open") openInv++;
+    }
+    if (d.kind === "estimate" && d.status === "sent") waitingEst++;
+  });
+  $("app").innerHTML =
+    msgHtml() +
+    '<div class="card center">' +
+      '<img src="' + LOGO_URL + '" alt="JPR KING lion logo" style="width:120px;height:120px;object-fit:cover;border-radius:15px;border:2px solid var(--gold);box-shadow:0 0 24px rgba(212,175,55,.45)">' +
+      "<h2 style='font-size:24px;margin-top:12px'>" + esc(s.businessName || "JPR KING") + " INVOICING</h2>" +
+      '<p class="small" style="white-space:pre-line;margin:2px 0">' + esc(s.businessAddress || "") + "</p>" +
+      '<p class="small" style="margin:2px 0">' + esc(s.businessPhone || "") + " &mdash; ask for JAY</p>" +
+    "</div>" +
+    '<div class="tiles">' +
+      '<div class="tile"><div class="k">Outstanding</div><div class="v">' + fmt$(outstanding) + "</div></div>" +
+      '<div class="tile"><div class="k">Open invoices</div><div class="v">' + openInv + "</div></div>" +
+      '<div class="tile"><div class="k">Estimates waiting</div><div class="v">' + waitingEst + "</div></div>" +
+      '<div class="tile"><div class="k">Clients</div><div class="v">' + book.clients.length + "</div></div>" +
+    "</div>" +
+    '<div class="btnrow">' +
+      '<button class="btn" onclick="newDocument(\'estimate\')">+ New Estimate</button>' +
+      '<button class="btn" onclick="newDocument(\'invoice\')">+ New Invoice</button>' +
+    "</div>" +
+    '<div class="btnrow">' +
+      '<button class="btn ghost" onclick="go(\'documents\')">Documents</button>' +
+      '<button class="btn ghost" onclick="go(\'clients\')">Clients</button>' +
+      '<button class="btn ghost" onclick="go(\'library\')">Library</button>' +
+      '<button class="btn ghost" onclick="go(\'settings\')">Settings</button>' +
+    "</div>" +
+    (book.clients.length === 0 && book.documents.length === 0
+      ? '<div class="card"><h2>Your book is empty on this device</h2><p class="small">This app keeps its book on this device. To bring your book in, go to <strong>Settings &rarr; Import book</strong> and pick your book export file. Nothing about your book is stored online.</p></div>'
+      : "");
+}
+
+/* ---------- Documents ---------- */
+function docMatches(d, q){
+  if (!q) return true;
+  q = q.toLowerCase();
+  var c = clientById(d.clientId);
+  return (String(d.number || "").toLowerCase().indexOf(q) > -1) ||
+         (c && String(c.name || "").toLowerCase().indexOf(q) > -1) ||
+         (String(d.vehicle || "").toLowerCase().indexOf(q) > -1);
+}
+function docRow(d){
+  var c = clientById(d.clientId);
+  var t = docTotals(d);
+  var right = d.kind === "invoice" && d.status !== "paid" && t.balance > 0
+    ? '<div class="amt">' + fmt$(t.balance) + '<div class="small mut">balance</div></div>'
+    : '<div class="amt">' + fmt$(t.total) + "</div>";
+  return '<button class="rowitem" onclick="openDoc(' + d.id + ')">' +
+    '<span class="grow"><span class="t1">' + esc(d.number || "(no number)") + "</span>" + statusChip(d) +
+    '<span class="t2">' + esc(c ? c.name : "—") + (d.vehicle ? " &bull; " + esc(d.vehicle) : "") + "</span></span>" +
+    right + "</button>";
+}
+function renderDocuments(){
+  var q = ui.docSearch;
+  var active = book.documents.filter(function (d){ return !d.archivedAt && d.kind === ui.docTab && docMatches(d, q); });
+  active.sort(function (a, b){ return String(b.createdAt || "").localeCompare(String(a.createdAt || "")); });
+  var filed = book.documents.filter(function (d){ return d.archivedAt && docMatches(d, q); });
+  filed.sort(function (a, b){ return String(b.archivedAt || "").localeCompare(String(a.archivedAt || "")); });
+  $("app").innerHTML =
+    msgHtml() +
+    '<div class="tabs no-print">' +
+      '<button class="tab' + (ui.docTab === "estimate" ? " on" : "") + '" onclick="ui.docTab=\'estimate\';render()">Estimates</button>' +
+      '<button class="tab' + (ui.docTab === "invoice" ? " on" : "") + '" onclick="ui.docTab=\'invoice\';render()">Invoices</button>' +
+    "</div>" +
+    '<input type="search" placeholder="Search number, client, vehicle…" value="' + esc(q) + '" oninput="ui.docSearch=this.value;renderDocumentsKeepFocus()">' +
+    '<div class="btnrow"><button class="btn" onclick="newDocument(\'' + ui.docTab + '\')">+ New ' + (ui.docTab === "estimate" ? "Estimate" : "Invoice") + "</button></div>" +
+    (active.length ? active.map(docRow).join("") : '<p class="mut center" style="margin:22px 0">No ' + (ui.docTab === "estimate" ? "estimates" : "invoices") + " found.</p>") +
+    (filed.length
+      ? '<div class="card"><h2>Filed history</h2><p class="small mut">Archived documents — read-only.</p>' + filed.map(function (d){
+          return '<div class="rowitem" style="cursor:default"><span class="grow"><span class="t1">' + esc(d.number || "") + "</span>" + statusChip(d) +
+            '<span class="t2">' + esc((clientById(d.clientId) || {}).name || "—") + " &bull; filed " + fmtDate(d.archivedAt) + '</span></span><span class="amt">' + fmt$(docTotals(d).total) + "</span></div>";
+        }).join("") + "</div>"
+      : "");
+}
+function renderDocumentsKeepFocus(){
+  var v = ui.view;
+  renderDocuments();
+  var inp = document.querySelector('input[type="search"]');
+  if (inp) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }
+  ui.view = v;
+}
+function openDoc(id){
+  ui.currentDocId = id;
+  go("docView");
+}
+
+/* ---------- Document editor ---------- */
+function blankDoc(kind){
+  return {
+    id: null, kind: kind, number: "", clientId: null, vehicle: "",
+    issueDate: todayISO(), dueDate: "", lines: [], taxRateBps: 0, discountCents: 0,
+    notes: "", installments: [], payments: [], status: "draft",
+    signature: null, asIsSignature: null, shareToken: null,
+    customerApprovedAt: null, customerApprovedName: "",
+    estimateChoice: "", estimateChoiceLimitCents: null,
+    sourceEstimateId: null, convertedInvoiceId: null,
+    archivedAt: null, createdAt: new Date().toISOString()
+  };
+}
+function newDocument(kind){
+  ui.draft = blankDoc(kind);
+  ui.draftIsNew = true;
+  ui.clientPickSearch = "";
+  go("docEdit");
+}
+function editDocument(id){
+  var d = docById(id);
+  if (!d) return;
+  ui.draft = JSON.parse(JSON.stringify(d));
+  ui.draftIsNew = false;
+  ui.clientPickSearch = "";
+  go("docEdit");
+}
+function edTotalsHtml(){
+  var t = docTotals(ui.draft);
+  return '<div class="totrow"><span>Subtotal</span><span>' + fmt$(t.subtotal) + "</span></div>" +
+    '<div class="totrow"><span>Tax</span><span>' + fmt$(t.tax) + "</span></div>" +
+    '<div class="totrow"><span>Discount</span><span>&minus;' + fmt$(t.discount) + "</span></div>" +
+    '<div class="totrow grand"><span>Total</span><span>' + fmt$(t.total) + "</span></div>";
+}
+function edClientResultsHtml(){
+  var q = String(ui.clientPickSearch || "").toLowerCase();
+  var list = book.clients.filter(function (c){
+    return !q || String(c.name || "").toLowerCase().indexOf(q) > -1 || String(c.phone || "").indexOf(q) > -1;
+  }).slice(0, 20);
+  if (!list.length) return '<p class="small mut">No matching clients — use quick-add below.</p>';
+  return list.map(function (c){
+    return '<button class="rowitem" onclick="edPickClient(' + c.id + ')"><span class="grow"><span class="t1" style="font-size:15px">' + esc(c.name) +
+      '</span><span class="t2">' + esc(c.phone || "") + "</span></span></button>";
+  }).join("");
+}
+function edPickClient(id){
+  ui.draft.clientId = id;
+  render();
+}
+function edQuickAddClient(){
+  var name = $("qaName").value.trim();
+  if (!name) { alert("Enter the new client's name first."); return; }
+  var c = { id: nextId(book.clients), name: name, phone: $("qaPhone").value.trim(), email: "", address: "", notes: "" };
+  book.clients.push(c);
+  saveBook();
+  ui.draft.clientId = c.id;
+  render();
+}
+function edAddLine(){
+  ui.draft.lines.push({ id: nextId(ui.draft.lines), name: "", description: "", quantity: 1, unitPriceCents: 0 });
+  render();
+}
+function edAddLibraryLine(){
+  var sel = $("libPick");
+  if (!sel || !sel.value) return;
+  var item = null;
+  book.items.forEach(function (i){ if (String(i.id) === String(sel.value)) item = i; });
+  if (!item) return;
+  ui.draft.lines.push({ id: nextId(ui.draft.lines), name: item.name, description: item.description || "", quantity: 1, unitPriceCents: item.priceCents || 0 });
+  render();
+}
+function edRemoveLine(idx){ ui.draft.lines.splice(idx, 1); render(); }
+function edLineChange(idx, field, el){
+  var l = ui.draft.lines[idx];
+  if (!l) return;
+  if (field === "quantity") l.quantity = parseFloat(el.value) || 0;
+  else if (field === "price") l.unitPriceCents = parseMoney(el.value);
+  else l[field] = el.value;
+  $("edTotals").innerHTML = edTotalsHtml();
+}
+function edAddInstallment(){
+  ui.draft.installments.push({ id: nextId(ui.draft.installments), label: "", amountCents: 0, dueDate: "" });
+  render();
+}
+function edRemoveInstallment(idx){ ui.draft.installments.splice(idx, 1); render(); }
+function edInstChange(idx, field, el){
+  var it = ui.draft.installments[idx];
+  if (!it) return;
+  if (field === "amount") it.amountCents = parseMoney(el.value);
+  else it[field] = el.value;
+}
+function saveDraft(){
+  var d = ui.draft;
+  if (!d.clientId) { alert("Pick a client first (search or quick-add)."); return; }
+  d.vehicle = $("edVehicle").value;
+  d.issueDate = $("edIssue").value;
+  d.dueDate = $("edDue").value;
+  d.taxRateBps = Math.round((parseFloat($("edTaxPct").value) || 0) * 100);
+  d.discountCents = parseMoney($("edDiscount").value);
+  d.notes = $("edNotes").value;
+  if (d.kind === "estimate"){
+    d.estimateChoice = $("edChoice").value;
+    d.estimateChoiceLimitCents = d.estimateChoice === "limit" ? parseMoney($("edChoiceLimit").value) : null;
+  }
+  if (ui.draftIsNew){
+    d.id = nextId(book.documents);
+    d.number = nextNumber(d.kind);
+    d.createdAt = new Date().toISOString();
+    book.documents.push(d);
+  } else {
+    for (var i = 0; i < book.documents.length; i++)
+      if (String(book.documents[i].id) === String(d.id)) { book.documents[i] = d; break; }
+  }
+  saveBook();
+  ui.currentDocId = d.id;
+  flash(d.number + " saved.");
+  go("docView");
+}
+function renderDocEdit(){
+  var d = ui.draft;
+  if (!d) { go("documents"); return; }
+  var client = d.clientId ? clientById(d.clientId) : null;
+  var libOptions = book.items.map(function (i){
+    return '<option value="' + i.id + '">' + esc(i.name) + " — " + fmt$(i.priceCents) + "</option>";
+  }).join("");
+  var linesHtml = d.lines.map(function (l, idx){
+    return '<div class="card" style="margin:9px 0;padding:13px">' +
+      '<div class="grid2">' +
+        '<div><label>Service / item</label><input value="' + esc(l.name) + '" onchange="edLineChange(' + idx + ',\'name\',this)" placeholder="e.g. Bumper repair"></div>' +
+        '<div><label>Description</label><input value="' + esc(l.description || "") + '" onchange="edLineChange(' + idx + ',\'description\',this)"></div>' +
+      "</div>" +
+      '<div class="grid3">' +
+        '<div><label>Qty</label><input type="number" step="any" value="' + esc(l.quantity) + '" onchange="edLineChange(' + idx + ',\'quantity\',this)"></div>' +
+        '<div><label>Unit price $</label><input type="text" inputmode="decimal" value="' + ((Number(l.unitPriceCents) || 0) / 100) + '" onchange="edLineChange(' + idx + ',\'price\',this)"></div>' +
+        '<div><label>Line total</label><div style="padding:10px 2px;font-weight:bold;color:var(--gold2)">' + fmt$(Math.round((Number(l.quantity) || 0) * (Number(l.unitPriceCents) || 0))) + "</div></div>" +
+      "</div>" +
+      '<button class="btn danger small" onclick="edRemoveLine(' + idx + ')">Remove line</button>' +
+    "</div>";
+  }).join("");
+  var instHtml = (d.installments || []).map(function (it, idx){
+    return '<div class="grid3">' +
+      '<div><label>Label</label><input value="' + esc(it.label || "") + '" onchange="edInstChange(' + idx + ',\'label\',this)" placeholder="Deposit"></div>' +
+      '<div><label>Amount $</label><input type="text" inputmode="decimal" value="' + ((Number(it.amountCents) || 0) / 100) + '" onchange="edInstChange(' + idx + ',\'amount\',this)"></div>' +
+      '<div><label>Due date</label><input type="date" value="' + esc(it.dueDate || "") + '" onchange="edInstChange(' + idx + ',\'dueDate\',this)"></div>' +
+      '<button class="btn danger small" onclick="edRemoveInstallment(' + idx + ')">Remove</button>' +
+    "</div>";
+  }).join("");
+  $("app").innerHTML =
+    '<div class="card"><h2>' + (ui.draftIsNew ? "New " : "Edit ") + (d.kind === "estimate" ? "Estimate" : "Invoice") +
+      (d.number ? " &mdash; " + esc(d.number) : "") + "</h2>" +
+      "<label>Client</label>" +
+      (client
+        ? '<div class="rowitem" style="cursor:default"><span class="grow"><span class="t1" style="font-size:15.5px">' + esc(client.name) + '</span><span class="t2">' + esc(client.phone || "") + '</span></span><button class="btn ghost small" onclick="ui.draft.clientId=null;render()">Change</button></div>'
+        : '<input type="search" placeholder="Search clients by name or phone…" value="' + esc(ui.clientPickSearch || "") + '" oninput="ui.clientPickSearch=this.value;$(\'pickResults\').innerHTML=edClientResultsHtml()">' +
+          '<div id="pickResults">' + edClientResultsHtml() + "</div>" +
+          '<div class="grid2"><div><label>Quick-add: name</label><input id="qaName" placeholder="New client name"></div>' +
+          '<div><label>Phone</label><input id="qaPhone" placeholder="Phone"></div></div>' +
+          '<div class="btnrow"><button class="btn ghost small" onclick="edQuickAddClient()">+ Add &amp; pick this client</button></div>') +
+      '<div class="grid2">' +
+        '<div><label>Vehicle</label><input id="edVehicle" value="' + esc(d.vehicle || "") + '" placeholder="e.g. 2024 Lexus"></div>' +
+        '<div><label>Status</label><input value="' + esc(d.status || "draft") + '" disabled></div>' +
+      "</div>" +
+      '<div class="grid2">' +
+        '<div><label>Issue date</label><input type="date" id="edIssue" value="' + esc(d.issueDate || "") + '"></div>' +
+        '<div><label>Due date</label><input type="date" id="edDue" value="' + esc(d.dueDate || "") + '"></div>' +
+      "</div>" +
+    "</div>" +
+    '<div class="card"><h2>Line items</h2>' + linesHtml +
+      '<div class="btnrow"><button class="btn ghost small" onclick="edAddLine()">+ Blank line</button></div>' +
+      (book.items.length
+        ? '<label>Add from library</label><div class="grid2"><select id="libPick" class="picker">' + libOptions + '</select><div><button class="btn ghost small" onclick="edAddLibraryLine()">Add library item</button></div></div>'
+        : "") +
+      '<div class="grid2">' +
+        '<div><label>Tax rate %</label><input type="text" inputmode="decimal" id="edTaxPct" value="' + ((Number(d.taxRateBps) || 0) / 100) + '" onchange="ui.draft.taxRateBps=Math.round((parseFloat(this.value)||0)*100);$(\'edTotals\').innerHTML=edTotalsHtml()"></div>' +
+        '<div><label>Discount $</label><input type="text" inputmode="decimal" id="edDiscount" value="' + ((Number(d.discountCents) || 0) / 100) + '" onchange="ui.draft.discountCents=parseMoney(this.value);$(\'edTotals\').innerHTML=edTotalsHtml()"></div>' +
+      "</div>" +
+      '<div id="edTotals">' + edTotalsHtml() + "</div>" +
+    "</div>" +
+    (d.kind === "estimate"
+      ? '<div class="card"><h2>Florida written-estimate choice</h2>' +
+        '<label>Customer choice</label><select id="edChoice">' +
+          '<option value=""' + (d.estimateChoice === "" ? " selected" : "") + ">Not recorded</option>" +
+          '<option value="request"' + (d.estimateChoice === "request" ? " selected" : "") + ">Written estimate requested</option>" +
+          '<option value="none"' + (d.estimateChoice === "none" ? " selected" : "") + ">Written estimate waived</option>" +
+          '<option value="limit"' + (d.estimateChoice === "limit" ? " selected" : "") + ">Estimate with authorized dollar limit</option>" +
+        "</select>" +
+        '<label>Authorized limit $ (for the limit choice)</label><input type="text" inputmode="decimal" id="edChoiceLimit" value="' + (d.estimateChoiceLimitCents != null ? d.estimateChoiceLimitCents / 100 : "") + '">' +
+      "</div>"
+      : '<input type="hidden" id="edChoice" value=""><input type="hidden" id="edChoiceLimit" value="">') +
+    '<div class="card"><h2>Payment schedule</h2>' + instHtml +
+      '<div class="btnrow"><button class="btn ghost small" onclick="edAddInstallment()">+ Add installment</button></div>' +
+      '<label>Notes</label><textarea id="edNotes" rows="3">' + esc(d.notes || "") + "</textarea>" +
+    "</div>" +
+    '<div class="btnrow no-print">' +
+      '<button class="btn" onclick="saveDraft()">Save ' + (d.kind === "estimate" ? "estimate" : "invoice") + "</button>" +
+      '<button class="btn ghost" onclick="go(\'documents\')">Cancel</button>' +
+    "</div>";
+}
+
+/* ---------- Terms (verbatim from the shop's public signing page) ---------- */
+function choiceLabel(doc){
+  if (doc.estimateChoice === "request") return "Written estimate requested";
+  if (doc.estimateChoice === "none") return "Written estimate waived";
+  if (doc.estimateChoice === "limit") return "Estimate with authorized dollar limit" + (doc.estimateChoiceLimitCents != null ? " — up to " + fmt$(doc.estimateChoiceLimitCents) : "");
+  return "";
+}
+function termsHtml(doc){
+  var cl = choiceLabel(doc);
+  return '<div class="terms">' +
+    "<h3 style='color:var(--gold);margin:14px 0 2px'>Florida Written Estimate Choice</h3>" +
+    "<p>Florida&rsquo;s Motor Vehicle Repair Act (Fla. Stat. &sect;559.905) gives you the right to a written estimate before work begins.</p>" +
+    (cl ? "<p><strong>Customer choice:</strong> " + esc(cl) + "</p>" : "") +
+    "<p><strong>Give me a written estimate first</strong> — JPR KING will prepare a written estimate, and no work will start until I approve it.</p>" +
+    "<p><strong>I waive the written estimate</strong> — I do not want a written estimate. JPR KING may proceed with the work described on this invoice.</p>" +
+    "<p><strong>Estimate, with a dollar limit I set</strong> — Give me a written estimate, and I authorize work up to the amount I set without further approval.</p>" +
+    "<h3 style='color:var(--gold);margin:16px 0 2px'>Repair Authorization &amp; Shop Terms</h3>" +
+    "<p><strong>Authorization.</strong> By signing below, I authorize JPR KING (837 NW 8th Ave, Fort Lauderdale, FL 33311) to perform the repairs and services listed on this invoice, including ordering the parts and materials needed, and to operate my vehicle on public roads for testing and inspection.</p>" +
+    "<p><strong>Payment.</strong> I agree to pay for all parts, labor, shop supplies, taxes, and fees on completion of the work, before the vehicle is released. A deposit may be required before work begins and will be applied to my total.</p>" +
+    "<p><strong>Changes.</strong> If additional work is found to be needed, JPR KING will contact me for approval before doing work beyond what I authorized above, as required by Florida law.</p>" +
+    "<p><strong>Mechanic&rsquo;s lien.</strong> I understand JPR KING may claim a lien on the vehicle for unpaid repair charges under Fla. Stat. &sect;713.585, and that vehicles left more than 3 days after I am notified the work is complete may incur a storage charge of $25 per day.</p>" +
+    "<p><strong>Old parts.</strong> Replaced parts will be returned to me if I ask at the time I authorize the repair; otherwise they may be discarded or returned for core credit.</p>" +
+    "<p><strong>Liability.</strong> JPR KING is not responsible for loss or damage to the vehicle or items left in it caused by fire, theft, or events beyond the shop&rsquo;s control.</p>" +
+    "<h3 style='color:var(--gold);margin:16px 0 2px'>AS IS Dealer Warranty Disclaimer</h3>" +
+    '<div class="asis-banner">SOLD / SERVICED &ldquo;AS IS&rdquo; &mdash; NO WARRANTY</div>' +
+    "<p><strong>AS IS.</strong> The vehicle and any used parts are provided <strong>&ldquo;AS IS, WHERE IS,&rdquo;</strong> with all faults. JPR KING makes <strong>no warranties of any kind</strong>, express or implied, including any implied warranty of merchantability or fitness for a particular purpose, except for any written warranty JPR KING gives me separately in writing.</p>" +
+    "<p>I understand I am responsible for inspecting the vehicle, that I accept its condition as it stands, and that JPR KING has not promised any repairs or improvements beyond the work listed on this invoice.</p>" +
+    "<p>This disclaimer requires its own separate signature below, in addition to my invoice approval signature.</p>" +
+  "</div>";
+}
+
+/* ---------- Document view ---------- */
+function renderDocView(){
+  var d = docById(ui.currentDocId);
+  if (!d) { go("documents"); return; }
+  var s = book.settings;
+  var c = clientById(d.clientId);
+  var t = docTotals(d);
+  var isEst = d.kind === "estimate";
+  var linesHtml = (d.lines || []).map(function (l){
+    var lt = Math.round((Number(l.quantity) || 0) * (Number(l.unitPriceCents) || 0));
+    return "<tr><td><strong>" + esc(l.name || "Service") + "</strong>" +
+      (l.description ? '<div class="small mut">' + esc(l.description) + "</div>" : "") +
+      '</td><td class="r">' + esc(l.quantity) + '</td><td class="r">' + fmt$(l.unitPriceCents) + '</td><td class="r">' + fmt$(lt) + "</td></tr>";
+  }).join("");
+  var instHtml = "";
+  if ((d.installments || []).length){
+    instHtml = "<h3 style='color:var(--gold);margin:16px 0 4px'>Payment schedule</h3>" +
+      d.installments.map(function (it){
+        var link = paypalLink(it.amountCents);
+        return '<div class="totrow"><span>' + esc(it.label || "Installment") + (it.dueDate ? ' <span class="small mut">due ' + fmtDate(it.dueDate) + "</span>" : "") + "</span><span>" + fmt$(it.amountCents) +
+          (link ? ' &nbsp;<a href="' + esc(link) + '" target="_blank" rel="noopener">PayPal</a>' : "") + "</span></div>";
+      }).join("");
+  }
+  var payHtml = "";
+  if ((d.payments || []).length){
+    payHtml = "<h3 style='color:var(--gold);margin:16px 0 4px'>Payments</h3>" +
+      d.payments.map(function (p){
+        return '<div class="totrow"><span>' + fmt$(p.amountCents) + ' <span class="small mut">' + esc(p.method || "") +
+          (p.paidAt ? " &bull; " + fmtDate(p.paidAt) : "") + (p.note ? " &bull; " + esc(p.note) : "") + '</span></span>' +
+          '<button class="btn danger small no-print" onclick="deletePayment(' + d.id + "," + p.id + ')">Remove</button></div>';
+      }).join("");
+  }
+  var actions = "";
+  if (isEst){
+    if (d.status === "draft") actions += '<button class="btn" onclick="markSent(' + d.id + ')">Mark sent</button>';
+    if (d.status !== "approved" && d.status !== "declined" && !d.convertedInvoiceId)
+      actions += '<button class="btn" onclick="recordApproval(' + d.id + ')">Record approval</button>';
+    if (d.status === "approved" && !d.convertedInvoiceId)
+      actions += '<button class="btn" onclick="convertToInvoice(' + d.id + ')">Convert to invoice</button>';
+    if (d.convertedInvoiceId)
+      actions += '<button class="btn ghost" onclick="openDoc(' + d.convertedInvoiceId + ')">Open invoice ' + esc((docById(d.convertedInvoiceId) || {}).number || "") + "</button>";
+    if (d.status !== "declined" && !d.convertedInvoiceId)
+      actions += '<button class="btn danger" onclick="declineEstimate(' + d.id + ')">Decline</button>';
+  } else {
+    if (d.status === "draft") actions += '<button class="btn" onclick="markSent(' + d.id + ')">Mark open</button>';
+    if (t.balance > 0) actions += '<button class="btn" onclick="ui.payForm=!ui.payForm;render()">Record payment</button>';
+    if (t.balance <= 0 && d.status !== "paid") actions += '<button class="btn" onclick="markPaid(' + d.id + ')">Mark paid</button>';
+  }
+  actions += '<button class="btn ghost" onclick="editDocument(' + d.id + ')">Edit</button>';
+  actions += '<button class="btn ghost" onclick="window.print()">Print</button>';
+  var payForm = "";
+  if (!isEst && ui.payForm && t.balance > 0){
+    payForm = '<div class="card no-print"><h2>Record payment</h2>' +
+      '<div class="grid3">' +
+        '<div><label>Amount $</label><input id="payAmt" type="text" inputmode="decimal" value="' + (t.balance / 100) + '"></div>' +
+        '<div><label>Method</label><select id="payMethod"><option>PayPal</option><option>Cash</option><option>Card</option><option>Check</option><option>Other</option></select></div>' +
+        '<div><label>Note</label><input id="payNote" placeholder="Optional"></div>' +
+      "</div>" +
+      '<div class="btnrow"><button class="btn" onclick="savePayment(' + d.id + ')">Save payment</button>' +
+      '<button class="btn ghost" onclick="ui.payForm=false;render()">Cancel</button></div></div>';
+  }
+  function sigBlock(which, title){
+    var sig = d[which];
+    if (sig && sig.dataUrl){
+      return "<h3 style='color:var(--gold);margin:16px 0 4px'>" + title + '</h3><img class="sigimg" src="' + sig.dataUrl + '" alt="Signature">' +
+        '<p class="small mut">Signed by ' + esc(sig.signerName || "") + (sig.signedAt ? " &bull; " + fmtDate(sig.signedAt) : "") + "</p>" +
+        '<button class="btn ghost small no-print" onclick="openSign(' + d.id + ",'" + which + '\')">Re-sign</button>';
+    }
+    return "<h3 style='color:var(--gold);margin:16px 0 4px'>" + title + '</h3><p class="small mut">Not signed yet.</p>' +
+      '<button class="btn ghost small no-print" onclick="openSign(' + d.id + ",'" + which + '\')">Sign</button>';
+  }
+  var link = signingLink(d);
+  var balLink = paypalLink(Math.max(0, t.balance));
+  $("app").innerHTML =
+    msgHtml() +
+    '<div class="btnrow no-print"><button class="btn ghost small" onclick="go(\'documents\')">&larr; All documents</button></div>' +
+    '<div class="card doc-sheet">' +
+      '<div class="doc-head"><img src="' + LOGO_URL + '" alt="JPR KING lion logo"><div>' +
+        "<h2 style='font-size:22px;margin:0'>" + esc(s.businessName || "JPR KING") + "</h2>" +
+        '<p class="small" style="white-space:pre-line;margin:2px 0">' + esc(s.businessAddress || "") + "</p>" +
+        '<p class="small" style="margin:2px 0">' + esc(s.businessPhone || "") + (s.businessEmail ? " &bull; " + esc(s.businessEmail) : "") + "</p>" +
+      "</div></div>" +
+      "<h2 style='margin-top:16px;font-size:21px'>" + (isEst ? "ESTIMATE " : "INVOICE ") + esc(d.number || "") + statusChip(d) + "</h2>" +
+      '<div class="grid2">' +
+        "<div><label>Customer</label><div><strong>" + esc(c ? c.name : "—") + "</strong>" +
+          (c && c.phone ? '<br><a href="tel:' + esc(c.phone.replace(/[^0-9+]/g, "")) + '">' + esc(c.phone) + "</a>" : "") +
+          (c && c.email ? "<br>" + esc(c.email) : "") +
+          (c && c.address ? '<br><span class="small" style="white-space:pre-line">' + esc(c.address) + "</span>" : "") + "</div></div>" +
+        "<div><label>Vehicle</label><div>" + esc(d.vehicle || "—") + "</div>" +
+          "<label>Issue date</label><div>" + (fmtDate(d.issueDate) || "—") + "</div>" +
+          (d.dueDate ? "<label>Due date</label><div>" + fmtDate(d.dueDate) + "</div>" : "") + "</div>" +
+      "</div>" +
+      '<table class="lines"><tr><th>Service</th><th class="r">Qty</th><th class="r">Price</th><th class="r">Total</th></tr>' + linesHtml + "</table>" +
+      '<div class="totrow"><span>Subtotal</span><span>' + fmt$(t.subtotal) + "</span></div>" +
+      (t.tax ? '<div class="totrow"><span>Tax</span><span>' + fmt$(t.tax) + "</span></div>" : "") +
+      (t.discount ? '<div class="totrow"><span>Discount</span><span>&minus;' + fmt$(t.discount) + "</span></div>" : "") +
+      '<div class="totrow grand"><span>Total</span><span>' + fmt$(t.total) + "</span></div>" +
+      instHtml + payHtml +
+      (t.paid ? '<div class="totrow"><span>Paid</span><span>' + fmt$(t.paid) + "</span></div>" : "") +
+      '<div class="totrow grand"><span>Balance due</span><span>' + fmt$(Math.max(0, t.balance)) + "</span></div>" +
+      (d.customerApprovedName ? '<p class="small" style="margin-top:12px">Approved by ' + esc(d.customerApprovedName) + (d.customerApprovedAt ? " &bull; " + fmtDate(d.customerApprovedAt) : "") + "</p>" : "") +
+      (d.notes ? '<label>Notes</label><p style="white-space:pre-line;margin:4px 0">' + esc(d.notes) + "</p>" : "") +
+      termsHtml(d) +
+      sigBlock("signature", isEst ? "Approval signature" : "Customer signature") +
+      sigBlock("asIsSignature", "AS IS acknowledgment signature") +
+    "</div>" +
+    payForm +
+    '<div class="btnrow no-print">' + actions + "</div>" +
+    '<div class="card no-print"><h2>Customer link</h2>' +
+      '<p class="small">Send this link to the customer — it opens this ' + (isEst ? "estimate" : "invoice") + ' on the shop&rsquo;s signing page, ready to review, sign, and pay.</p>' +
+      '<div class="linkbox">' + esc(link) + "</div>" +
+      '<div class="btnrow"><button class="btn small" onclick="copyText(signingLink(docById(' + d.id + ')),this)">Copy signing link</button></div>' +
+      (balLink && t.balance > 0
+        ? '<p class="small" style="margin-top:12px">PayPal.me link for the balance (' + fmt$(t.balance) + "):</p>" +
+          '<div class="linkbox">' + esc(balLink) + "</div>" +
+          '<div class="btnrow"><button class="btn small" onclick="copyText(paypalLink(Math.max(0,docTotals(docById(' + d.id + ')).balance)),this)">Copy PayPal link</button></div>'
+        : "") +
+    "</div>";
+}
+function markSent(id){
+  var d = docById(id); if (!d) return;
+  d.status = d.kind === "estimate" ? "sent" : "open";
+  saveBook(); flash(d.number + (d.kind === "estimate" ? " marked sent." : " marked open.")); render();
+}
+function recordApproval(id){
+  var d = docById(id); if (!d) return;
+  var c = clientById(d.clientId);
+  var name = window.prompt("Approved by (customer name):", d.customerApprovedName || (c ? c.name : ""));
+  if (name === null) return;
+  d.customerApprovedName = name;
+  d.customerApprovedAt = new Date().toISOString();
+  d.status = "approved";
+  saveBook(); flash(d.number + " approval recorded."); render();
+}
+function declineEstimate(id){
+  var d = docById(id); if (!d) return;
+  if (!window.confirm("Mark " + d.number + " as declined?")) return;
+  d.status = "declined";
+  saveBook(); flash(d.number + " declined."); render();
+}
+function convertToInvoice(id){
+  var est = docById(id); if (!est || est.convertedInvoiceId) return;
+  var inv = blankDoc("invoice");
+  inv.id = nextId(book.documents);
+  inv.number = nextNumber("invoice");
+  inv.clientId = est.clientId;
+  inv.vehicle = est.vehicle || "";
+  inv.issueDate = todayISO();
+  inv.dueDate = est.dueDate || "";
+  inv.lines = (est.lines || []).map(function (l){
+    return { id: nextId(inv.lines), name: l.name, description: l.description || "", quantity: l.quantity, unitPriceCents: l.unitPriceCents };
+  });
+  inv.taxRateBps = est.taxRateBps || 0;
+  inv.discountCents = est.discountCents || 0;
+  inv.notes = est.notes || "";
+  inv.installments = JSON.parse(JSON.stringify(est.installments || []));
+  inv.sourceEstimateId = est.id;
+  inv.status = "draft";
+  book.documents.push(inv);
+  est.convertedInvoiceId = inv.id;
+  est.status = "approved";
+  saveBook();
+  ui.currentDocId = inv.id;
+  flash(est.number + " converted to " + inv.number + ".");
+  go("docView");
+}
+function savePayment(id){
+  var d = docById(id); if (!d) return;
+  var amt = parseMoney($("payAmt").value);
+  if (amt <= 0) { alert("Enter a payment amount."); return; }
+  d.payments = d.payments || [];
+  d.payments.push({ id: nextId(d.payments), amountCents: amt, method: $("payMethod").value, note: $("payNote").value, paidAt: new Date().toISOString() });
+  var t = docTotals(d);
+  if (t.balance <= 0) d.status = "paid";
+  else if (d.status === "draft") d.status = "open";
+  ui.payForm = false;
+  saveBook(); flash("Payment of " + fmt$(amt) + " recorded on " + d.number + "."); render();
+}
+function deletePayment(docId, payId){
+  var d = docById(docId); if (!d) return;
+  if (!window.confirm("Remove this payment from " + d.number + "?")) return;
+  d.payments = (d.payments || []).filter(function (p){ return String(p.id) !== String(payId); });
+  var t = docTotals(d);
+  if (d.status === "paid" && t.balance > 0) d.status = "open";
+  saveBook(); flash("Payment removed."); render();
+}
+function markPaid(id){
+  var d = docById(id); if (!d) return;
+  d.status = "paid";
+  saveBook(); flash(d.number + " marked paid."); render();
+}
+
+/* ---------- Signature pad ---------- */
+var padCtx = null, padDrawing = false, padDirty = false;
+function openSign(docId, which){
+  ui.currentDocId = docId;
+  ui.signWhich = which;
+  go("sign");
+}
+function renderSign(){
+  var d = docById(ui.currentDocId);
+  if (!d) { go("documents"); return; }
+  var c = clientById(d.clientId);
+  var title = ui.signWhich === "asIsSignature" ? "AS IS acknowledgment signature" : "Approval signature";
+  $("app").innerHTML =
+    msgHtml() +
+    '<div class="card"><h2>' + title + " — " + esc(d.number || "") + "</h2>" +
+      '<p class="small">Sign in the box with a finger or mouse.</p>' +
+      '<canvas class="pad" id="pad" width="660" height="210"></canvas>' +
+      "<label>Signer name</label>" +
+      '<input id="signerName" value="' + esc(c ? c.name : "") + '">' +
+      '<div class="btnrow">' +
+        '<button class="btn" onclick="saveSignature()">Save signature</button>' +
+        '<button class="btn ghost" onclick="clearPad()">Clear</button>' +
+        '<button class="btn ghost" onclick="go(\'docView\')">Back</button>' +
+      "</div></div>";
+  setupPad();
+}
+function setupPad(){
+  var cv = $("pad");
+  if (!cv) return;
+  padCtx = cv.getContext("2d");
+  padCtx.lineWidth = 2.4; padCtx.lineCap = "round"; padCtx.strokeStyle = "#10131c";
+  padDirty = false; padDrawing = false;
+  function pos(e){
+    var r = cv.getBoundingClientRect();
+    var x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+    var y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
+    return { x: x * cv.width / r.width, y: y * cv.height / r.height };
+  }
+  function start(e){ padDrawing = true; var p = pos(e); padCtx.beginPath(); padCtx.moveTo(p.x, p.y); e.preventDefault(); }
+  function move(e){
+    if (!padDrawing) return;
+    var p = pos(e); padCtx.lineTo(p.x, p.y); padCtx.stroke(); padDirty = true; e.preventDefault();
+  }
+  function end(){ padDrawing = false; }
+  cv.addEventListener("pointerdown", start);
+  cv.addEventListener("pointermove", move);
+  window.addEventListener("pointerup", end);
+  cv.addEventListener("touchstart", start, { passive: false });
+  cv.addEventListener("touchmove", move, { passive: false });
+  cv.addEventListener("touchend", end);
+}
+function clearPad(){
+  var cv = $("pad");
+  if (cv && padCtx) { padCtx.clearRect(0, 0, cv.width, cv.height); padDirty = false; }
+}
+function saveSignature(){
+  var d = docById(ui.currentDocId);
+  var cv = $("pad");
+  if (!d || !cv) return;
+  if (!padDirty) { flash("The signature box is empty — sign first, then save.", false); window.scrollTo(0, 0); return; }
+  d[ui.signWhich] = {
+    dataUrl: cv.toDataURL("image/png"),
+    signedAt: new Date().toISOString(),
+    signerName: $("signerName").value.trim()
+  };
+  saveBook();
+  flash("Signature saved on " + d.number + ".");
+  go("docView");
+}
+
+/* ---------- Clients ---------- */
+function renderClients(){
+  var q = ui.clientSearch.toLowerCase();
+  var list = book.clients.filter(function (c){
+    return !q || String(c.name || "").toLowerCase().indexOf(q) > -1 ||
+           String(c.phone || "").indexOf(q) > -1 || String(c.email || "").toLowerCase().indexOf(q) > -1;
+  });
+  list.sort(function (a, b){ return String(a.name || "").localeCompare(String(b.name || "")); });
+  var shown = list.slice(0, ui.clientShown);
+  $("app").innerHTML =
+    msgHtml() +
+    '<input type="search" placeholder="Search ' + book.clients.length + ' clients by name, phone, email…" value="' + esc(ui.clientSearch) + '" oninput="ui.clientSearch=this.value;ui.clientShown=100;renderClientsKeepFocus()">' +
+    '<div class="btnrow"><button class="btn" onclick="editClient(null)">+ New client</button></div>' +
+    shown.map(function (c){
+      var tel = String(c.phone || "").replace(/[^0-9+]/g, "");
+      return '<div class="rowitem"><span class="grow"><span class="t1" style="font-size:15.5px">' + esc(c.name) + "</span>" +
+        '<span class="t2">' + esc(c.phone || "") + (c.email ? " &bull; " + esc(c.email) : "") + "</span></span>" +
+        (tel ? '<a class="btn ghost small" href="tel:' + tel + '">Call</a><a class="btn ghost small" href="sms:' + tel + '">Text</a>' : "") +
+        '<button class="btn ghost small" onclick="editClient(' + c.id + ')">Edit</button></div>';
+    }).join("") +
+    (list.length > shown.length
+      ? '<div class="center" style="margin:14px 0"><button class="btn ghost" onclick="ui.clientShown+=100;render()">Show more (' + shown.length + " of " + list.length + ")</button></div>"
+      : "") +
+    (!list.length ? '<p class="mut center" style="margin:22px 0">No clients found.</p>' : "");
+}
+function renderClientsKeepFocus(){
+  renderClients();
+  var inp = document.querySelector('input[type="search"]');
+  if (inp) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }
+}
+function editClient(id){
+  ui.editClientId = id;
+  go("clientEdit");
+}
+function renderClientEdit(){
+  var c = ui.editClientId != null ? clientById(ui.editClientId) : null;
+  var v = c || { name: "", phone: "", email: "", address: "", notes: "" };
+  var hasDocs = c ? book.documents.some(function (d){ return String(d.clientId) === String(c.id); }) : false;
+  $("app").innerHTML =
+    msgHtml() +
+    '<div class="card"><h2>' + (c ? "Edit client" : "New client") + "</h2>" +
+      "<label>Name</label><input id='clName' value='" + esc(v.name) + "'>" +
+      "<label>Phone</label><input id='clPhone' value='" + esc(v.phone) + "'>" +
+      "<label>Email</label><input id='clEmail' value='" + esc(v.email) + "'>" +
+      "<label>Address</label><textarea id='clAddress' rows='2'>" + esc(v.address) + "</textarea>" +
+      "<label>Notes</label><textarea id='clNotes' rows='2'>" + esc(v.notes) + "</textarea>" +
+      '<div class="btnrow"><button class="btn" onclick="saveClient()">Save client</button>' +
+      '<button class="btn ghost" onclick="go(\'clients\')">Cancel</button>' +
+      (c && !hasDocs ? '<button class="btn danger" onclick="deleteClient(' + c.id + ')">Delete client</button>' : "") +
+      (c && hasDocs ? '<p class="small mut">This client has documents, so it cannot be deleted.</p>' : "") +
+    "</div></div>";
+}
+function saveClient(){
+  var name = $("clName").value.trim();
+  if (!name) { alert("Enter the client's name."); return; }
+  if (ui.editClientId != null){
+    var c = clientById(ui.editClientId);
+    if (!c) return;
+    c.name = name; c.phone = $("clPhone").value.trim(); c.email = $("clEmail").value.trim();
+    c.address = $("clAddress").value; c.notes = $("clNotes").value;
+  } else {
+    book.clients.push({ id: nextId(book.clients), name: name, phone: $("clPhone").value.trim(), email: $("clEmail").value.trim(), address: $("clAddress").value, notes: $("clNotes").value });
+  }
+  saveBook();
+  flash("Client saved.");
+  go("clients");
+}
+function deleteClient(id){
+  var c = clientById(id);
+  if (!c) return;
+  if (book.documents.some(function (d){ return String(d.clientId) === String(id); })) { alert("This client has documents and cannot be deleted."); return; }
+  if (!window.confirm("Delete client " + c.name + "?")) return;
+  book.clients = book.clients.filter(function (x){ return String(x.id) !== String(id); });
+  saveBook();
+  flash("Client deleted.");
+  go("clients");
+}
+
+/* ---------- Library ---------- */
+function renderLibrary(){
+  var list = book.items.slice().sort(function (a, b){ return String(a.name || "").localeCompare(String(b.name || "")); });
+  $("app").innerHTML =
+    msgHtml() +
+    '<div class="card"><h2>' + (ui.editItemId != null ? "Edit item" : "Add item") + "</h2>" +
+      "<label>Name</label><input id='liName' value='" + esc(ui.editItemId != null ? (book.items.filter(function (i){ return String(i.id) === String(ui.editItemId); })[0] || {}).name || "" : "") + "'>" +
+      "<label>Description</label><input id='liDesc' value='" + esc(ui.editItemId != null ? (book.items.filter(function (i){ return String(i.id) === String(ui.editItemId); })[0] || {}).description || "" : "") + "'>" +
+      "<label>Price $</label><input id='liPrice' type='text' inputmode='decimal' value='" + (ui.editItemId != null ? ((book.items.filter(function (i){ return String(i.id) === String(ui.editItemId); })[0] || {}).priceCents || 0) / 100 : "") + "'>" +
+      '<div class="btnrow"><button class="btn" onclick="saveItem()">Save item</button>' +
+      (ui.editItemId != null ? '<button class="btn ghost" onclick="ui.editItemId=null;render()">Cancel edit</button>' : "") + "</div>" +
+    "</div>" +
+    (list.length ? list.map(function (i){
+      return '<div class="rowitem"><span class="grow"><span class="t1" style="font-size:15.5px">' + esc(i.name) + "</span>" +
+        '<span class="t2">' + esc(i.description || "") + '</span></span><span class="amt">' + fmt$(i.priceCents) + "</span>" +
+        '<button class="btn ghost small" onclick="ui.editItemId=' + i.id + ';render()">Edit</button>' +
+        '<button class="btn danger small" onclick="deleteItem(' + i.id + ')">Delete</button></div>';
+    }).join("") : '<p class="mut center">No library items yet.</p>');
+}
+function saveItem(){
+  var name = $("liName").value.trim();
+  if (!name) { alert("Enter the item name."); return; }
+  if (ui.editItemId != null){
+    book.items.forEach(function (i){
+      if (String(i.id) === String(ui.editItemId)) { i.name = name; i.description = $("liDesc").value; i.priceCents = parseMoney($("liPrice").value); }
+    });
+  } else {
+    book.items.push({ id: nextId(book.items), name: name, description: $("liDesc").value, priceCents: parseMoney($("liPrice").value) });
+  }
+  ui.editItemId = null;
+  saveBook();
+  flash("Library item saved.");
+  render();
+}
+function deleteItem(id){
+  if (!window.confirm("Delete this library item?")) return;
+  book.items = book.items.filter(function (i){ return String(i.id) !== String(id); });
+  saveBook();
+  flash("Library item deleted.");
+  render();
+}
+
+/* ---------- Filed bookings (read-only) ---------- */
+function renderBookings(){
+  var list = (book.filedBookings || []).slice().sort(function (a, b){
+    return String(b.date || b.createdAt || "").localeCompare(String(a.date || a.createdAt || ""));
+  });
+  $("app").innerHTML =
+    msgHtml() +
+    '<div class="card"><h2>Filed bookings</h2>' +
+    '<p class="small mut">Archived bookings from your imported history — read-only in this edition.</p>' +
+    (list.length ? list.map(function (b){
+      return '<div class="rowitem" style="cursor:default"><span class="grow"><span class="t1" style="font-size:15.5px">' + esc(b.customerName || "—") + "</span>" + statusChip({ status: b.status || "" }) +
+        '<span class="t2">' + esc(fmtDate(b.date) || "") + (b.time ? " &bull; " + esc(b.time) : "") + " &bull; " + esc(b.service || "") + (b.vehicle ? " &bull; " + esc(b.vehicle) : "") + "</span></span>" +
+        '<span class="amt">' + fmt$(b.depositCents) + '<div class="small mut">' + (b.depositPaid ? "deposit paid" : "deposit") + "</div></span></div>";
+    }).join("") : '<p class="mut">No filed bookings in this book yet. Import your filed-history file in Settings to see them here.</p>') +
+    "</div>";
+}
+
+/* ---------- Settings / Import / Export ---------- */
+function renderSettings(){
+  var s = book.settings;
+  $("app").innerHTML =
+    msgHtml() +
+    '<div class="card"><h2>Business settings</h2>' +
+      "<label>Business name</label><input id='stName' value='" + esc(s.businessName) + "'>" +
+      "<label>Business address</label><textarea id='stAddress' rows='2'>" + esc(s.businessAddress) + "</textarea>" +
+      "<label>Business email</label><input id='stEmail' value='" + esc(s.businessEmail) + "'>" +
+      "<label>Business phone</label><input id='stPhone' value='" + esc(s.businessPhone || "") + "'>" +
+      "<label>PayPal.me handle</label><input id='stPaypal' value='" + esc(s.paypalMeHandle) + "'>" +
+      "<label>Signing page (portal) URL</label><input id='stPortal' value='" + esc(s.portalUrl) + "'>" +
+      '<div class="btnrow"><button class="btn" onclick="saveSettings()">Save settings</button></div>' +
+    "</div>" +
+    '<div class="card"><h2>Your book</h2>' +
+      '<p class="small">Your book lives <strong>on this device only</strong> — nothing is stored online. Export it regularly and keep the file safe: that export is your walk-away copy, and importing it on any device brings your whole book back.</p>' +
+      '<p class="small mut">On this device right now: ' + book.clients.length + " clients &bull; " + book.documents.length + " documents &bull; " + book.items.length + " library items &bull; " + (book.filedBookings || []).length + " filed bookings.</p>" +
+      "<label>Import book (book export file, or filed-history file)</label>" +
+      '<input type="file" id="importFile" accept=".json,application/json">' +
+      '<div class="btnrow"><button class="btn" onclick="importBook()">Import selected file</button>' +
+      '<button class="btn ghost" onclick="exportBook()">Export book</button></div>' +
+    "</div>";
+}
+function saveSettings(){
+  book.settings.businessName = $("stName").value;
+  book.settings.businessAddress = $("stAddress").value;
+  book.settings.businessEmail = $("stEmail").value;
+  book.settings.businessPhone = $("stPhone").value;
+  book.settings.paypalMeHandle = $("stPaypal").value.trim();
+  book.settings.portalUrl = $("stPortal").value.trim();
+  saveBook();
+  flash("Settings saved.");
+  render();
+}
+function exportBook(){
+  var payload = { data: { clients: book.clients, documents: book.documents, items: book.items, settings: book.settings, filedBookings: book.filedBookings } };
+  var blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "jpr-king-book-" + todayISO() + ".json";
+  document.body.appendChild(a); a.click();
+  setTimeout(function (){ URL.revokeObjectURL(a.href); a.remove(); }, 400);
+}
+function importBook(){
+  var f = $("importFile").files && $("importFile").files[0];
+  if (!f) { flash("Pick a book file first.", false); return; }
+  var reader = new FileReader();
+  reader.onload = function (){
+    try {
+      var root = JSON.parse(reader.result);
+      if (root && root.data && typeof root.data === "object") root = root.data;   /* accept the {"data": {...}} wrapper */
+      if (!root || typeof root !== "object") throw new Error("bad file");
+      var hasBook = Array.isArray(root.clients) || Array.isArray(root.documents) || Array.isArray(root.items);
+      var hasFiled = Array.isArray(root.bookings);
+      if (!hasBook && !hasFiled) throw new Error("not a book file");
+      if (hasBook && !window.confirm("Replace the book on this device with the imported book? (Clients, documents and library are replaced. Export first if you need the current book.)")) return;
+      if (hasFiled && !window.confirm("Load the filed bookings from this file? (Filed bookings are replaced; your clients and documents stay.)")) return;
+      if (hasBook){
+        book.clients = Array.isArray(root.clients) ? root.clients : [];
+        book.documents = Array.isArray(root.documents) ? root.documents : [];
+        book.items = Array.isArray(root.items) ? root.items : [];
+        if (root.settings && typeof root.settings === "object")
+          book.settings = Object.assign({}, DEFAULT_SETTINGS, root.settings);
+        if (Array.isArray(root.filedBookings)) book.filedBookings = root.filedBookings;
+      }
+      if (hasFiled){
+        book.filedBookings = root.bookings;
+        (root.documents || []).forEach(function (fd){
+          if (!book.documents.some(function (d){ return String(d.id) === String(fd.id); })) book.documents.push(fd);
+        });
+      }
+      book = normalizeBook(book);
+      saveBook();
+      flash("Book imported: " + book.clients.length + " clients, " + book.documents.length + " documents, " + book.filedBookings.length + " filed bookings.");
+      go("home");
+    } catch (e) {
+      flash("That file could not be imported — it does not look like a JPR KING book export.", false);
+    }
+  };
+  reader.readAsText(f);
+}
+
+/* ---------- init ---------- */
+render();
+</script>
+</body>
+</html>
