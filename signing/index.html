@@ -442,17 +442,6 @@
           <div id="paypalButtons"></div>
           <p class="small-note">Secure PayPal checkout — you never enter card details here.</p>
           <p class="small-note" id="ppNote" role="status"></p>
-          <h3 style="margin:22px 0 2px; font-size:18px;">Or pay via PayPal.me</h3>
-          <a class="btn btn-gold" id="payBtnTop" href="#" target="_blank" rel="noopener">Pay with <span class="pp">PayPal</span></a>
-          <p class="small-note">Opens PayPal in a new tab. Come back here and log it below with your PayPal transaction ID so JPR KING matches it instantly.</p>
-          <label class="field" for="claimTxn">PAYPAL TRANSACTION / ORDER ID</label>
-          <input class="name-input" id="claimTxn" type="text" placeholder="From your PayPal receipt" />
-          <label class="field" for="claimEmail">YOUR PAYPAL EMAIL</label>
-          <input class="name-input" id="claimEmail" type="email" placeholder="you@email.com" />
-          <label class="field" for="claimNote">NOTE (OPTIONAL)</label>
-          <input class="name-input" id="claimNote" type="text" placeholder="e.g. Deposit for F-150" />
-          <button type="button" class="btn btn-gold" id="claimBtn" style="margin-top:10px;">I paid with PayPal — log my payment</button>
-          <p class="small-note" id="claimMsg" role="status"></p>
         </section>
 
         <!-- Agreements -->
@@ -973,6 +962,7 @@
         var paypal = data.paypalLink || "";
         ["payBtnTop", "payBtnBar", "payBtnDone"].forEach(function (id) {
           var a = document.getElementById(id);
+          if (!a) return;
           if (paypal) { a.href = paypal; }
           else { a.style.display = "none"; }
         });
@@ -1086,13 +1076,13 @@
                   ppSdkStarted = true;
                   ppNote("Loading secure PayPal buttons…", true);
                   setTimeout(function () {
-                    if (!ppSdkRendered) ppNote("PayPal buttons are taking a while — you can also use the PayPal.me option below.", false);
+                    if (!ppSdkRendered) ppNote("PayPal buttons are taking a while — give them a few more seconds.", false);
                   }, 12000);
                   var sc = document.createElement("script");
                   sc.src = "https://www.paypal.com/sdk/js?client-id=" + encodeURIComponent(cid) + "&currency=USD&intent=capture";
-                  sc.onerror = function () { ppNote("PayPal buttons couldn't load — you can use the PayPal.me option below.", false); };
+                  sc.onerror = function () { ppNote("PayPal buttons couldn't load — refresh the page to try again.", false); };
                   sc.onload = function () {
-                    if (!window.paypal) { ppNote("PayPal buttons couldn't load — you can use the PayPal.me option below.", false); return; }
+                    if (!window.paypal) { ppNote("PayPal buttons couldn't load — refresh the page to try again.", false); return; }
                     window.paypal.Buttons({
                       style: { layout: "vertical", color: "gold", shape: "rect" },
                       onInit: function () { ppSdkRendered = true; ppNote("", true); },
@@ -1111,7 +1101,7 @@
                           else { ppNote("Your payment went through at PayPal — the shop will confirm it on your invoice shortly.", false); }
                         }).catch(function () { ppNote("Your payment went through at PayPal — the shop will confirm it on your invoice shortly.", false); });
                       },
-                      onError: function () { ppNote("PayPal checkout hit a snag — you can use the PayPal.me option below instead.", false); }
+                      onError: function () { ppNote("PayPal checkout hit a snag — please try again.", false); }
                     }).render("#paypalButtons");
                   };
                   document.head.appendChild(sc);
@@ -1129,20 +1119,6 @@
                   if (chip) chip.addEventListener("click", function () { document.getElementById("payAmt").value = (ppBalance() / 100).toFixed(2); });
                   var sel = document.getElementById("payApplies");
                   if (sel) sel.addEventListener("change", function () { document.getElementById("payAmt").value = (ppBalance() / 100).toFixed(2); });
-                  var cb = document.getElementById("claimBtn");
-                  if (cb) cb.addEventListener("click", function () {
-                    var m = document.getElementById("claimMsg");
-                    var txn = document.getElementById("claimTxn").value.trim();
-                    var amt = ppAmtCents();
-                    if (!data.shareToken) { m.textContent = "This link can't log payments — text JPR KING your transaction ID instead."; return; }
-                    if (!txn || !amt) { m.textContent = "Add the amount above and your PayPal transaction ID."; return; }
-                    cb.disabled = true;
-                    ppPost({ action: "log-claim", shareToken: data.shareToken, txnId: txn, email: document.getElementById("claimEmail").value.trim(), note: document.getElementById("claimNote").value.trim(), amountCents: amt }).then(function (r) {
-                      if (r && r.ok) { m.textContent = "Logged ✓ — JPR KING will match it against PayPal and post it to your invoice."; m.style.color = "#35d99a"; }
-                      else { m.textContent = "Couldn't log it — text JPR KING your transaction ID instead."; }
-                    }).catch(function () { m.textContent = "Couldn't log it — text JPR KING your transaction ID instead."; })
-                    .then(function () { cb.disabled = false; });
-                  });
                   try {
                     var q = new URLSearchParams(window.location.search);
                     if (q.get("paypal") === "return") {
