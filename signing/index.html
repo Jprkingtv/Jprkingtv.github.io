@@ -409,9 +409,27 @@
 
         <!-- Pay -->
         <section class="card" id="payCard">
-          <h2 class="sec"><span class="step">2</span>Pay deposit or full amount</h2>
-          <p class="lede">Pay securely through PayPal — the deposit or the full amount. You can pay before or after signing.</p>
+          <h2 class="sec"><span class="step">2</span>Pay with PayPal</h2>
+          <p class="lede" id="ppDueLine">Pay the deposit or the full balance — your payment posts to this invoice automatically. You&rsquo;ll get a PayPal receipt by email too.</p>
+          <label class="field" for="payAmt">AMOUNT TO PAY</label>
+          <input class="name-input" id="payAmt" type="text" inputmode="decimal" />
+          <label class="field" for="payApplies">APPLIES TO</label>
+          <select class="name-input" id="payApplies"><option value="balance">Full balance</option></select>
+          <p><button type="button" class="btn btn-ghost" id="payFullChip">Pay full balance</button></p>
+          <div id="paypalButtons"></div>
+          <p class="small-note">Secure PayPal checkout — you never enter card details here.</p>
+          <p class="small-note" id="ppNote" role="status"></p>
+          <h3 style="margin:22px 0 2px; font-size:18px;">Or pay via PayPal.me</h3>
           <a class="btn btn-gold" id="payBtnTop" href="#" target="_blank" rel="noopener">Pay with <span class="pp">PayPal</span></a>
+          <p class="small-note">Opens PayPal in a new tab. Come back here and log it below with your PayPal transaction ID so JPR KING matches it instantly.</p>
+          <label class="field" for="claimTxn">PAYPAL TRANSACTION / ORDER ID</label>
+          <input class="name-input" id="claimTxn" type="text" placeholder="From your PayPal receipt" />
+          <label class="field" for="claimEmail">YOUR PAYPAL EMAIL</label>
+          <input class="name-input" id="claimEmail" type="email" placeholder="you@email.com" />
+          <label class="field" for="claimNote">NOTE (OPTIONAL)</label>
+          <input class="name-input" id="claimNote" type="text" placeholder="e.g. Deposit for F-150" />
+          <button type="button" class="btn btn-gold" id="claimBtn" style="margin-top:10px;">I paid with PayPal — log my payment</button>
+          <p class="small-note" id="claimMsg" role="status"></p>
         </section>
 
         <!-- Agreements -->
@@ -440,23 +458,7 @@
             </span>
           </label>
 
-          <h3 style="margin:22px 0 2px; font-size:18px;">Repair Authorization &amp; Shop Terms</h3>
-          <div class="terms" tabindex="0">
-            <p><strong>Authorization.</strong> By signing below, I authorize JPR KING (837 NW 8th Ave, Fort Lauderdale, FL 33311) to perform the repairs and services listed on this invoice, including ordering the parts and materials needed, and to operate my vehicle on public roads for testing and inspection.</p>
-            <p><strong>Payment.</strong> I agree to pay for all parts, labor, shop supplies, taxes, and fees on completion of the work, before the vehicle is released. A deposit may be required before work begins and will be applied to my total.</p>
-            <p><strong>Changes.</strong> If additional work is found to be needed, JPR KING will contact me for approval before doing work beyond what I authorized above, as required by Florida law.</p>
-            <p><strong>Mechanic&rsquo;s lien.</strong> I understand JPR KING may claim a lien on the vehicle for unpaid repair charges under Fla. Stat. &sect;713.585, and that vehicles left more than 3 days after I am notified the work is complete may incur a storage charge of $25 per day.</p>
-            <p><strong>Old parts.</strong> Replaced parts will be returned to me if I ask at the time I authorize the repair; otherwise they may be discarded or returned for core credit.</p>
-            <p><strong>Liability.</strong> JPR KING is not responsible for loss or damage to the vehicle or items left in it caused by fire, theft, or events beyond the shop&rsquo;s control.</p>
-          </div>
-
-          <h3 style="margin:22px 0 2px; font-size:18px;">AS IS Dealer Warranty Disclaimer</h3>
-          <div class="asis-banner">SOLD / SERVICED &ldquo;AS IS&rdquo; — NO WARRANTY</div>
-          <div class="terms" tabindex="0">
-            <p><strong>AS IS.</strong> The vehicle and any used parts are provided <strong>&ldquo;AS IS, WHERE IS,&rdquo;</strong> with all faults. JPR KING makes <strong>no warranties of any kind</strong>, express or implied, including any implied warranty of merchantability or fitness for a particular purpose, except for any written warranty JPR KING gives me separately in writing.</p>
-            <p>I understand I am responsible for inspecting the vehicle, that I accept its condition as it stands, and that JPR KING has not promised any repairs or improvements beyond the work listed on this invoice.</p>
-            <p><strong>This disclaimer requires its own separate signature below</strong>, in addition to my invoice approval signature.</p>
-          </div>
+          <div id="agreementsBox"></div>
         </section>
 
         <!-- Signature 1 -->
@@ -621,6 +623,7 @@
             paid: paidC / 100,
             balance: balanceC / 100,
             paypalLink: paypalLink,
+            shareToken: obj.shareToken || "",
             issueDate: obj.issueDate || "",
             dueDate: obj.dueDate || "",
             estimateChoice: obj.estimateChoice || "",
@@ -953,6 +956,207 @@
           document.getElementById("payCard").style.display = "none";
           paybar.style.display = "none";
         }
+
+        var AGREEMENT_SECTIONS = [
+          { n: 1, title: "REPAIR AUTHORIZATION & SHOP TERMS",
+            summary: "Repair authorization, pickup, and shop-fee terms for the work on this invoice.",
+            body: ["Estimate good for 30 days. Not responsible for damage caused by theft or acts of nature. I hereby authorize the above repairs, including sublet work, along with the necessary materials. You and your employees may operate my vehicle for the purpose of testing, inspection and delivery at my risk. If I cancel repairs prior to their completion for any reason, a tear down and reassembly fee of $_____ will be applied."],
+            box: ["Vehicle must be picked up on day of completion", "Storage fee of $_____ per day applies"],
+            foot: "** This charge represents costs and profits to the motor vehicle repair facility for miscellaneous shop supplies or waste disposal. ** F.S.403.718 mandates a $1.50 fee for each new or remanufactured battery sold in the State of Florida." },
+          { n: 2, title: "AUCTION AGREEMENT",
+            summary: "Auction buying terms — deposit, bid, and fee rules for vehicles bought through auction.",
+            body: [
+              "We offer this service to everyone interested in purchasing one or a few vehicles from used and salvage auto auctions.",
+              "You would provide us with specific lot number or the Year/Make/Model, maximum bid price and any other specific details regarding the vehicle you want.",
+              "Our bidding specialist will place bids on your behalf at the live Internet auction up to your maximum bid plus auction fees.",
+              "The buyer is responsible for any transportation fees. JPK King Auto Sales will assist in securing a licensed carrier if needed.",
+              "The buyer is bound by the terms & conditions of the selected auction company and is aware all vehicles are sold as is. JPK King Auto Sales is not responsible for the buyer's choice of vehicle.",
+              "Associated fees:",
+              "Security Deposit: $1,000 or 20% of Max Bid (whichever is higher)",
+              "Cash, Cashiers Check or Direct Bank Deposit",
+              "Full Max Bid Amount Required For International Customers (Non US Residents)",
+              "Additional fees (if applicable):",
+              "Sales tax: 7% (applicable to retail sales in Florida)"
+            ] },
+          { n: 3, title: "“AS IS” DEALER WARRANTY DISCLAIMER",
+            summary: "This vehicle is sold as is — read before signing. Sign the separate acknowledgment below after you have read the disclaimer.",
+            body: [
+              "EXPLANATION OF DEALER'S WARRANTY DISCLAIMER WITH REGARD TO ABOVE DESCRIBED VEHICLE.",
+              "THIS USED MOTOR VEHICLE IS SOLD WITHOUT ANY WARRANTY, EITHER EXPRESSED OR IMPLIED. THE BUYER WILL BEAR THE ENTIRE EXPENSE OF REPAIRING OR CORRECTING ANY DEFECTS THAT MAY PRESENTLY EXIST OR THAT MAY OCCUR IN THE VEHICLE. THE DEALER (SELLER) SHALL NOT HAVE ANY RESPONSIBILITY FOR CONSEQUENTIAL DAMAGES, DAMAGES TO PROPERTY, DAMAGES FOR LOSS OF USE, LOSS OF TIME, LOSS OF PROFITS OR INCOME, OR ANY OTHER INCIDENTAL DAMAGES WITH RESPECT TO ANY DEFECT OR MALFUNCTION OR UNFITNESS OR OTHER DEFICIENCY OF THIS VEHICLE. THE DEALER MAKES NO WARRANTIES, REPRESENTATION OR ASSURANCES THAT THE MOTOR VEHICLE CONTAINS ONLY ORIGINAL MANUFACTURER INSTALLED OR MANUFACTURER REBUILT COMPONENTS, PARTS OR ACCESSORIES.",
+              "(BUYER) PURCHASER ACKNOWLEDGES THAT HE HAS READ, UNDERSTANDS AND ACCEPTS ALL OF THE PROVISIONS OF THIS WARRANTY DISCLAIMER COVERING THE VEHICLE ABOVE DESCRIBED."
+            ] }
+        ];
+
+                /* ---------- Agreements & Disclaimers (mirror of the shop app) ---------- */
+                var agreeOpen = {};
+                function ppEsc(x){ return String(x == null ? "" : x).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+                function renderAgreements(){
+                  var box = document.getElementById("agreementsBox");
+                  if (!box) return;
+                  var h = '<h3 style="margin:22px 0 2px; font-size:18px;">Agreements &amp; Disclaimers</h3><p class="lede">JPR KING · TERMS THAT APPLY TO THIS DOCUMENT</p>';
+                  AGREEMENT_SECTIONS.forEach(function (sec){
+                    var open = !!agreeOpen[sec.n];
+                    h += '<div style="border-top:1px solid #2a3c5f;padding:12px 0 4px;margin-top:12px">' +
+                      '<p style="margin:0"><strong>' + sec.n + '. ' + ppEsc(sec.title) + '</strong></p>' +
+                      '<p class="lede" style="margin:4px 0">' + ppEsc(sec.summary) + '</p>' +
+                      '<button type="button" class="btn btn-ghost" data-agree="' + sec.n + '">' + (open ? "Hide" : "Read") + '</button>';
+                    if (open){
+                      h += sec.body.map(function (p){ return '<p class="lede" style="white-space:pre-line">' + ppEsc(p) + "</p>"; }).join("");
+                      if (sec.box) h += '<div class="terms">' + sec.box.map(function (b){ return "<p><strong>" + ppEsc(b) + "</strong></p>"; }).join("") + "</div>";
+                      if (sec.foot) h += '<p class="lede">' + ppEsc(sec.foot) + "</p>";
+                      if (sec.n === 3) h += '<div class="asis-banner">AS IS — Read Before Signing</div><p class="lede">X Buyer (print or sign name above) — sign the AS IS acknowledgment in step 5 below, after you have read the disclaimer. Separate from the general invoice signature below.</p>';
+                    }
+                    h += "</div>";
+                  });
+                  box.innerHTML = h;
+                  Array.prototype.forEach.call(box.querySelectorAll("[data-agree]"), function (b){
+                    b.addEventListener("click", function (){ var n = b.getAttribute("data-agree"); agreeOpen[n] = !agreeOpen[n]; renderAgreements(); });
+                  });
+                }
+                renderAgreements();
+
+                /* ---------- PayPal engine v3 (own-house): live doc, SDK checkout,
+                   auto-confirm, signature posting, PayPal.me log-my-payment. ---------- */
+                var PP_FN_URL = "https://lwnpgzduhghzdvcexjwe.supabase.co/functions/v1/paypal";
+                var PP_ANON = "sb_publishable_BQKwA9LQDWaHHiVt_5eA9A_8Z4is7fv";
+                function ppPost(payload) {
+                  return fetch(PP_FN_URL, {
+                    method: "POST",
+                    headers: { "apikey": PP_ANON, "Authorization": "Bearer " + PP_ANON, "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                  }).then(function (r) { return r.json(); });
+                }
+                var ppLive = null;
+                function ppDocTotals(doc) {
+                  var sub = (doc.lines || []).reduce(function (a, l) { return a + Math.round((Number(l.quantity) || 0) * (Number(l.unitPriceCents) || 0)); }, 0);
+                  var tax = Math.round(sub * (Number(doc.taxRateBps) || 0) / 10000);
+                  var total = sub + tax - (Number(doc.discountCents) || 0);
+                  var paid = (doc.payments || []).reduce(function (a, p) { return a + (Number(p.amountCents) || 0); }, 0);
+                  return { total: total, paid: paid, balance: Math.max(0, total - paid) };
+                }
+                function ppBalance() { return ppLive && ppLive.doc ? ppDocTotals(ppLive.doc).balance : Math.round(balance * 100); }
+                function ppAmtCents() { var el = document.getElementById("payAmt"); var v = parseFloat(String(el ? el.value : "").replace(/[^0-9.]/g, "")); return isNaN(v) ? 0 : Math.round(v * 100); }
+                function ppNote(text, good) { var p = document.getElementById("ppNote"); if (p) { p.textContent = text; p.style.color = good ? "#35d99a" : "#f2c14e"; } }
+                function ppMeHref(amtCents) { var h = (ppLive && ppLive.paypalMeHandle) || data.paypalMeHandle || ""; return h ? "https://paypal.me/" + h + "/" + (amtCents / 100).toFixed(2) : "#"; }
+                function ppApplyFallback() {
+                  var b = ppBalance();
+                  ["payBtnTop", "payBtnBar", "payBtnDone"].forEach(function (id) { var el = document.getElementById(id); if (el) el.href = ppMeHref(b); });
+                  var chip = document.getElementById("payFullChip");
+                  if (chip) chip.textContent = "Pay full balance — " + money(b / 100);
+                  var due = document.getElementById("ppDueLine");
+                  if (due) due.textContent = money(b / 100) + " due — pay the deposit or the full balance; your payment posts to this " + (data.kind === "estimate" ? "estimate" : "invoice") + " automatically. You'll get a PayPal receipt by email too.";
+                  var amt = document.getElementById("payAmt");
+                  if (amt && !amt.value) amt.value = (b / 100).toFixed(2);
+                  var sel = document.getElementById("payApplies");
+                  if (sel) sel.innerHTML = '<option value="balance">Full balance — ' + money(b / 100) + "</option>";
+                }
+                function ppLoadSdk() {
+                  if (!ppLive || !ppLive.paypalClientId || !ppLive.ready) return;
+                  if (ppBalance() <= 0) { ppNote("Paid in full — thank you! ✅", true); return; }
+                  var sc = document.createElement("script");
+                  sc.src = "https://www.paypal.com/sdk/js?client-id=" + encodeURIComponent(ppLive.paypalClientId) + "&currency=USD&intent=capture";
+                  sc.onload = function () {
+                    if (!window.paypal) return;
+                    window.paypal.Buttons({
+                      style: { layout: "vertical", color: "gold", shape: "rect" },
+                      createOrder: function () {
+                        var amt = ppAmtCents();
+                        if (!amt || amt > ppBalance()) { ppNote("Enter an amount up to the balance due.", false); return Promise.reject(new Error("bad amount")); }
+                        return ppPost({ action: "create-order", shareToken: data.shareToken, amountCents: amt }).then(function (r) {
+                          if (!r || !r.orderId) throw new Error("no order");
+                          return r.orderId;
+                        });
+                      },
+                      onApprove: function (d) {
+                        ppNote("Confirming your payment…", true);
+                        return ppPost({ action: "capture-order", orderId: d.order }).then(function (r) {
+                          if (r && r.ok) { ppNote("✅ Payment confirmed — thank you! It has been recorded on your " + (data.kind === "estimate" ? "estimate" : "invoice") + ".", true); ppRefresh(); }
+                          else { ppNote("Your payment went through at PayPal — the shop will confirm it on your invoice shortly.", false); }
+                        }).catch(function () { ppNote("Your payment went through at PayPal — the shop will confirm it on your invoice shortly.", false); });
+                      },
+                      onError: function () { ppNote("PayPal checkout hit a snag — you can use the PayPal.me option below instead.", false); }
+                    }).render("#paypalButtons");
+                  };
+                  document.head.appendChild(sc);
+                }
+                function ppRefresh() {
+                  if (!data.shareToken) return;
+                  ppPost({ action: "public-document", shareToken: data.shareToken }).then(function (r) {
+                    if (r && r.doc) { ppLive = r; ppApplyFallback(); }
+                  }).catch(function () {});
+                }
+                (function ppInit() {
+                  ppApplyFallback();
+                  var chip = document.getElementById("payFullChip");
+                  if (chip) chip.addEventListener("click", function () { document.getElementById("payAmt").value = (ppBalance() / 100).toFixed(2); });
+                  var sel = document.getElementById("payApplies");
+                  if (sel) sel.addEventListener("change", function () { document.getElementById("payAmt").value = (ppBalance() / 100).toFixed(2); });
+                  var cb = document.getElementById("claimBtn");
+                  if (cb) cb.addEventListener("click", function () {
+                    var m = document.getElementById("claimMsg");
+                    var txn = document.getElementById("claimTxn").value.trim();
+                    var amt = ppAmtCents();
+                    if (!data.shareToken) { m.textContent = "This link can't log payments — text JPR KING your transaction ID instead."; return; }
+                    if (!txn || !amt) { m.textContent = "Add the amount above and your PayPal transaction ID."; return; }
+                    cb.disabled = true;
+                    ppPost({ action: "log-claim", shareToken: data.shareToken, txnId: txn, email: document.getElementById("claimEmail").value.trim(), note: document.getElementById("claimNote").value.trim(), amountCents: amt }).then(function (r) {
+                      if (r && r.ok) { m.textContent = "Logged ✓ — JPR KING will match it against PayPal and post it to your invoice."; m.style.color = "#35d99a"; }
+                      else { m.textContent = "Couldn't log it — text JPR KING your transaction ID instead."; }
+                    }).catch(function () { m.textContent = "Couldn't log it — text JPR KING your transaction ID instead."; })
+                    .then(function () { cb.disabled = false; });
+                  });
+                  try {
+                    var q = new URLSearchParams(window.location.search);
+                    if (q.get("paypal") === "return") {
+                      var oid = q.get("token");
+                      if (oid) {
+                        ppNote("Confirming your payment…", true);
+                        ppPost({ action: "capture-order", orderId: oid }).then(function (r) {
+                          if (r && r.ok) { ppNote("✅ Payment confirmed — thank you! It has been recorded on your invoice.", true); ppRefresh(); }
+                          else { ppNote("Your payment went through at PayPal — the shop will confirm it on your invoice shortly.", false); }
+                        }).catch(function () { ppNote("Your payment went through at PayPal — the shop will confirm it on your invoice shortly.", false); });
+                      }
+                    } else if (q.get("paypal") === "cancel") {
+                      ppNote("Payment cancelled — no charge was made. You can pay any time with the buttons above.", false);
+                    }
+                  } catch (e) { /* return-flow is best-effort */ }
+                  if (data.shareToken) {
+                    ppPost({ action: "public-document", shareToken: data.shareToken }).then(function (r) {
+                      if (r && r.doc) { ppLive = r; ppApplyFallback(); ppLoadSdk(); }
+                    }).catch(function () {});
+                  }
+                  var sb = document.getElementById("submitBtn");
+                  if (sb) sb.addEventListener("click", function () {
+                    if (!data.shareToken) return;
+                    var n1 = document.getElementById("name1").value.trim();
+                    var n2 = document.getElementById("name2").value.trim();
+                    var jobs = [];
+                    try { jobs.push(ppPost({ action: "sign-document", shareToken: data.shareToken, signerName: n1, dataUrl: document.getElementById("pad1").toDataURL("image/png") })); } catch (e) {}
+                    try { jobs.push(ppPost({ action: "sign-asis", shareToken: data.shareToken, signerName: n2, dataUrl: document.getElementById("pad2").toDataURL("image/png") })); } catch (e) {}
+                    if (data.kind === "estimate") {
+                      var codeMap = { "Written estimate requested": "request", "Written estimate waived": "none", "Estimate with authorized dollar limit": "limit" };
+                      var radio = document.querySelector('input[name="estChoice"]:checked');
+                      var code = radio ? (codeMap[radio.value] || "") : "";
+                      var limEl = document.getElementById("estLimit");
+                      var limC = null;
+                      if (limEl && limEl.value) { var v = parseFloat(limEl.value.replace(/[^0-9.]/g, "")); if (!isNaN(v)) limC = Math.round(v * 100); }
+                      jobs.push(ppPost({ action: "approve-estimate", shareToken: data.shareToken, signerName: n1, estimateChoice: code, estimateChoiceLimitCents: limC }));
+                    }
+                    Promise.all(jobs).then(function (res) {
+                      var okAll = res.every(function (r) { return r && (r.ok || r.alreadyConverted); });
+                      if (!okAll) return;
+                      var ds = document.getElementById("doneStatus");
+                      if (ds) { ds.textContent = "Posted to JPR KING ✓ — your signatures are saved on your document."; ds.style.color = "#35d99a"; }
+                      var dt = document.getElementById("doneTitle");
+                      if (dt) dt.textContent = "Posted to JPR KING ✓";
+                      var dm = document.getElementById("doneMessage");
+                      if (dm) dm.textContent = "Your signed document went straight to JPR KING. Keep the backup copy below if you want one for yourself.";
+                      var sl = document.getElementById("sendLink");
+                      if (sl) sl.classList.add("hidden");
+                    }).catch(function () {});
+                  });
+                })();
+
 
         /* ---------- Signature pads ---------- */
         function makePad(canvasId, hintId, stampId, saveId) {
