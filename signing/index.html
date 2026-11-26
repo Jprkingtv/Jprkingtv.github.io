@@ -8,7 +8,7 @@
     <title>JPR KING — Review &amp; Sign Your Invoice</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&family=Cinzel:wght@700;800&display=swap" rel="stylesheet" />
     <style>
       :root {
         --navy: #0a1a33;
@@ -56,17 +56,32 @@
 
       /* ---------- Header ---------- */
       header.shop {
-        background: linear-gradient(160deg, var(--navy) 0%, var(--navy-deep) 100%);
+        background:
+          radial-gradient(ellipse 90% 55% at 50% -10%, rgba(230, 193, 92, 0.28) 0%, rgba(230, 193, 92, 0) 60%),
+          linear-gradient(165deg, #12294d 0%, var(--navy) 45%, var(--navy-deep) 100%);
         color: #f4f6fb;
         border-bottom: 4px solid var(--gold);
-        padding: 26px 16px 22px;
+        box-shadow: 0 1px 0 #7a5f22, 0 14px 34px rgba(6, 18, 36, 0.35);
+        padding: 30px 16px 24px;
         text-align: center;
       }
-      header.shop .crown { display: block; margin: 0 auto 4px; }
+      .lionmed {
+        width: 108px; height: 108px; margin: 0 auto 10px; border-radius: 50%;
+        padding: 4px;
+        background: conic-gradient(from 210deg, #8a6d1f, #e6c15c, #fff2c4, #c9a24b, #8a6d1f);
+        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(230, 193, 92, 0.35), 0 0 34px rgba(230, 193, 92, 0.25);
+      }
+      .lionmed img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; border: 2px solid rgba(10, 26, 51, 0.85); }
+      .lionmed.sm { width: 76px; height: 76px; margin-bottom: 8px; }
+      .hrule { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 12px auto 0; max-width: 340px; }
+      .hrule::before, .hrule::after { content: ""; height: 1px; flex: 1; background: linear-gradient(90deg, transparent, var(--gold)); }
+      .hrule::after { background: linear-gradient(90deg, var(--gold), transparent); }
+      .hrule span { color: var(--gold-bright); font-size: 11px; line-height: 1; }
       header.shop h1 {
-        font-family: "Barlow Condensed", "Barlow", sans-serif;
-        font-size: 52px;
-        letter-spacing: 3px;
+        font-family: "Cinzel", "Barlow Condensed", serif;
+        font-size: 46px;
+        letter-spacing: 4px;
+        text-shadow: 0 2px 14px rgba(230, 193, 92, 0.35);
         margin: 0;
         line-height: 1;
         color: #ffffff;
@@ -331,19 +346,30 @@
       .paybar .tot .v { font-size: 22px; font-weight: 700; white-space: nowrap; }
       .paybar .btn { flex: 1; min-height: 54px; }
 
+      /* ---------- Dress pass: gold edges, depth, sheen ---------- */
+      section.card {
+        border: 1px solid rgba(201, 162, 75, 0.45);
+        box-shadow: 0 12px 30px rgba(6, 18, 36, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      }
+      .btn-gold {
+        background: linear-gradient(165deg, #f0d488 0%, var(--gold-bright) 35%, var(--gold) 70%, #a37f2c 100%);
+        box-shadow: 0 8px 20px rgba(163, 127, 44, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+      }
+      h2.sec .step, .band-step { box-shadow: 0 0 0 2px rgba(201, 162, 75, 0.55), 0 4px 10px rgba(6, 18, 36, 0.25); }
+      .doc-band { border-bottom: 2px solid rgba(201, 162, 75, 0.5); padding-bottom: 10px; }
+      .paybar { box-shadow: 0 -10px 30px rgba(6, 18, 36, 0.35); border-top: 2px solid rgba(230, 193, 92, 0.6); }
+
       .hidden { display: none !important; }
       .small-note { font-size: 14px; color: var(--ink-soft); margin-top: 10px; }
     </style>
   </head>
   <body>
     <header class="shop">
-      <svg class="crown" width="54" height="40" viewBox="0 0 24 24" fill="none" stroke="#e6c15c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.735H5.81a1 1 0 0 1-.957-.735L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z" fill="#c9a24b"/>
-        <path d="M5 21h14"/>
-      </svg>
+      <div class="lionmed"><img src="https://invoice.jprkingtv.store/logo.jpg" alt="JPR KING — Sales, Auto Repair, Autobody" /></div>
       <h1>JPR KING</h1>
       <div class="sub">AUTO SALES &amp; REPAIR</div>
       <div class="tagline">GOD IS GOOD ALL THE TIME</div>
+      <div class="hrule" aria-hidden="true"><span>◆</span></div>
       <div class="addr">
         837 NW 8th Ave, Fort Lauderdale, FL 33311<br />
         <a href="tel:+19412704988">(941) 270-4988</a>
@@ -353,10 +379,7 @@
     <div class="wrap">
       <!-- ===== Empty state: no invoice data in the link ===== -->
       <section class="card empty hidden" id="emptyView">
-        <svg class="crown" width="46" height="34" viewBox="0 0 24 24" fill="none" stroke="#c9a24b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin:0 auto;">
-          <path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.735H5.81a1 1 0 0 1-.957-.735L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z" fill="#c9a24b"/>
-          <path d="M5 21h14"/>
-        </svg>
+        <div class="lionmed sm"><img src="https://invoice.jprkingtv.store/logo.jpg" alt="JPR KING — Sales, Auto Repair, Autobody" /></div>
         <h2>Open your estimate</h2>
         <p>The link that brought you here arrived without your document attached — some apps strip it off in transit. Use the link from your JPR KING email below and your estimate or invoice opens right here, ready to review, sign, and pay.</p>
         <div class="left" style="margin-top:6px;">
