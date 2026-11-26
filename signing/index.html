@@ -647,6 +647,7 @@
             balance: balanceC / 100,
             paypalLink: paypalLink,
             shareToken: obj.shareToken || "",
+            paypalClientId: obj.paypalClientId || "",
             issueDate: obj.issueDate || "",
             dueDate: obj.dueDate || "",
             estimateChoice: obj.estimateChoice || "",
@@ -1073,15 +1074,28 @@
                   var sel = document.getElementById("payApplies");
                   if (sel) sel.innerHTML = '<option value="balance">Full balance — ' + money(b / 100) + "</option>";
                 }
+                var ppSdkStarted = false;
+                var ppSdkRendered = false;
                 function ppLoadSdk() {
-                  if (!ppLive || !ppLive.paypalClientId || !ppLive.ready) return;
+                  var cid = (ppLive && ppLive.paypalClientId) || data.paypalClientId || "";
+                  if (!cid) return;
+                  if (ppLive && !ppLive.ready) return;
+                  if (!data.shareToken) return;
+                  if (ppSdkStarted) return;
                   if (ppBalance() <= 0) { ppNote("Paid in full — thank you! ✅", true); return; }
+                  ppSdkStarted = true;
+                  ppNote("Loading secure PayPal buttons…", true);
+                  setTimeout(function () {
+                    if (!ppSdkRendered) ppNote("PayPal buttons are taking a while — you can also use the PayPal.me option below.", false);
+                  }, 12000);
                   var sc = document.createElement("script");
-                  sc.src = "https://www.paypal.com/sdk/js?client-id=" + encodeURIComponent(ppLive.paypalClientId) + "&currency=USD&intent=capture";
+                  sc.src = "https://www.paypal.com/sdk/js?client-id=" + encodeURIComponent(cid) + "&currency=USD&intent=capture";
+                  sc.onerror = function () { ppNote("PayPal buttons couldn't load — you can use the PayPal.me option below.", false); };
                   sc.onload = function () {
-                    if (!window.paypal) return;
+                    if (!window.paypal) { ppNote("PayPal buttons couldn't load — you can use the PayPal.me option below.", false); return; }
                     window.paypal.Buttons({
                       style: { layout: "vertical", color: "gold", shape: "rect" },
+                      onInit: function () { ppSdkRendered = true; ppNote("", true); },
                       createOrder: function () {
                         var amt = ppAmtCents();
                         if (!amt || amt > ppBalance()) { ppNote("Enter an amount up to the balance due.", false); return Promise.reject(new Error("bad amount")); }
@@ -1110,6 +1124,7 @@
                 }
                 (function ppInit() {
                   ppApplyFallback();
+                  ppLoadSdk();
                   var chip = document.getElementById("payFullChip");
                   if (chip) chip.addEventListener("click", function () { document.getElementById("payAmt").value = (ppBalance() / 100).toFixed(2); });
                   var sel = document.getElementById("payApplies");
