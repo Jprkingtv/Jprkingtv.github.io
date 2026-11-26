@@ -767,7 +767,31 @@
         if (bootData) {
           boot(bootData);
         } else {
-          emptyView.classList.remove("hidden");
+          /* SHORT LINK (?t=<share token>): the document stays in the shop's
+             book and loads live from it — the link is ~55 characters, short
+             enough to survive a text message without breaking. */
+          var shortToken = "";
+          try { shortToken = new URLSearchParams(location.search).get("t") || ""; } catch (e) { /* no query */ }
+          if (shortToken && /^[A-Za-z0-9-]{10,40}$/.test(shortToken)) {
+            fetch("https://lwnpgzduhghzdvcexjwe.supabase.co/functions/v1/paypal", {
+              method: "POST",
+              headers: { "apikey": "sb_publishable_BQKwA9LQDWaHHiVt_5eA9A_8Z4is7fv", "Authorization": "Bearer sb_publishable_BQKwA9LQDWaHHiVt_5eA9A_8Z4is7fv", "Content-Type": "application/json" },
+              body: JSON.stringify({ action: "public-document", shareToken: shortToken })
+            }).then(function (r) { return r.json(); }).then(function (r) {
+              if (r && r.doc) {
+                var payload = {};
+                for (var k in r.doc) payload[k] = r.doc[k];
+                payload.shareToken = shortToken;
+                payload.paypalClientId = r.paypalClientId || "";
+                payload.paypalMeHandle = r.paypalMeHandle || "";
+                var nd = normalize(payload);
+                if (nd) { boot(nd); return; }
+              }
+              emptyView.classList.remove("hidden");
+            }).catch(function () { emptyView.classList.remove("hidden"); });
+          } else {
+            emptyView.classList.remove("hidden");
+          }
 
           /* Keep hunting: late URL rewrites, shell hand-offs, bfcache
              returns — any of them can deliver the code after first paint. */
